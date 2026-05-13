@@ -16,39 +16,13 @@
         <nav class="nav" aria-label="頁面切換">
           <a href="../app_structures/index.html">首頁</a>
           <a class="active" href="index.html">功能比較</a>
+          <a href="../product_architecture/index.html">產品架構</a>
           <a href="../reports/report.html">完整報告</a>
         </nav>
       </div>
     </header>
 
     <main>
-      <section id="overview">
-        <div class="hero-grid">
-          <div>
-            <h1>獨立 IM：個人通訊、社群與商業服務的統一入口</h1>
-            <p class="lead">本頁整合 27 款應用調研、功能模組比較與產品藍圖，用來判斷第一版 IM 的模組取捨、架構邊界與後續擴展方向。</p>
-            <div class="pill-row">
-              <span class="pill">獨立 IM</span>
-              <span class="pill">Inbox OS</span>
-              <span class="pill">個人與商業並行</span>
-              <span class="pill">社群與頻道</span>
-              <span class="pill">API / Bot / AI</span>
-              <span class="pill">信任與風控</span>
-            </div>
-          </div>
-          <div class="panel recommendation">
-            <h3>產品判斷</h3>
-            <p class="muted">第一版採用 Inbox OS / 可分區通訊收件箱：個人聊天、群組、頻道和商業對話共用通訊底座；商業檔案、商品卡、客服 CRM、API / Bot / AI 作為模組逐步掛載，早期預留身份、權限、風控、資料與區域擴展。</p>
-          </div>
-        </div>
-        <div class="decision-strip" aria-label="本頁用途">
-          <div class="decision-card"><strong>市場基準</strong><span>先看 27 款應用的能力分布，找出可借鑑方向。</span></div>
-          <div class="decision-card"><strong>模組取捨</strong><span>再按功能模組比較流程、實現方式與風險。</span></div>
-          <div class="decision-card"><strong>產品藍圖</strong><span>用直向架構圖看清楚模組關係與依賴。</span></div>
-          <div class="decision-card"><strong>功能決策</strong><span>討論哪些能力進入第一版，哪些只做架構預留。</span></div>
-        </div>
-      </section>
-
       <section id="benchmark">
         <div class="section-head">
           <div>
@@ -89,7 +63,7 @@
       <section id="module-compare">
         <div class="section-head">
           <div>
-            <h2>互動式功能模組比較</h2>
+            <h2>功能模組比較</h2>
           </div>
           <p class="muted">比較內容整合全球 IM 功能調研與社交互動應用功能分析：同一個模組下看多個產品怎麼做，再判斷本產品應採用哪條路線。</p>
         </div>
@@ -107,58 +81,6 @@
               </div>
             </div>
             <div class="app-grid" id="appCards"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="product">
-        <div class="section-head">
-          <div>
-            <h2>自有 IM 產品藍圖</h2>
-            <p class="muted">用架構圖呈現第一版產品應如何拆模組、如何互相依賴，以及哪些能力需要在早期資料模型與服務邊界中預留。</p>
-          </div>
-          <p class="muted">建議第一版採用「通訊收件箱 + 模組化商業能力」路線：聊天、群組、頻道和商業對話共用通訊底座，但商業服務、AI、API、推薦和治理透過清楚邊界接入。</p>
-        </div>
-        <div class="architecture-shell">
-          <div class="architecture-panel" aria-label="自有 IM 模組關係架構圖">
-            <pre class="mermaid">
-%%{init: {"flowchart": {"nodeSpacing": 34, "rankSpacing": 70, "curve": "basis", "htmlLabels": true}} }%%
-flowchart TB
-  subgraph L1["入口與身份層"]
-    Entry["外部入口<br/>邀請、QR、搜尋、廣告導流"]
-    Identity["身份與同意<br/>個人、商業、企業、地區、權限"]
-    Trust["Trust & Risk<br/>檢舉、封鎖、審核、發送者聲譽"]
-  end
-  subgraph L2["通訊底座"]
-    Inbox["Inbox OS<br/>私聊、群組、頻道、商業對話"]
-    Personal["個人通訊<br/>文字、語音、媒體、通話"]
-    Community["社群與頻道<br/>管理員、加入規則、討論承接"]
-  end
-  subgraph L3["商業與服務層"]
-    Merchant["Merchant OS<br/>商業檔案、商品卡、標籤"]
-    Support["Support / CRM<br/>AI 先答、人工接手、SLA 摘要"]
-    Platform["API / Bot / 迷你應用<br/>Webhook、scope、審核、停用"]
-  end
-  subgraph L4["交易與擴展層"]
-    Payments["支付<br/>支付請求、退款、第三方接入"]
-    Retail["Retail Graph<br/>商品、訂單摘要、物流狀態"]
-    Matching["匹配與推薦<br/>好友、商家、商品、頻道"]
-    Data["資料與擴容<br/>區域路由、事件、審計"]
-  end
-  Entry --> Identity --> Inbox
-  Trust --> Identity
-  Inbox --> Personal
-  Inbox --> Community
-  Inbox --> Merchant
-  Merchant --> Support
-  Merchant --> Platform
-  Merchant --> Payments
-  Merchant --> Retail
-  Matching --> Inbox
-  Platform --> Data
-  Payments --> Data
-  Retail --> Data
-            </pre>
           </div>
         </div>
       </section>
@@ -431,29 +353,45 @@ flowchart TB
       ];
       const moduleRank = new Map(moduleOrder.map((id, index) => [id, index]));
       modules.sort((a, b) => (moduleRank.get(a.id) ?? 999) - (moduleRank.get(b.id) ?? 999));
+      const moduleLookup = new Map(modules.map((module) => [module.id, module]));
 
       const roleScenarios = [
-        { role: "普通用戶", badge: "個人通訊", needs: ["穩定聊天", "好友邀請", "群組", "狀態更新", "安全封鎖"], path: ["建立身份", "加入聊天", "分享狀態", "管理通知"], targets: ["identity", "inbox", "personal", "community", "trust"] },
-        { role: "商家 / 商業主", badge: "商業經營", needs: ["商業檔案", "頻道經營", "商品卡", "AI 客服", "外部投放"], path: ["建立商業檔案", "承接流量", "商品卡進聊天", "客服接入"], targets: ["merchant", "entry", "support", "payments", "trust"] },
-        { role: "社群 / 頻道經營者", badge: "社群治理", needs: ["公開 / 私密群", "外部邀請連結", "入群審核", "管理員權限"], path: ["建立群 / 頻道", "配置加入規則", "導入外部流量", "管理內容"], targets: ["community", "entry", "platform", "trust"] },
-        { role: "企業客戶", badge: "客製與管理", needs: ["企業空間", "成員角色", "API 對接", "權限管理"], path: ["建立企業空間", "配置角色權限", "接入自有系統", "審計與停用"], targets: ["identity", "inbox", "platform", "support", "trust"] },
-        { role: "第三方服務商", badge: "API 生態", needs: ["機器人", "迷你應用", "Webhook", "權限同意"], path: ["提交模組", "審核 API 範圍", "管理員授權", "監控日誌"], targets: ["platform", "merchant", "support", "trust"] },
-        { role: "平台營運與安全", badge: "擴容 / 風控", needs: ["區域分流", "高併發", "內容審核", "資料分層"], path: ["資料分型", "按區域路由", "分場景審核", "模組化擴展"], targets: ["identity", "inbox", "trust", "data"] }
+        {
+          role: "普通用戶",
+          badge: "個人通訊",
+          needs: ["穩定聊天", "好友邀請", "群組", "狀態更新", "安全封鎖"],
+          path: ["建立身份", "加入聊天", "分享狀態", "管理通知"],
+          targets: ["messaging-identity", "external-entry", "community-governance", "status-updates", "trust-risk"]
+        },
+        {
+          role: "商家 / 商業主",
+          badge: "商業經營",
+          needs: ["商業檔案", "頻道經營", "商品卡", "AI 客服", "外部投放"],
+          path: ["建立商業檔案", "承接流量", "商品卡進聊天", "客服接入"],
+          targets: ["business-commerce", "channel-loop", "external-entry", "support-crm", "platform-ai-ops", "trust-risk"]
+        },
+        {
+          role: "社群 / 頻道經營者",
+          badge: "社群治理",
+          needs: ["公開 / 私密群", "頻道到討論閉環", "外部邀請連結", "入群審核", "管理員權限"],
+          path: ["建立群 / 頻道", "配置加入規則", "導入外部流量", "管理內容"],
+          targets: ["channel-loop", "community-governance", "external-entry", "platform-ai-ops", "trust-risk"]
+        },
+        {
+          role: "企業客戶",
+          badge: "客製與管理",
+          needs: ["企業空間", "成員角色", "API 對接", "權限管理", "審計與停用"],
+          path: ["建立企業空間", "配置角色權限", "接入自有系統", "審計與停用"],
+          targets: ["b2b-selling", "messaging-identity", "platform-ai-ops", "support-crm", "trust-risk"]
+        },
+        {
+          role: "第三方服務商",
+          badge: "API 生態",
+          needs: ["機器人", "迷你應用", "Webhook", "權限同意", "監控日誌"],
+          path: ["提交模組", "審核 API 範圍", "管理員授權", "監控日誌"],
+          targets: ["platform-ai-ops", "mini-apps", "business-commerce", "support-crm", "trust-risk"]
+        }
       ];
-
-      const architectureLookup = {
-        entry: { name: "外部入口" },
-        identity: { name: "身份與同意" },
-        inbox: { name: "Inbox OS" },
-        personal: { name: "個人通訊" },
-        community: { name: "社群與頻道" },
-        merchant: { name: "Merchant OS" },
-        payments: { name: "支付" },
-        support: { name: "Support / CRM" },
-        platform: { name: "API / Bot / 迷你應用" },
-        trust: { name: "Trust & Risk" },
-        data: { name: "資料與擴容" }
-      };
 
       function item(app, category, flow, implementation, borrow, avoid) {
         return { app, category, flow, implementation, borrow, avoid };
@@ -546,9 +484,20 @@ flowchart TB
             </div>
             <div class="proof-block">
               <b>對應模組</b>
-              <div class="proof-tags">${scenario.targets.map((target) => `<span>${architectureLookup[target]?.name || target}</span>`).join("")}</div>
+              <div class="proof-tags">
+                ${scenario.targets.map((target) => {
+                  const module = moduleLookup.get(target);
+                  return `<button class="module-link" type="button" data-module="${target}">${module?.name || target}</button>`;
+                }).join("")}
+              </div>
             </div>
           `;
+          card.querySelectorAll(".module-link").forEach((button) => {
+            button.addEventListener("click", () => {
+              renderModule(button.dataset.module);
+              keepModuleCompareInView();
+            });
+          });
           roleCards.appendChild(card);
         });
       }
@@ -569,28 +518,6 @@ flowchart TB
 
       renderModule(modules[0].id);
       renderRoles();
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <script>
-      if (window.mermaid) {
-        mermaid.initialize({
-          startOnLoad: true,
-          theme: "base",
-          themeVariables: {
-            background: "transparent",
-            primaryColor: "#ffffff",
-            primaryTextColor: "#18212d",
-            primaryBorderColor: "rgba(11,125,67,0.32)",
-            lineColor: "rgba(11,125,67,0.54)",
-            tertiaryColor: "#f5fbf7",
-            clusterBkg: "rgba(255,255,255,0.76)",
-            clusterBorder: "rgba(24,33,45,0.16)",
-            nodeBorder: "rgba(11,125,67,0.32)",
-            mainBkg: "transparent",
-            fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
-          }
-        });
-      }
     </script>
   </body>
 </html>

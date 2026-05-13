@@ -2034,7 +2034,7 @@ const ZH_EXACT_TEXT = {
   "After-sales": "售後",
   "Ecosystem": "生態系",
   "Messenger": "Messenger",
-  "Channels": "渠道",
+  "Channels": "頻道",
   "Context": "脈絡",
   "Conversation Handling": "對話處理",
   "Collaboration": "協作",
