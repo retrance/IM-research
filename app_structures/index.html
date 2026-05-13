@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>App 功能生態系架構</title>
+    <link rel="icon" href="assets/icons/whatsapp.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=site-navigation">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <h1>IM 應用功能架構</h1>
+            <p>以架構視圖檢視各類 IM 與商業能力</p>
+          </div>
+        </div>
+        <nav class="site-nav" aria-label="頁面切換">
+          <a class="active" href="index.html">首頁</a>
+          <a href="../compare_features/index.html">功能比較</a>
+          <a href="../reports/report.html">完整報告</a>
+        </nav>
+      </header>
+
+      <nav class="app-tabs" aria-label="應用程式" id="appTabs"></nav>
+
+      <section class="workspace" aria-live="polite">
+        <section class="map-panel" aria-labelledby="schemaTitle">
+          <div class="schema-heading">
+            <div class="app-title-lockup">
+              <span class="app-emblem"><img id="activeAppIcon" alt=""></span>
+              <div>
+                <h2 id="schemaTitle"></h2>
+                <p id="schemaSubtitle"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="map-stage" id="mapStage">
+            <svg class="map-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <defs>
+                <marker id="arrowhead" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                  <path d="M0,0 L7,3.5 L0,7 Z"></path>
+                </marker>
+              </defs>
+              <line x1="50" y1="49" x2="50" y2="17" class="flow-line"></line>
+              <line x1="50" y1="50" x2="82" y2="23" class="flow-line"></line>
+              <line x1="50" y1="51" x2="84" y2="57" class="flow-line"></line>
+              <line x1="50" y1="53" x2="70" y2="81" class="flow-line"></line>
+              <line x1="50" y1="53" x2="30" y2="81" class="flow-line"></line>
+              <line x1="50" y1="51" x2="16" y2="57" class="flow-line"></line>
+              <line x1="50" y1="50" x2="18" y2="23" class="flow-line"></line>
+              <line x1="50" y1="88" x2="50" y2="61" class="trust-line"></line>
+              <line x1="50" y1="88" x2="18" y2="59" class="trust-line"></line>
+              <line x1="50" y1="88" x2="82" y2="59" class="trust-line"></line>
+            </svg>
+            <button class="hub-card" id="hubCard" type="button"></button>
+            <div class="cluster-layer" id="clusterLayer"></div>
+            <button class="trust-layer" id="trustLayer" type="button"></button>
+          </div>
+        </section>
+
+        <aside class="detail-panel" id="detailPanel" aria-labelledby="detailTitle">
+          <div class="detail-kicker" id="detailKicker"></div>
+          <h3 id="detailTitle"></h3>
+          <p id="detailSummary"></p>
+          <div id="detailGroups" class="detail-groups"></div>
+          <p class="footnote">功能是否可用會依地區、帳號類型與分階段推出狀態而異。</p>
+        </aside>
+      </section>
+    </main>
+    <script src="assets/vendor/cytoscape.min.js"></script>
+    <script src="assets/vendor/dagre.min.js"></script>
+    <script src="assets/vendor/cytoscape-dagre.js"></script>
+    <script src="app.js?v=edge-label-position-fix"></script>
+  </body>
+</html>

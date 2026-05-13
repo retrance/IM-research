@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IM 產品架構與功能比較</title>
+    <link rel="stylesheet" href="styles.css?v=compare-site-ui">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>IM 產品架構與功能比較</strong>
+          <span>全球調研、模組化產品設計、可擴展商業架構</span>
+        </div>
+        <nav class="nav" aria-label="頁面切換">
+          <a href="../app_structures/index.html">首頁</a>
+          <a class="active" href="index.html">功能比較</a>
+          <a href="../reports/report.html">完整報告</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="overview">
+        <div class="hero-grid">
+          <div>
+            <h1>獨立 IM：個人通訊、社群與商業服務的統一入口</h1>
+            <p class="lead">本頁整合 27 款應用調研、功能模組比較與產品藍圖，用來判斷第一版 IM 的模組取捨、架構邊界與後續擴展方向。</p>
+            <div class="pill-row">
+              <span class="pill">獨立 IM</span>
+              <span class="pill">Inbox OS</span>
+              <span class="pill">個人與商業並行</span>
+              <span class="pill">社群與頻道</span>
+              <span class="pill">API / Bot / AI</span>
+              <span class="pill">信任與風控</span>
+            </div>
+          </div>
+          <div class="panel recommendation">
+            <h3>產品判斷</h3>
+            <p class="muted">第一版採用 Inbox OS / 可分區通訊收件箱：個人聊天、群組、頻道和商業對話共用通訊底座；商業檔案、商品卡、客服 CRM、API / Bot / AI 作為模組逐步掛載，早期預留身份、權限、風控、資料與區域擴展。</p>
+          </div>
+        </div>
+        <div class="decision-strip" aria-label="本頁用途">
+          <div class="decision-card"><strong>市場基準</strong><span>先看 27 款應用的能力分布，找出可借鑑方向。</span></div>
+          <div class="decision-card"><strong>模組取捨</strong><span>再按功能模組比較流程、實現方式與風險。</span></div>
+          <div class="decision-card"><strong>產品藍圖</strong><span>用直向架構圖看清楚模組關係與依賴。</span></div>
+          <div class="decision-card"><strong>功能決策</strong><span>討論哪些能力進入第一版，哪些只做架構預留。</span></div>
+        </div>
+      </section>
+
+      <section id="benchmark">
+        <div class="section-head">
+          <div>
+            <h2>27 款應用有效性比較</h2>
+            <p class="muted">評分來自全球 IM 功能調研報告。5 分代表可作為核心參考；1 分代表能力較弱或不是該產品重點。</p>
+          </div>
+          <p class="muted">市場能力分散：WeChat 覆蓋最廣，WhatsApp Business 與 LINE 在商業通訊較強，Discord 代表大型社群治理，Amazon / Shopee / Mercado Libre 代表交易履約，Intercom / Zendesk 代表客服營運。</p>
+        </div>
+        <div class="score-wrap">
+          <table aria-label="跨應用有效性評分">
+            <thead>
+              <tr>
+                <th>應用</th>
+                <th>IM 核心</th>
+                <th>商業聊天</th>
+                <th>社群</th>
+                <th>發現 / 創作者</th>
+                <th>零售</th>
+                <th>支付</th>
+                <th>物流</th>
+                <th>客服 / CRM</th>
+                <th>信任 / 安全</th>
+                <th>平台能力</th>
+              </tr>
+            </thead>
+            <tbody id="scoreRows"></tbody>
+          </table>
+        </div>
+        <div class="summary-grid">
+          <div class="metric-card"><strong>IM 核心</strong><span class="muted small">WhatsApp, Telegram, WeChat, LINE</span></div>
+          <div class="metric-card"><strong>商業通訊</strong><span class="muted small">WhatsApp Business, LINE, Shopify Inbox</span></div>
+          <div class="metric-card"><strong>社群治理</strong><span class="muted small">Discord, Telegram, Reddit, LINE OpenChat</span></div>
+          <div class="metric-card"><strong>零售與訂單</strong><span class="muted small">Amazon, Mercado Libre, Shopee, Shopify</span></div>
+          <div class="metric-card"><strong>平台與 AI</strong><span class="muted small">WeChat, Telegram, Intercom, Zendesk</span></div>
+        </div>
+      </section>
+
+      <section id="module-compare">
+        <div class="section-head">
+          <div>
+            <h2>互動式功能模組比較</h2>
+          </div>
+          <p class="muted">比較內容整合全球 IM 功能調研與社交互動應用功能分析：同一個模組下看多個產品怎麼做，再判斷本產品應採用哪條路線。</p>
+        </div>
+        <div class="interactive">
+          <div class="module-nav" id="moduleNav"></div>
+          <div class="module-stage">
+            <div class="module-brief">
+              <div class="module-card">
+                <h3 id="moduleTitle"></h3>
+                <p class="muted" id="moduleSummary"></p>
+              </div>
+              <div class="module-card">
+                <h3>產品判斷</h3>
+                <p class="muted" id="moduleDecision"></p>
+              </div>
+            </div>
+            <div class="app-grid" id="appCards"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="product">
+        <div class="section-head">
+          <div>
+            <h2>自有 IM 產品藍圖</h2>
+            <p class="muted">用架構圖呈現第一版產品應如何拆模組、如何互相依賴，以及哪些能力需要在早期資料模型與服務邊界中預留。</p>
+          </div>
+          <p class="muted">建議第一版採用「通訊收件箱 + 模組化商業能力」路線：聊天、群組、頻道和商業對話共用通訊底座，但商業服務、AI、API、推薦和治理透過清楚邊界接入。</p>
+        </div>
+        <div class="architecture-shell">
+          <div class="architecture-panel" aria-label="自有 IM 模組關係架構圖">
+            <pre class="mermaid">
+%%{init: {"flowchart": {"nodeSpacing": 34, "rankSpacing": 70, "curve": "basis", "htmlLabels": true}} }%%
+flowchart TB
+  subgraph L1["入口與身份層"]
+    Entry["外部入口<br/>邀請、QR、搜尋、廣告導流"]
+    Identity["身份與同意<br/>個人、商業、企業、地區、權限"]
+    Trust["Trust & Risk<br/>檢舉、封鎖、審核、發送者聲譽"]
+  end
+  subgraph L2["通訊底座"]
+    Inbox["Inbox OS<br/>私聊、群組、頻道、商業對話"]
+    Personal["個人通訊<br/>文字、語音、媒體、通話"]
+    Community["社群與頻道<br/>管理員、加入規則、討論承接"]
+  end
+  subgraph L3["商業與服務層"]
+    Merchant["Merchant OS<br/>商業檔案、商品卡、標籤"]
+    Support["Support / CRM<br/>AI 先答、人工接手、SLA 摘要"]
+    Platform["API / Bot / 迷你應用<br/>Webhook、scope、審核、停用"]
+  end
+  subgraph L4["交易與擴展層"]
+    Payments["支付<br/>支付請求、退款、第三方接入"]
+    Retail["Retail Graph<br/>商品、訂單摘要、物流狀態"]
+    Matching["匹配與推薦<br/>好友、商家、商品、頻道"]
+    Data["資料與擴容<br/>區域路由、事件、審計"]
+  end
+  Entry --> Identity --> Inbox
+  Trust --> Identity
+  Inbox --> Personal
+  Inbox --> Community
+  Inbox --> Merchant
+  Merchant --> Support
+  Merchant --> Platform
+  Merchant --> Payments
+  Merchant --> Retail
+  Matching --> Inbox
+  Platform --> Data
+  Payments --> Data
+  Retail --> Data
+            </pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="coverage">
+        <div class="section-head">
+          <div>
+            <h2>需求驗證</h2>
+            <p class="muted">用代表性角色檢查第一版資料模型是否足以承接個人、商業、社群、企業與第三方服務商。</p>
+          </div>
+        </div>
+        <div class="role-grid" id="roleCards"></div>
+      </section>
+    </main>
+
+    <script>
+      const scoreRows = [
+        ["WeChat / Weixin", 5, 5, 4, 4, 5, 5, 3, 4, 4, 5],
+        ["LINE", 4, 5, 4, 3, 4, 4, 2, 3, 4, 4],
+        ["KakaoTalk", 4, 4, 4, 3, 4, 4, 2, 3, 4, 3],
+        ["WhatsApp Business", 5, 5, 2, 2, 3, 2, 1, 3, 4, 4],
+        ["Telegram", 5, 3, 5, 3, 3, 3, 1, 2, 3, 5],
+        ["Discord", 4, 2, 5, 2, 1, 1, 1, 2, 4, 5],
+        ["Slack", 4, 5, 5, 1, 1, 1, 1, 4, 5, 5],
+        ["TikTok", 2, 3, 3, 5, 5, 4, 3, 2, 3, 4],
+        ["Instagram", 3, 4, 3, 5, 4, 3, 2, 3, 3, 4],
+        ["Snapchat", 4, 2, 3, 4, 2, 2, 1, 1, 3, 4],
+        ["Xiaohongshu / RED", 2, 3, 4, 5, 4, 3, 2, 2, 3, 3],
+        ["Shopee", 3, 4, 2, 3, 5, 4, 5, 4, 3, 3],
+        ["Pinduoduo", 1, 2, 3, 3, 5, 4, 4, 2, 2, 2],
+        ["Amazon", 1, 2, 1, 3, 5, 5, 5, 5, 4, 4],
+        ["Shopify Shop + Inbox", 3, 5, 1, 2, 5, 5, 4, 4, 4, 5],
+        ["Mercado Libre", 2, 3, 1, 2, 5, 5, 5, 4, 4, 4],
+        ["Facebook Marketplace + Messenger", 4, 3, 3, 2, 4, 3, 3, 3, 3, 4],
+        ["Vinted", 3, 2, 2, 1, 4, 3, 4, 3, 3, 2],
+        ["Grab", 2, 3, 1, 1, 4, 5, 5, 3, 4, 4],
+        ["Gojek", 2, 3, 1, 1, 4, 4, 5, 3, 4, 3],
+        ["Meituan", 1, 3, 1, 2, 5, 5, 5, 4, 4, 3],
+        ["Intercom", 3, 5, 1, 1, 1, 1, 1, 5, 4, 5],
+        ["Zendesk", 2, 5, 1, 1, 1, 1, 1, 5, 4, 5],
+        ["Tinder", 3, 1, 1, 1, 1, 1, 1, 1, 5, 2],
+        ["Bumble", 3, 1, 2, 1, 1, 1, 1, 1, 5, 2],
+        ["LinkedIn", 3, 4, 3, 3, 2, 1, 1, 3, 4, 4],
+        ["Meta Business Suite", 3, 5, 2, 3, 3, 2, 1, 4, 4, 4]
+      ];
+
+      const modules = [
+        {
+          id: "messaging-identity",
+          name: "通訊核心與身份",
+          summary: "對話本身是基礎能力，差異在於身份、隱私、對話類型與商業入口如何一起工作。",
+          decision: "第一版採用統一收件箱，但私聊、群組、頻道、商業對話必須有清楚類型；身份資料一開始就預留個人、商業、企業、地區、標籤和同意狀態。",
+          comparisons: [
+            item("WhatsApp", "私人 IM", ["Chats 先呈現私聊、群組和商業對話", "送達 / 已讀、語音與通話建立信任", "Business 帳號在同一收件箱內被清楚標示"], ["1:1、群組、語音 / 視訊、媒體、反應、投票", "個人訊息與通話預設端對端加密", "Business App：商業檔案、目錄、快捷回覆、標籤", "Business Platform：templates、webhooks、品質管控"], "低學習成本與高信任心智值得借鑑。", "不要把商業流程寫死在個人聊天模型裡。"),
+            item("WeChat", "通訊超級平台", ["聊天列表承接個人、群聊與服務通知", "通訊錄沉澱好友、群聊、標籤與公眾號", "公眾號、小程序、支付共同承接服務"], ["微信帳號、手機號、OpenID / UnionID 身份映射", "公眾號菜單、文章、客服消息和訂閱消息", "小程序運行時、掃碼 / 搜尋 / 分享入口", "微信支付、商戶號、退款與交易通知"], "身份、收件箱、服務和支付形成高密度日常工具。", "第一版不能直接做超級平台，入口和治理都會過重。"),
+            item("LINE", "亞洲通訊平台", ["好友 / 聊天列表維持 IM 入口", "官方帳號以聊天形式承接品牌與服務", "Rich Menu、Quick Reply 和 Flex Message 分流操作", "LIFF / MINI App 承接表單、會員或交易"], ["官方帳號、廣播、窄播、Webhook / Messaging API", "Rich Menu、Quick Reply、Flex Message", "LINE URL scheme、LIFF、MINI App", "LINE Login、user ID、帳號連結、受眾分析"], "聊天選單和快捷回覆適合低成本商業分流。", "服務入口太多會壓低聊天效率，需要清楚分層。"),
+            item("Telegram", "雲端 IM + 公開身份", ["雲端聊天跨設備同步", "username、搜尋、t.me 連結導入人、群、頻道、Bot", "私聊、群組、頻道和 Bot 共存在同一聊天列表", "高隱私 1:1 場景才切到 Secret Chat"], ["雲端聊天儲存與多設備同步", "群組最高 200,000 成員，頻道可無上限訂閱", "public username、t.me link、invite link、join request", "Bot API、inline keyboard、commands、Web Apps", "Secret Chat 是裝置限定的一對一端對端加密模式"], "公開入口、Bot 和頻道適合社群與商業擴展。", "預設雲端聊天與真正端對端加密不同，隱私表述必須準確。")
+          ]
+        },
+        {
+          id: "trust-risk",
+          name: "信任 / 安全 / 風控",
+          summary: "安全不是後補功能。私聊、群組、商業、API、AI 都要共用角色權限、檢舉封鎖、審核佇列、可疑連結偵測和發送者聲譽。",
+          decision: "第一版先建立共用信任底座：身份驗證、權限、檢舉封鎖、發送限制、模板審核、審計日誌和可停用能力。",
+          comparisons: [
+            item("Tinder / Bumble", "身份驗證與安全互動", ["建立 profile 和偏好", "Photo / Selfie / ID verification 提供信任訊號", "match 或平台規則成立後才可聊天", "風險時 block、report、unmatch"], ["Tinder Photo Verification / 部分市場 ID verification", "Bumble Photo Verification", "match / messaging restrictions / opening move", "Safety Center、block & report、unmatch"], "陌生人互動前需要同意和驗證門檻。", "信任機制不能只放在交友場景。"),
+            item("Amazon / Mercado Libre / Vinted", "交易信任與保護", ["查看 listing、seller reputation、review 和交易條件", "平台記錄付款、配送、退貨和 dispute", "問題透過 buyer protection / claims / returns 處理"], ["verified purchase reviews / seller ratings", "A-to-z Guarantee、Compra Protegida、buyer protection", "order / shipping / return / dispute records", "seller reputation metrics"], "商業 IM 需要把評價和交易狀態帶進聊天上下文。", "沒有履約狀態的私聊交易風險很高。"),
+            item("Discord / WhatsApp Business / LINE", "社群與自動化治理", ["管理員或商家設定角色、權限和發送範圍", "平台或 bot 攔截垃圾訊息和低品質模板", "高風險訊息被 review、rate limit 或 disable"], ["Discord roles、permissions、timeouts、AutoMod、reports", "WhatsApp Business templates、review、quality rating、messaging limits", "LINE Messaging API rate limits、block / unsubscribe", "Bot / webhook scopes、admin permissions、audit logs"], "公開群、商業推播和 Bot 都需要治理底座。", "API / Bot 先開放、風控後補會非常昂貴。"),
+            item("Airbnb / Uber", "雙邊市場信任", ["雙方完成 identity、profile、rating 或資格檢查", "平台內 messaging、payment 和 booking / trip record 降低私下交易風險", "服務中保留 location、status、ETA 等證據"], ["Airbnb identity verification、reviews、secure payments、AirCover", "Uber driver screening、2-way ratings、driver profile", "Verify Your Ride PIN、Share Trip、GPS tracking、RideCheck", "in-app messaging / phone anonymization"], "陌生人商業互動需要身份、評價、交易狀態和平台內紀錄一起工作。", "只提供聊天不提供信任上下文會放大爭議。"),
+            item("Meta / TikTok", "內容安全與分發風控", ["內容、帳號、廣告或商品先經風險評分", "違規時移除、標示、降權或限制功能", "創作者 / 商家可 appeal", "風險訊號回到推薦和廣告審核"], ["AI / ML classifiers plus human review", "reporting、appeals、strikes / account status", "ads review and commerce policy review", "reduced distribution / recommendations eligibility", "account integrity、spam / fraud enforcement"], "推薦、廣告、商業訊息和公開內容要接同一套風險訊號。", "風控不能只靠人工後台。")
+          ]
+        },
+        {
+          id: "external-entry",
+          name: "外部入口 / 邀請 / 發現",
+          summary: "外部入口會影響增長、權限、風控和歸因。邀請好友與分享群組、頻道、商業檔案不是同一件事。",
+          decision: "連結模型需要記錄目標類型、建立者、有效期、加入規則、來源、活動 ID、撤銷狀態和風險檢查。",
+          comparisons: [
+            item("LINE", "QR / ID / 通訊錄入口", ["用 QR、LINE ID、電話簿或分享連結加好友", "入口目標可為個人、群組、官方帳號或 LIFF", "官方帳號再用 Rich Menu / 訊息分流"], ["QR Code、LINE ID、通訊錄與邀請", "官方帳號加好友 URL / QR", "LINE URL scheme 打開 chat、profile、LIFF", "LIFF / MINI App 使用 LINE Login 授權"], "入口類型拆得清楚，適合區分邀請好友和分享目標。", "入口太多時需要分層。"),
+            item("Telegram", "公開 username / invite link", ["用 public username、t.me link 或 invite link 建立入口", "外部點擊後落到個人、群組、頻道、Bot 或 Mini App", "私密群 / 頻道可設 join request"], ["public username、t.me/username、invite links", "join requests 和 invite link 管理", "群組、頻道、Bot、Mini App 共用 Telegram link 心智", "admins 可撤銷 invite link、限制成員權限"], "外部導流和公開身份能力強。", "公開入口必須配合反垃圾訊息和加入審核。"),
+            item("WhatsApp", "邀請與 click-to-chat", ["手機聯絡人、邀請連結或 QR 建立個人入口", "群組 / 社群透過 invite link 加入", "Business 用 click-to-chat 或 QR 帶入聊天"], ["Invite friends、group invite link、community invite link", "click-to-chat wa.me link", "Business profile / QR code", "管理員審核和社群設定"], "關係邀請和商業聊天入口都很直接。", "邀請好友與分享群組 / 頻道連結不能混成同一動作。"),
+            item("TikTok / Instagram", "內容 / 廣告導流", ["內容或廣告先產生興趣", "使用者點 profile、message CTA、link 或 product tag", "進入 DM、商品頁、直播或外部網站"], ["For You / Reels feed 推薦", "Creator / Business Profile、DM、link in bio", "Click-to-message ads", "LIVE、product tag、shop / showcase 能力依市場開放"], "外部流量應直接落到群組、頻道、商業檔案或商品。", "強推式導流容易帶來垃圾流量，需要來源追蹤和風控。")
+          ]
+        },
+        {
+          id: "status-updates",
+          name: "狀態更新",
+          summary: "狀態更新是低壓力輕內容入口，適合承接近況、品牌更新、限時活動與服務提醒。",
+          decision: "第一版可預留狀態型內容物件：可見範圍、過期時間、回覆入口、商業活動標記、通知強度和內容安全。",
+          comparisons: [
+            item("WhatsApp Status / Updates", "熟人近況與頻道入口", ["打開 Updates 分開看 Status 與 Channels", "Status 回覆進私聊", "Status 24 小時後消失", "Channels 是追蹤式一對多更新"], ["Status 支援文字、照片、影片和語音", "Status 可設定可見範圍並可收到回覆", "Channels 位於 Updates，與聊天收件箱分離", "Channels 支援貼文、反應、投票、轉發連結"], "低壓力近況放在聊天之外，可降低收件箱噪音。", "不要讓狀態頁承擔完整內容平台功能。"),
+            item("Instagram Stories", "創作者與品牌互動", ["瀏覽 Stories", "用貼紙、投票、問答、連結或回覆互動", "回覆沉澱為 DM 關係", "Close Friends / Highlights 做分層留存"], ["24 小時 Stories 與 Highlights", "互動貼紙、問答、投票、連結貼紙", "Close Friends 可見範圍", "回覆進 DM；購物標籤 / CTA 依帳號和地區能力而定"], "狀態可以成為創作者和品牌的輕量觸達工具。", "視覺內容工具太重會偏離 IM 核心。"),
+            item("Snapchat Stories", "即時分享與低留存壓力", ["拍攝 Snap 後發到 My Story、Friends 或 Public Story", "朋友可在 24 小時內查看並上滑回覆", "可見範圍和回覆權限決定內容壓力"], ["My Story 通常 24 小時過期", "My Friends / Custom / Public Story 可見性", "Story Reply 進入 Chat 或回覆管理", "觀看者、保存與截圖風險被隱私提示強化"], "短生命週期能降低使用者發布壓力。", "不要把強攝影心智作為 IM 主入口。")
+          ]
+        },
+        {
+          id: "community-governance",
+          name: "群組 / 社群治理",
+          summary: "群組不是多人私聊。大群、公開入口、角色、審核、語音、主題串和機器人都會改變資料模型。",
+          decision: "群組模型需要從第一版包含加入方式、群主 / 管理員、審核佇列、禁言、機器人掛鉤與內容安全策略。",
+          comparisons: [
+            item("Telegram", "大群與公開社群", ["建立群組或公開群", "用 invite link、public link 或搜尋導入成員", "管理員配置權限、禁言和刪除規則", "大群用 topics 分題"], ["群組最高 200,000 成員", "public group 可用 username / t.me link", "管理員權限、禁言、封鎖和 Recent Actions", "Bot API 可自動禁言、刪除或提供服務", "群組可作為頻道 discussion group"], "大群公開成長和 Bot 管理能力成熟。", "開放入口會帶來垃圾訊息和信任風險。"),
+            item("Discord", "持久社群空間", ["加入 server", "onboarding / 角色決定可見頻道", "文字、forum、thread、語音和 stage 分流", "AutoMod、角色權限與 Bot 維持秩序"], ["Server、category、channel、thread、forum channel", "role hierarchy 和 channel permission overrides", "Forum tags、post guidelines、inactive hide", "語音、視訊、螢幕分享和 stage", "AutoMod、Webhook、Bot 與審核工具"], "角色、頻道分層、語音和治理工具完整。", "伺服器樹狀結構對大眾 IM 過重。"),
+            item("LINE OpenChat", "主題公開聊天室", ["以主題搜尋或推薦發現 OpenChat", "加入時可設定不同於 LINE 個人檔案的暱稱", "依設定公開加入、密碼或審核"], ["OpenChat 主題社群與搜尋 / 分類入口", "每個聊天室可用獨立暱稱和頭像", "加入方式、公告、管理員設定", "歷史訊息可見範圍受設定與地區版本影響"], "匿名暱稱和主題入口可降低陌生人加入門檻。", "OpenChat 是區域性產品模式。"),
+            item("Reddit", "主題公共討論", ["進入 subreddit", "閱讀 / 發 post / comment", "upvote / downvote 影響排序和 karma", "mod queue、rules、Automoderator 支撐治理"], ["subreddit、post、comment、vote、flair", "community rules、mod queue、reports、removal reasons", "Automoderator 自動處理", "karma 不是 1:1 換算的信任訊號"], "異步主題討論、排序和版主管理值得借鑑。", "匿名公共討論不適合直接承接私密商業信任。"),
+            item("Facebook Groups", "熟人圖譜上的社群營運", ["推薦、搜尋或邀請進入群組", "回答入群問題或等待審核", "貼文、留言、活動和檔案沉澱內容", "管理員用規則、公告和成員洞察維持秩序"], ["public / private group", "membership questions、member approval", "group rules、post approval、reported content", "events、files、announcements / guides", "Group Insights、Admin Assist"], "入群問題、群規與審核適合商業社群。", "社交推薦太強會讓群組像內容流。")
+          ]
+        },
+        {
+          id: "channel-loop",
+          name: "頻道 / 內容到討論閉環",
+          summary: "頻道是一對多低噪音內容面，討論群是多對多互動面；兩者混在一起會讓使用者不知道是在閱讀還是在聊天。",
+          decision: "採用低噪音頻道 + 明確討論承接 + 可追蹤外部入口，頻道可分個人與商業類型。",
+          comparisons: [
+            item("Telegram", "頻道 + 綁定討論群", ["Channel 發布一對多內容", "post 可分享、反應、投票並有獨立連結", "comments 導到綁定 discussion group thread"], ["Channels 可無上限訂閱，只有 admins 發文", "public post 有 t.me link", "polls、reactions、view counters、statistics", "discussion group 讓 comments 回流到群組 thread"], "內容發布到社群討論模型清楚。", "頻道、評論、群組、topics 全開會提高管理成本。"),
+            item("WhatsApp Channels", "低噪音廣播", ["在 Updates 發現或追蹤 Channel", "Admin 發布一對多更新", "Follower 只能 reaction、poll vote 或轉發", "需要對話時另接私聊、群組或外部入口"], ["Channels 是 one-way broadcast tool", "Admin 可發文字、照片、影片、貼圖、投票", "Follower phone number 不暴露", "Channel history 只保留近期歷史"], "低打擾廣播適合品牌更新。", "頻道內沒有完整成員互聊。"),
+            item("Discord", "公告 + 論壇 / thread", ["Announcement channel 發布消息", "Follower server 透過 Follow 接收內容", "Forum channel / thread 承接分題討論"], ["Announcement channel 和 Follow / publish", "Channel Following 依靠 webhook 轉發", "Forum channel tags、post guidelines、search / filter", "Threads 承接短期分支討論"], "多主題長期討論可用論壇和 thread 降噪。", "加入 server 比追蹤頻道重。"),
+            item("LINE 官方帳號", "內容 / 服務路由", ["使用者加官方帳號", "收到 broadcast / narrowcast 或進入聊天室", "Rich Menu 常駐服務入口", "Quick Reply / Flex Message 導向 LIFF、網站或客服"], ["Reply、push、multicast、narrowcast、broadcast", "Rich Menu / per-user rich menu", "Quick Reply、Flex Message、template message", "Webhook / Messaging API 收事件"], "商業頻道中常駐選單比大段說明更容易理解。", "官方帳號不是大型公開討論空間。")
+          ]
+        },
+        {
+          id: "matching-trust",
+          name: "匹配 / 推薦",
+          summary: "匹配不是交友專用，也可以服務好友、商家、客戶、頻道、商品和合作方，但必須基於同意與信任分層。",
+          decision: "註冊與資料模型需預留興趣、地區、商業偏好、身份類型、行為訊號和是否接受匹配；推薦要可關閉且能解釋原因。",
+          comparisons: [
+            item("Tinder / Bumble / Hinge", "同意門檻與關係品質", ["建立個人資料、意圖與偏好", "排序系統依距離、偏好和行為呈現候選人", "雙方 match 或接受 like / comment 後才可聊天"], ["preferences、distance、intent / prompts", "Tinder match、Bumble opening move、Hinge likes / comments", "Photo / Selfie verification", "block、report、unmatch"], "匹配一定要有同意門檻。", "不要照搬交友 UI。"),
+            item("LinkedIn", "專業身份與商業觸達", ["建立職業檔案與公司關係", "search / recommendations 找人脈、公司和 lead", "用 InMail、connection request 或 TeamLink 觸達"], ["profile、company page、skills、experience", "Sales Navigator filters、Lead / Account lists", "TeamLink、shared connections、InMail", "CRM integration and usage reporting"], "商業匹配需要可信身份和明確觸達理由。", "過度自動化會破壞訊息真實性。"),
+            item("Facebook Marketplace", "本地信任與交易發現", ["location、category 和 search 發現 listing", "查看 seller profile、ratings 和 listing history", "用 Messenger 談價或約取貨 / 配送"], ["local search / filters / categories", "Marketplace listing and seller profile", "Messenger negotiation", "seller ratings / reviews、report seller / listing / scam"], "商業推薦可以結合地區、商品興趣和賣家信任。", "交易狀態若不清楚，私聊容易變成爭議區。"),
+            item("TikTok / Instagram", "內容興趣到推薦", ["內容互動形成興趣訊號", "推薦系統推創作者、商品、直播或品牌內容", "使用者進 profile、DM、Broadcast Channel、Shop 或外部連結"], ["For You / Reels ranking", "creator / business profile、DM、link、CTA", "LIVE、product tags、shop / showcase（依市場）", "Broadcast Channel / subscriptions"], "商業頻道推薦可以從內容興趣切入。", "只追求曝光會犧牲信任。")
+          ]
+        },
+        {
+          id: "business-commerce",
+          name: "商業檔案 / 商品卡 / 聊天商務",
+          summary: "商業功能不應把 IM 變成商城；更適合先做商業身份、商品物件、聊天中的商品卡和外部服務入口。",
+          decision: "第一版可做商業檔案、商品卡、商業標籤、AI 客服入口和服務接入，不在 IM 核心內重做完整訂單與客服後台。",
+          comparisons: [
+            item("WhatsApp Business", "小商家商業身份", ["商家建立 Business profile", "用目錄、營業資訊與自動化回覆建立信任", "客戶在聊天中詢問商品或服務", "規模化後接 Business Platform / CRM"], ["Business profile：地址、營業時間、網站、類別", "Catalog / collections、product sharing", "Quick replies、away message、greeting message、labels", "Cloud API、webhooks、templates"], "商業身份先建立信任，再把商品與客服接入對話。", "不要讓商業帳號訊息污染個人聊天。"),
+            item("LINE 官方帳號", "品牌聊天與 CRM-lite", ["使用者加官方帳號", "Rich Menu 常駐服務入口", "Webhook / 自動回覆先處理常見需求", "人工客服或 LIFF 接續複雜流程"], ["官方帳號聊天、broadcast、narrowcast、multicast", "Rich Menu / per-user rich menu", "Quick Reply、Flex Message、coupon / shop card", "Webhook、Messaging API、LINE Login / LIFF"], "商業動作放進聊天底部常駐入口容易理解。", "如果沒有狀態模型，選單會變成雜亂入口。"),
+            item("WeChat 官方帳號 / 小程式", "服務與交易平台", ["關注服務號 / 訂閱號", "文章、菜單、客服消息或掃碼導入小程序", "小程序內完成購物、預約、會員或支付"], ["公眾號內容發布、菜單和客服能力", "小程序運行時、分享、掃碼、搜尋入口", "微信支付與商戶號接入", "訂閱消息 / 服務通知"], "長期可把商業服務做成可接入模組。", "第一版不要複製完整超級平台。"),
+            item("Shopify Inbox / Instagram", "商品進入聊天", ["客戶在商店、商品頁、內容或 DM 產生問題", "商品連結 / 商品卡進入對話", "Instant Answers 或 quick replies 先回答常見問題"], ["Shopify Inbox quick replies、instant answers、order status", "商品推薦 / 商品連結和客戶購物上下文", "Instagram DM、product tags、shop / product detail 依市場", "購買與履約回到 Shopify / 商店系統"], "商品卡應是聊天中的結構化物件。", "訂單與履約先作為接入能力。")
+          ]
+        },
+        {
+          id: "support-crm",
+          name: "客服 / CRM 營運",
+          summary: "聊天要能變成可分配、可追蹤、可升級、可衡量的工作。",
+          decision: "第一版應定義客服接入邊界：AI 先答、人工接手、客戶資料、工單摘要、SLA 提醒和 Webhook。",
+          comparisons: [
+            item("Intercom", "AI-first 支援與銷售訊息", ["使用者從 Messenger / web / app 發問", "Fin 依知識庫與資料回答", "無法解決時交給 Helpdesk / Inbox 人工"], ["Fin AI Agent、audiences、content sources、RAG answers", "Help Center / Knowledge Hub", "Inbox / Helpdesk、Tickets、Workflows、Omnichannel", "Copilot、Outbound、Analyze"], "AI 必須接知識庫、升級路徑和衡量指標。", "不要只放聊天機器人。"),
+            item("Zendesk", "工單與路由", ["多渠道進入 ticket / Agent Workspace", "trigger、macro、AI agent 或 routing 分流", "Omnichannel routing 依容量、優先級、技能分配"], ["Agent Workspace", "Ticket、trigger、automation、macro、views", "Omnichannel routing：email、messaging、calls", "AI agents、agent copilot、knowledge", "SLA、CSAT、Explore"], "商業對話要能變成可管理工作。", "完整客服配置很重，IM 端先顯示摘要和接入狀態。"),
+            item("Salesforce Service Cloud", "企業 CRM 與服務流程", ["客戶互動進入 case / messaging / service channel", "Service Console 關聯 account、contact、asset 和 history", "Omni-Channel / flow 分配給 agent 或 AI"], ["Case、Account、Contact、Asset、Service Console", "Omni-Channel routing and flows", "Knowledge / Enterprise Knowledge", "Einstein / Agentforce / automation", "SLA / entitlement / audit / CRM reporting"], "企業版需要把聊天事件連到客戶、案例和權限。", "Salesforce 級工作台過重。"),
+            item("Meta Business Suite / Shopify Inbox", "中小商家統一收件箱", ["商家集中看 Messenger、Instagram、Facebook 或商店聊天", "快捷回覆 / instant answers 處理常見問題", "商品連結、訂單狀態或客戶資料輔助回覆"], ["Meta Business Suite Inbox", "labels、assignment、saved replies / automations", "Shopify Inbox quick replies、instant answers、customer / order context", "product links / recommendations"], "中小商家的第一需求是集中回覆和快速帶商品。", "不要過早設計成大型企業客服。")
+          ]
+        },
+        {
+          id: "b2b-selling",
+          name: "B2B 社交銷售 / 企業協作",
+          summary: "專業身份、線索搜尋、Page Inbox、CRM 和團隊工作流會影響企業版 IM。",
+          decision: "B2B 不應只是商業帳號加聊天。需要企業身份、成員角色、線索來源、團隊協作、CRM 接入、觸達頻率和審計。",
+          comparisons: [
+            item("LinkedIn", "專業身份與線索搜尋", ["建立 professional profile 和 company page", "Sales Navigator 搜尋 lead / account", "TeamLink / shared connections 提供 warm intro", "InMail / connection request 觸達"], ["Profile、Company Page、LinkedIn Page", "Sales Navigator Lead / Account Search", "TeamLink、saved leads / accounts、alerts", "InMail、CRM integrations、Usage Reporting"], "企業客戶需要可信身份與明確觸達理由。", "過度自動化會降低訊息真實性。"),
+            item("Slack / Microsoft Teams", "企業協作與工作流", ["組織成員登入 workspace / team", "在 channels、chats、threads 和 files 協作", "Workflow / apps / connectors 把任務帶進對話"], ["Workspace / Team / Channel / Chat", "apps、connectors、Workflow Builder / Workflows", "files、search、meetings / huddles / calls", "Copilot in Teams / Slack AI summaries", "permissions、retention、audit / compliance"], "企業版需要成員、權限和工作流。", "企業結構不能壓到個人 IM。"),
+            item("Meta Business Suite / Intercom", "商業收件箱與客戶資料", ["多渠道訊息進入商業收件箱", "團隊成員 assign、tag、reply", "Customer profile / conversation history 提供上下文"], ["Meta Business Suite Inbox and Page / Instagram context", "Intercom Inbox / Helpdesk、Customer profiles", "assignment、tags、saved replies / workflows", "CRM / apps integrations、analytics"], "商業團隊要看到客戶上下文。", "團隊協作需要審計和權限。")
+          ]
+        },
+        {
+          id: "platform-ai-ops",
+          name: "API / Bot / AI / 營運自動化",
+          summary: "API、Bot、AI 和服務接入會把 IM 變成平台，但必須受角色、授權、審核、審計和資料範圍限制。",
+          decision: "早期預留模組註冊表、API scope、Webhook、AI 代理設定、人工接手、審計日誌和停用開關。",
+          comparisons: [
+            item("Telegram Bot API", "可程式化通訊", ["使用者、群組或頻道啟用 Bot", "Bot 用 command、keyboard 或 inline mode 互動", "需要複雜 UI 時打開 Mini App / Web App"], ["HTTP Bot API、webhooks / getUpdates", "commands、inline keyboard、reply keyboard、callback query", "admin rights、chat_member / join_request updates", "Telegram Mini Apps / Web Apps", "deep links、t.me links、Payments / Stars"], "Bot 是商業、管理和自動化的高槓桿能力。", "Bot 權限必須可見可撤銷。"),
+            item("LINE Messaging API / LIFF", "商業訊息與輕應用", ["官方帳號收到 message、postback、follow 或 LIFF 事件", "Webhook 交給商家系統", "reply / push / narrowcast 回覆或觸達"], ["reply / push / multicast / narrowcast / broadcast APIs", "webhook、user ID、account link", "Rich Menu、Quick Reply、Flex Message", "LIFF、LINE Login、URL scheme、MINI App", "audiences、statistics、rate limits"], "API 應從商業帳號和服務場景開始。", "推播和自動化需要頻率、同意和退訂控制。"),
+            item("Intercom / Zendesk", "AI 客服與營運路由", ["訊息進客服工作區", "AI agent 依 knowledge base 回答或分流", "無法解決時 escalates to human ticket", "macro / workflow / trigger 協助坐席處理"], ["AI agent / Fin / Zendesk AI、knowledge base", "Inbox / Helpdesk / Agent Workspace", "omnichannel routing、tickets、conversation history", "macros、triggers、workflows", "SLA、CSAT、QA、reporting、audit"], "AI 只有接上知識、權限、人工接手和衡量指標才有價值。", "不要把客服操作台變成 IM 主體。"),
+            item("Slack / Microsoft Teams", "企業工作流與權限", ["組織身份登入 workspace / tenant", "channel / chat 承接協作上下文", "workflow、app、connector 或 bot 進入對話", "Copilot / AI 摘要把會議和聊天轉成行動"], ["workspace / team / tenant、members、channels、chats", "Workflow Builder / Power Automate / apps / connectors", "files、search、meetings", "Copilot in Teams / Slack AI summaries", "enterprise permissions、retention、eDiscovery / audit logs"], "企業客製需要身份、成員、權限和審計。", "企業功能必須用方案和角色隔離。")
+          ]
+        },
+        {
+          id: "mini-apps",
+          name: "迷你應用",
+          summary: "迷你應用讓第三方服務在 IM 內完成輕流程，例如預約、表單、商品、客服、會員和活動。",
+          decision: "第一版先預留 Webview / 迷你應用容器、授權範圍、商業帳號綁定、審核流程、停用開關和事件回寫。",
+          comparisons: [
+            item("WeChat Mini Programs", "服務容器與商業閉環", ["從聊天、掃碼、搜尋、分享卡片或公眾號進入小程序", "小程序在微信容器內完成服務或交易", "微信支付、訂閱消息和客服帶回結果"], ["小程序 framework / runtime / API capabilities", "login / authorization、OpenID / UnionID", "WeChat Pay mini program payment、refund、notifications", "subscribe messages / service notifications", "QR、share card、official account menu、search"], "服務可以不寫進 IM 核心，而是透過受控容器接入。", "小程序生態很重，第一版不要全面開放。"),
+            item("Telegram Mini Apps", "聊天內 Web App / Bot 服務", ["從 bot profile、keyboard / inline button、direct link 或 attachment menu 進入", "Mini App 在 Telegram 內取得用戶、主題與 chat context", "完成表單、遊戲、團購、訂閱或支付後把結果回到 bot / inline message / chat"], ["Telegram Mini Apps / WebApp SDK", "Bot API web_app buttons、menu button、direct links / startapp", "init data、user / chat context validation", "sendData、answerWebAppQuery、inline mode", "payments via providers / Telegram Stars"], "Mini App 可和公開群、頻道、Bot、自動化直接連動。", "必須清楚標示第三方服務、資料授權與 bot 權限。"),
+            item("LINE LIFF / MINI App", "官方帳號內的輕服務", ["從 rich menu、訊息、URL scheme 或 permanent link 進入", "LINE Login / LIFF 取得授權與上下文", "在 webview / mini app 完成會員、表單、預約或交易"], ["LIFF SDK、LINE Login、LIFF URL / permanent link", "LINE MINI App 和 Official Account 關聯", "Rich Menu、URL scheme、Messaging API", "user authorization、ID tokens / profile scope"], "迷你應用應和商業帳號、圖文選單、聊天事件結合。", "不要讓每個服務都變成獨立入口。"),
+            item("Grab", "超級 App 服務模組", ["首頁選 ride、food、delivery、pay 或本地服務", "服務流程使用同一帳號、地圖、支付與通知", "訂單 / 行程狀態和客服留在 Grab"], ["service modules：Mobility、Deliveries、Food、Pay", "maps、ETA、driver / merchant assignment", "GrabPay Wallet / payment and rewards", "order status、notifications、in-app support", "regional availability、risk controls"], "不同地區和服務可用模組開關接入同一身份與支付能力。", "超級 App 首頁太重，不適合直接套在 IM 第一版。")
+          ]
+        },
+        {
+          id: "payments",
+          name: "支付",
+          summary: "支付會把聊天中的意圖轉成交易，但同時牽涉身份、風控、退款、合規、地區路由和第三方支付服務。",
+          decision: "第一版不必自建錢包；先定義支付請求、付款狀態、退款狀態、交易風險、第三方支付接入和聊天通知物件。",
+          comparisons: [
+            item("WeChat Pay", "錢包與生活服務支付", ["在聊天、掃碼、小程序或服務中產生付款", "確認支付並完成交易", "支付結果通知回到服務或聊天", "退款、帳單和商家結算形成閉環"], ["微信錢包 / 零錢 / 銀行卡、付款碼 / 掃碼", "轉帳、紅包、商家收款", "JSAPI / 小程序支付、商戶號 / openid", "支付結果通知、訂單查詢、退款"], "支付結果應回到對話和服務狀態。", "自建錢包與金融合規很重。"),
+            item("LINE Pay", "通訊平台上的支付入口", ["支援市場以 LINE Pay 線上結帳或店內 QR / 條碼付款", "確認金額與支付方式", "完成後回到交易紀錄", "可用功能依市場而異"], ["QR / barcode / My Code / merchant QR", "online payment with LINE Pay", "merchant review and country-specific availability", "LINE POINTS / offers 依市場", "交易紀錄和通知"], "支付入口可與官方帳號、商業檔案和 QR 結合。", "優惠和點數不是第一版重點。"),
+            item("GrabPay", "本地服務支付與錢包", ["在 Grab 服務或商家付款", "Wallet / QR / online payment 承接交易", "付款狀態連到 ride、food、delivery 等服務進度"], ["GrabPay Wallet、QR / online payment", "Grab services payment", "GrabRewards points / offers（依市場）", "refund / support flows", "地區化支付方式和可用性"], "本地服務需要支付、ETA、客服和退款狀態一起設計。", "不能用單一支付流程寫死所有地區。"),
+            item("PayPal", "跨境支付與買家保護", ["支付連結、invoice 或 checkout 完成付款", "PayPal 保留 transaction 和 funding source 狀態", "爭議走 dispute / claim / protection 流程"], ["PayPal Checkout、payment links、invoice", "Buyer Protection / Seller Protection（資格制）", "disputes、claims、refunds、chargebacks", "settlement、fees、currency conversion", "KYC / compliance and account limitations"], "跨境商業需要支付狀態、爭議和退款可被聊天引用。", "支付不是單純按鈕，會影響信任、客服和風控。")
+          ]
+        },
+        {
+          id: "marketplace",
+          name: "交易市場",
+          summary: "交易市場把商品、商家、買家、聊天、支付、物流和評價串在一起；對 IM 來說，重點是讓交易意圖能被聊天理解。",
+          decision: "第一版可先做商品 / 商家 / 聊天引用物件與外部市場接入；交易市場本體後置，但資料模型要預留 listing、offer、order summary、review 和 dispute。",
+          comparisons: [
+            item("Facebook Marketplace", "本地商品發現 + Messenger 溝通", ["瀏覽本地 listing 或搜尋分類", "查看 seller profile、ratings 和位置資訊", "用 Messenger 問價或約交付", "支付與交付方式決定是否有 Purchase Protection"], ["Listing、category、location、search / filters", "Seller profile、seller rating / reviews", "Messenger 對話與 offer / negotiation", "Report listing / seller / scam"], "商品卡進聊天、賣家信任與地區訊號是商業 IM 必備能力。", "私下交易爭議多，需要清楚風險提示。"),
+            item("Shopee", "電商交易閉環", ["搜尋、活動或推薦進商品頁", "看評價、優惠、物流承諾和店鋪資訊", "下單後追蹤付款、配送和收貨", "售後與退換貨回到平台紀錄"], ["商品、店鋪、活動、優惠券 / coins / free shipping", "購物車、付款、物流追蹤", "Shop Chat / Seller Chat、客服和 auto-reply", "退換貨、退款和 dispute / return"], "商品、優惠、物流、客服狀態需要能成為聊天中的結構化引用。", "完整交易後台很重，IM 第一版只需接摘要、通知和跳轉。"),
+            item("Taobao", "商品供給與客服導購", ["搜尋或被推薦商品", "進店查看商品、評價、問大家和促銷", "用客服聊天確認規格、發貨和售後", "交易、物流、售後形成完整商業紀錄"], ["商品、店鋪、內容推薦和活動導購", "旺旺 / 店鋪客服聊天", "購物車、支付、訂單、物流", "退換售後、退款、平台介入", "評價、問答、促銷和會員營運"], "客服導購和商品問答能支援購買決策。", "IM 不應把自己做成重電商首頁。")
+          ]
+        },
+        {
+          id: "retail-local-infrastructure",
+          name: "零售 / 本地商務基礎設施",
+          summary: "目錄、結帳、物流、退換、評價、本地庫存和 ETA 都是商業閉環的一部分。",
+          decision: "展示頁不展開訂單和客服細節，但架構上要把商品、訂單摘要、物流狀態、本地服務和評價作為可接入物件預留。",
+          comparisons: [
+            item("Amazon / Mercado Libre", "交易履約基礎設施", ["商品目錄 / 搜尋 / 推薦", "下單付款並生成 order record", "fulfillment / shipping status 更新", "退貨、退款、dispute 或 protection 介入"], ["Catalog、checkout、fulfillment / shipping", "A-to-z Guarantee / Compra Protegida", "returns、refunds、claims / disputes", "seller rating / reputation metrics", "order notifications and tracking"], "商業聊天需要能引用訂單摘要和信任指標。", "完整市場規則不應硬寫進 IM。"),
+            item("Shopee / Shopify", "賣家營運與商品管理", ["商家管理 catalog、inventory、variants 和 promotions", "客戶從 search、content 或 chat 進商品頁", "商家用 chat / Inbox 回覆並帶商品連結"], ["Shopee seller tools、vouchers、Shopee Live", "Shopify products、variants、inventory、discounts", "Shopify Inbox quick replies、instant answers、customer context", "product links / recommendations in chat"], "商品卡和客戶上下文值得先做。", "不要把買家端做成商家工具。"),
+            item("Meituan / Grab / Gojek", "本地服務與 ETA", ["使用者選本地服務或商家", "地圖、ETA、供給和價格先決定可用性", "下單後位置、派單和狀態通知持續更新"], ["地圖、位置、ETA、供給調度", "餐飲外送、叫車、跑腿、服務預約", "order / trip status、driver / courier assignment", "wallet / payment and promotions"], "地區、位置和服務狀態會影響商業 IM 資料模型。", "本地履約太重，第一版只保留狀態摘要。"),
+            item("DoorDash / Instacart", "即時零售與配送狀態", ["選商家、商品和配送時段", "缺貨時依替代偏好、shopper 建議或退款處理", "driver / shopper 狀態與 ETA 更新", "缺件、延遲、品質問題進入 refund / support"], ["catalog / local inventory、delivery window", "substitution preferences、item instructions", "driver / dasher / shopper status", "order changes、refunds、credits and support", "ETA、delivery proof"], "缺貨替代、配送狀態和客服升級適合做成狀態物件。", "即時履約不應在 IM 核心內實作。")
+          ]
+        },
+        {
+          id: "short-video-discovery",
+          name: "短影片發現",
+          summary: "短影片發現不是 IM 第一層核心，但它是外部流量、創作者商業化、商品興趣和頻道成長的重要來源。",
+          decision: "第一版不做完整短影片資訊流，但要預留內容來源、創作者身份、商品標記、頻道 / 私訊承接、推薦訊號與風控。",
+          comparisons: [
+            item("TikTok", "演算法發現與商業轉化", ["For You feed 捕捉興趣", "使用者追蹤、評論、私訊或點商品 link", "LIVE / Shop / Showcase 承接購買意圖"], ["For You ranking 和興趣圖譜", "Creator profile、DM、LIVE", "TikTok Shop：shoppable video、LIVE shopping、product showcase", "Ads CTA、Pixel / Events API"], "內容可以直接導向頻道、商業檔案、商品卡或私訊。", "完整短影片平台成本高、風控重。"),
+            item("Instagram Reels", "社交圖譜 + 內容發現", ["Reels 發現內容", "進入 profile 後追蹤、看 Stories 或發 DM", "Broadcast Channel / Stories 維持關係", "商品標籤、link sticker 或廣告 CTA 轉成商業動作"], ["Reels feed 與推薦 / 追蹤混合分發", "Profile、DM、Stories、Highlights", "Broadcast Channels 是一對多更新", "Product tags in Reels / posts 依資格"], "短內容、私訊、頻道和商業身份可以形成連續路徑。", "不要把所有互動都塞進私訊。"),
+            item("YouTube Shorts", "短內容到長期訂閱", ["Shorts feed 發現短內容", "使用者訂閱頻道或進入 channel page", "Shorts 可連到同頻道相關影片、Short 或 Live"], ["Shorts creation / feed，短片最長 3 分鐘", "Subscribe button / channel page", "Related video link", "Live、membership、Shopping product tags 和廣告收益（資格制）"], "短影片適合做發現，長期關係仍需要頻道和訂閱。", "缺少頻道承接會只帶來一次性流量。")
+          ]
+        },
+        {
+          id: "social-commerce-layer",
+          name: "社交商務 / 內容導購",
+          summary: "內容、創作者、商品標籤、直播、團購和社會證明會把聊天導向商業需求。",
+          decision: "第一版不做完整內容平台，但要預留商品筆記、可分享商品卡、創作者 / 商家身份、直播或團購的後續接入點。",
+          comparisons: [
+            item("TikTok / TikTok Shop", "短影片到商品轉化", ["內容先建立需求", "影片或 LIVE 中 product link / shop tag 導入商品頁", "Showcase 沉澱商品", "購買和 affiliate 成效回到商業後台"], ["For You ranking", "TikTok Shop shoppable videos、LIVE shopping、Showcase", "Affiliate Program and creator commission", "商品審核、訂單與履約在 TikTok Shop 後台"], "內容可以成為商業入口。", "高曝光導流若沒有信任和風控會變成低品質流量。"),
+            item("Instagram", "創作者內容到私訊 / 商品", ["Reels / Stories / posts 建立興趣", "使用者進入 profile、DM、broadcast channel 或 product detail", "商品標籤 / link sticker / ads CTA 導向購買"], ["Reels、Stories、Highlights、Broadcast Channels", "DM 和 click-to-message ads", "Product tags / Shop / product detail 依市場與資格", "外部網站或平台 checkout 承接交易"], "內容、私訊和商業身份可以互相導流。", "DM 只是輔助層，不能取代商品狀態。"),
+            item("Xiaohongshu / RED", "商品筆記與社會證明", ["搜尋或推薦看到筆記", "收藏、評論、關注形成消費信任", "商品或店鋪入口把內容連到交易", "互動和搜尋詞影響後續推薦"], ["圖文 / 影片筆記、標題、標籤、評論、收藏", "KOL / KOC 種草和品牌號 / 店鋪頁", "商品卡 / 商品連結、直播或店鋪能力依商家資質", "站內搜尋是高意圖入口"], "商品不只是 SKU，也需要內容、評價和使用情境。", "內容社群一旦變成硬廣，信任會下降。"),
+            item("Pinduoduo / Shopee", "團購與直播商務", ["低價、優惠或直播觸發購買動機", "Pinduoduo 用拼單 / 分享降低價格門檻", "Shopee 用 voucher、coins、Live 和店鋪活動提高轉化"], ["Pinduoduo 拼單 / 團購、分享鏈路和活動門檻", "Shopee vouchers、free shipping、coins cashback", "Shopee Live 商品購買入口", "訂單、付款、物流、退換貨和評價"], "分享連結可以帶有團購、優惠或活動狀態。", "交易閉環仍在電商平台內。")
+          ]
+        }
+      ];
+
+      const moduleOrder = [
+        "messaging-identity",
+        "trust-risk",
+        "external-entry",
+        "status-updates",
+        "community-governance",
+        "channel-loop",
+        "matching-trust",
+        "business-commerce",
+        "support-crm",
+        "b2b-selling",
+        "platform-ai-ops",
+        "mini-apps",
+        "payments",
+        "marketplace",
+        "retail-local-infrastructure",
+        "short-video-discovery",
+        "social-commerce-layer"
+      ];
+      const moduleRank = new Map(moduleOrder.map((id, index) => [id, index]));
+      modules.sort((a, b) => (moduleRank.get(a.id) ?? 999) - (moduleRank.get(b.id) ?? 999));
+
+      const roleScenarios = [
+        { role: "普通用戶", badge: "個人通訊", needs: ["穩定聊天", "好友邀請", "群組", "狀態更新", "安全封鎖"], path: ["建立身份", "加入聊天", "分享狀態", "管理通知"], targets: ["identity", "inbox", "personal", "community", "trust"] },
+        { role: "商家 / 商業主", badge: "商業經營", needs: ["商業檔案", "頻道經營", "商品卡", "AI 客服", "外部投放"], path: ["建立商業檔案", "承接流量", "商品卡進聊天", "客服接入"], targets: ["merchant", "entry", "support", "payments", "trust"] },
+        { role: "社群 / 頻道經營者", badge: "社群治理", needs: ["公開 / 私密群", "外部邀請連結", "入群審核", "管理員權限"], path: ["建立群 / 頻道", "配置加入規則", "導入外部流量", "管理內容"], targets: ["community", "entry", "platform", "trust"] },
+        { role: "企業客戶", badge: "客製與管理", needs: ["企業空間", "成員角色", "API 對接", "權限管理"], path: ["建立企業空間", "配置角色權限", "接入自有系統", "審計與停用"], targets: ["identity", "inbox", "platform", "support", "trust"] },
+        { role: "第三方服務商", badge: "API 生態", needs: ["機器人", "迷你應用", "Webhook", "權限同意"], path: ["提交模組", "審核 API 範圍", "管理員授權", "監控日誌"], targets: ["platform", "merchant", "support", "trust"] },
+        { role: "平台營運與安全", badge: "擴容 / 風控", needs: ["區域分流", "高併發", "內容審核", "資料分層"], path: ["資料分型", "按區域路由", "分場景審核", "模組化擴展"], targets: ["identity", "inbox", "trust", "data"] }
+      ];
+
+      const architectureLookup = {
+        entry: { name: "外部入口" },
+        identity: { name: "身份與同意" },
+        inbox: { name: "Inbox OS" },
+        personal: { name: "個人通訊" },
+        community: { name: "社群與頻道" },
+        merchant: { name: "Merchant OS" },
+        payments: { name: "支付" },
+        support: { name: "Support / CRM" },
+        platform: { name: "API / Bot / 迷你應用" },
+        trust: { name: "Trust & Risk" },
+        data: { name: "資料與擴容" }
+      };
+
+      function item(app, category, flow, implementation, borrow, avoid) {
+        return { app, category, flow, implementation, borrow, avoid };
+      }
+
+      function renderList(items, ordered = false) {
+        const tag = ordered ? "ol" : "ul";
+        return `<${tag}>${items.map((entry) => `<li>${entry}</li>`).join("")}</${tag}>`;
+      }
+
+      const scoreBody = document.getElementById("scoreRows");
+      scoreRows.forEach((row) => {
+        const tr = document.createElement("tr");
+        row.forEach((cell, index) => {
+          const td = document.createElement("td");
+          td.innerHTML = index === 0 ? cell : `<span class="score s${cell}">${cell}</span>`;
+          tr.appendChild(td);
+        });
+        scoreBody.appendChild(tr);
+      });
+
+      const moduleNav = document.getElementById("moduleNav");
+      const moduleTitle = document.getElementById("moduleTitle");
+      const moduleSummary = document.getElementById("moduleSummary");
+      const moduleDecision = document.getElementById("moduleDecision");
+      const appCards = document.getElementById("appCards");
+      const roleCards = document.getElementById("roleCards");
+
+      function renderModule(moduleId) {
+        const module = modules.find((entry) => entry.id === moduleId) || modules[0];
+        moduleTitle.textContent = module.name;
+        moduleSummary.textContent = module.summary;
+        moduleDecision.textContent = module.decision;
+        appCards.innerHTML = "";
+
+        document.querySelectorAll(".module-button").forEach((button) => {
+          button.classList.toggle("active", button.dataset.module === module.id);
+        });
+
+        module.comparisons.forEach((entry) => {
+          const card = document.createElement("article");
+          card.className = "comparison-row";
+          card.innerHTML = `
+            <div class="comparison-product">
+              <strong>${entry.app}</strong>
+              <p>${entry.category}</p>
+            </div>
+            <div class="comparison-content">
+              <div class="comparison-cols">
+                <div class="comparison-col">
+                  <h4>邏輯流程</h4>
+                  ${renderList(entry.flow, true)}
+                </div>
+                <div class="comparison-col">
+                  <h4>具體實現</h4>
+                  ${renderList(entry.implementation)}
+                </div>
+                <div class="comparison-col">
+                  <h4>產品取捨</h4>
+                  <ul>
+                    <li><strong>借鑑：</strong>${entry.borrow}</li>
+                    <li><strong>避免：</strong>${entry.avoid}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `;
+          appCards.appendChild(card);
+        });
+      }
+
+      function keepModuleCompareInView() {
+        requestAnimationFrame(() => {
+          document.getElementById("module-compare").scrollIntoView({ block: "start", behavior: "smooth" });
+        });
+      }
+
+      function renderRoles() {
+        roleScenarios.forEach((scenario) => {
+          const card = document.createElement("article");
+          card.className = "role-card";
+          card.innerHTML = `
+            <h3>${scenario.role}<span class="score-tag">${scenario.badge}</span></h3>
+            <div class="role-path">
+              ${scenario.path.map((step, index) => `<div class="role-step"><b>${index + 1}</b>${step}</div>`).join("")}
+            </div>
+            <div class="proof-block">
+              <b>需要覆蓋</b>
+              <div class="proof-tags">${scenario.needs.map((need) => `<span>${need}</span>`).join("")}</div>
+            </div>
+            <div class="proof-block">
+              <b>對應模組</b>
+              <div class="proof-tags">${scenario.targets.map((target) => `<span>${architectureLookup[target]?.name || target}</span>`).join("")}</div>
+            </div>
+          `;
+          roleCards.appendChild(card);
+        });
+      }
+
+      modules.forEach((module, index) => {
+        const button = document.createElement("button");
+        button.className = "module-button";
+        button.dataset.module = module.id;
+        button.type = "button";
+        button.textContent = module.name;
+        button.addEventListener("click", () => {
+          renderModule(module.id);
+          keepModuleCompareInView();
+        });
+        moduleNav.appendChild(button);
+        if (index === 0) button.classList.add("active");
+      });
+
+      renderModule(modules[0].id);
+      renderRoles();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+      if (window.mermaid) {
+        mermaid.initialize({
+          startOnLoad: true,
+          theme: "base",
+          themeVariables: {
+            background: "transparent",
+            primaryColor: "#ffffff",
+            primaryTextColor: "#18212d",
+            primaryBorderColor: "rgba(11,125,67,0.32)",
+            lineColor: "rgba(11,125,67,0.54)",
+            tertiaryColor: "#f5fbf7",
+            clusterBkg: "rgba(255,255,255,0.76)",
+            clusterBorder: "rgba(24,33,45,0.16)",
+            nodeBorder: "rgba(11,125,67,0.32)",
+            mainBkg: "transparent",
+            fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

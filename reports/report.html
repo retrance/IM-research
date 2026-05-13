@@ -1,0 +1,2002 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>全球 IM 功能調研報告</title>
+    <link rel="stylesheet" href="../compare_features/styles.css?v=compare-site-ui">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>全球 IM 功能調研報告</strong>
+          <span>完整研究材料，可在討論中隨時切換查證</span>
+        </div>
+        <nav class="nav" aria-label="頁面切換">
+          <a href="../app_structures/index.html">首頁</a>
+          <a href="../compare_features/index.html">功能比較</a>
+          <a class="active" href="report.html">完整報告</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <article class="report-shell">
+        <div class="report-note">
+          <p>此頁為完整調研報告的會議展示版，內容已轉為繁體中文。需要追溯表格、評分、產品案例或原始分析時，可直接使用本頁。</p>
+        </div>
+        <div class="markdown-body">
+<h1>以 IM 為中心的零售超級 App：全球功能基準報告</h1>
+<p><strong>版本日期：</strong> 2026-05-11<br><strong>輸出：</strong> 中文 Markdown 報告<br><strong>目標：</strong> 從全球 27 個強社交互動產品中提取功能、模組和系統模式，為一個“IM 為中心、零售能力超過任何單一現有 App”的超級 App 提供產品設計參考。</p>
+<hr>
+<h2>0. 閱讀方式</h2>
+<p>這不是普通的 App 橫向對比。它是一個面向產品設計的研究報告：目標產品不是“商城加聊天”，而是把 <strong>即時通訊 IM 當作作業系統</strong>，讓零售、客服、社交發現、支付、物流、創作者、商家營運和平台擴展都掛在對話關係上。</p>
+<p>建議按下面順序閱讀：</p>
+<ol>
+<li><strong>App 選擇</strong>：解釋為什麼選擇這些產品。</li>
+<li><strong>統一功能命名</strong>：相似功能使用同一套名稱，方便後續比較和產品落地。</li>
+<li><strong>核心架構和流程圖</strong>：展示一個 IM 中心零售超級 App 應該如何組織模組。</li>
+<li><strong>逐個 App 分析</strong>：提取每個產品最值得借鑑的實現。</li>
+<li><strong>跨 App 功能評分</strong>：比較各產品在不同模組上的有效性。</li>
+<li><strong>目標產品藍圖</strong>：把觀察轉成可建設的產品架構。</li>
+<li><strong>個人使用 vs 商業使用</strong>：最後明確同一功能在個人端和商家端的不同形態。</li>
+</ol>
+<h3>評分規則</h3>
+<p>評分是基於公開產品體驗、官方文件和市場可見實現的定性判斷，不代表內部數據。</p>
+<table>
+<thead>
+<tr>
+<th align="right">分數</th>
+<th>含義</th>
+<th>解釋</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">5</td>
+<td>標杆級</td>
+<td>該產品在此模組上可以作為參考實現。</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>強</td>
+<td>成熟、實用，值得借鑑但需要適配。</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>合格</td>
+<td>功能可用，但不是最佳實踐。</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>局部</td>
+<td>有該功能，但範圍窄、集成弱或不是重點。</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td>弱 / 基本沒有</td>
+<td>對該模組幫助不大。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>1. 產品核心判斷</h2>
+<p>最好的零售超級 App 不應該從“商城”開始，也不應該從“客服系統”開始，而應該從 <strong>收件箱 Inbox</strong> 開始。</p>
+<p>很多零售意圖不是先出現在商品頁，而是先出現在對話中：用戶向朋友詢問建議、關注創作者、收藏商品、向賣家提問、收到物流更新、投訴訂單、協商價格、申請退款、向客服尋求幫助。這些本質上都是 conversation events。</p>
+<p>全球強產品共同說明了一個模式：</p>
+<pre><code class="language-text">對話 -&gt; 上下文 -&gt; 動作 -&gt; 交易 -&gt; 服務 -&gt; 關係 -&gt; 下一次對話
+</code></pre>
+<p>因此，一個真正的 IM 中心零售超級 App 必須同時營運四個循環：</p>
+<pre><code class="language-text">+------------------+      +------------------+
+|  社交循環        | ---&gt; |  商業循環        |
+|  好友、群、社區  |      |  商品、購物車    |
++------------------+      +------------------+
+          ^                         |
+          |                         v
++------------------+      +------------------+
+|  信任循環        | &lt;--- |  服務循環        |
+|  身份、風控      |      |  訂單、客服      |
++------------------+      +------------------+
+</code></pre>
+<p>一句話原則：<strong>所有零售對象都應該可以被聊天引用和操作</strong>。商品、訂單、商家、客服工單、直播、配送、優惠券、評價，都應該能被髮送、討論、操作，並在收件箱裡被再次找到。</p>
+<hr>
+<h2>2. 選擇的 App 及選擇理由</h2>
+<p>本報告選擇 27 個 App 或 App 生態。選擇範圍故意很寬：消費者 IM、超級 App、創作者平台、社交電商、市場平台、客服系統、匹配/約會、安全系統、B2B 銷售等。</p>
+<table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>App / 生態</th>
+<th>主要類別</th>
+<th>選擇理由</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>WeChat / Weixin</td>
+<td>超級 App + IM</td>
+<td>聊天、公眾號、小程式、錢包、服務入口結合最完整的參考。</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>LINE</td>
+<td>IM + 商業消息</td>
+<td>聊天原生商業賬號、Rich Menu、貼紙、支付、區域性超級 App 行為很強。</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>KakaoTalk</td>
+<td>IM + 韓國超級 App 層</td>
+<td>商業頻道、支付、預約、訂單、諮詢服務值得參考。</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>WhatsApp Business</td>
+<td>商業消息</td>
+<td>SMB 商業聊天、目錄、快捷回覆、標籤、Flows、API 化消息的關鍵參考。</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>Telegram</td>
+<td>IM + 機器人 + Mini Apps</td>
+<td>Bot、頻道、群組、Mini Apps、支付 API 的開放能力強。</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>Discord</td>
+<td>社區</td>
+<td>Server、Channel、Role、Permission、語音房、社區治理的最佳參考。</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>Slack</td>
+<td>工作溝通</td>
+<td>商業協作、工作流、集成、Canvas、內外部團隊溝通的標杆。</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>TikTok</td>
+<td>創作者電商</td>
+<td>短視頻發現、TikTok Shop、直播購物、可購物視頻、創作者分傭強。</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td>Instagram</td>
+<td>社交電商 + 創作者</td>
+<td>視覺發現、DM、Broadcast Channel、商品標籤、創作者商業溝通強。</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>Snapchat</td>
+<td>相機優先社交</td>
+<td>AR Lens、閱後即焚、Camera Commerce、地圖和年輕用戶社交方式值得借鑑。</td>
+</tr>
+<tr>
+<td align="right">11</td>
+<td>Xiaohongshu / RED</td>
+<td>生活方式社交電商</td>
+<td>筆記、種草、評價、生活方式推薦和社會證明非常強。</td>
+</tr>
+<tr>
+<td align="right">12</td>
+<td>Shopee</td>
+<td>市場平台 + 直播電商</td>
+<td>賣家聊天、物流、促銷、Shopee Live 和東南亞電商營運能力強。</td>
+</tr>
+<tr>
+<td align="right">13</td>
+<td>Pinduoduo</td>
+<td>社交低價電商</td>
+<td>拼團、分享、低價發現、遊戲化和社交需求聚合強。</td>
+</tr>
+<tr>
+<td align="right">14</td>
+<td>Amazon</td>
+<td>零售基礎設施</td>
+<td>商品、推薦、評價、物流、退換貨、客服、直播和 AI 購物助手的零售標杆。</td>
+</tr>
+<tr>
+<td align="right">15</td>
+<td>Shopify Shop + Shopify Inbox</td>
+<td>零售 App + 商家聊天</td>
+<td>獨立商家、聊天銷售、商品鏈接、折扣、訂單上下文和買家側訂單追蹤強。</td>
+</tr>
+<tr>
+<td align="right">16</td>
+<td>Mercado Libre</td>
+<td>市場平台 + 金融科技 + 物流</td>
+<td>拉美市場中支付、物流、售後消息、賣家工具和交易基礎設施強。</td>
+</tr>
+<tr>
+<td align="right">17</td>
+<td>Facebook Marketplace + Messenger</td>
+<td>C2C 市場 + 聊天</td>
+<td>社交圖譜、二手交易、Marketplace 消息和 AI 賣家工具值得參考。</td>
+</tr>
+<tr>
+<td align="right">18</td>
+<td>Vinted</td>
+<td>C2C 二手轉售</td>
+<td>輕量發佈、買家承擔運費、預付標籤、買賣協商和二手信任模型強。</td>
+</tr>
+<tr>
+<td align="right">19</td>
+<td>Grab</td>
+<td>本地服務超級 App</td>
+<td>出行、餐飲、雜貨、配送、錢包、積分和商家服務整合強。</td>
+</tr>
+<tr>
+<td align="right">20</td>
+<td>Gojek</td>
+<td>本地服務超級 App</td>
+<td>出行、餐飲、物流、支付和日常服務打包能力強。</td>
+</tr>
+<tr>
+<td align="right">21</td>
+<td>Meituan</td>
+<td>本地生活超級 App</td>
+<td>外賣、即時零售、團購、酒店旅行、跑腿、訂座、本地密度強。</td>
+</tr>
+<tr>
+<td align="right">22</td>
+<td>Intercom</td>
+<td>AI 客服 + Helpdesk</td>
+<td>AI Agent、Business Messenger、Inbox、Ticket、自動化和人工轉接強。</td>
+</tr>
+<tr>
+<td align="right">23</td>
+<td>Zendesk</td>
+<td>客服營運</td>
+<td>全渠道工單、知識庫、AI、路由、宏、SLA、報表和企業客服流程強。</td>
+</tr>
+<tr>
+<td align="right">24</td>
+<td>Tinder</td>
+<td>匹配 + 信任</td>
+<td>互相匹配、資料卡、安全中心、驗證和受控開聊機制值得參考。</td>
+</tr>
+<tr>
+<td align="right">25</td>
+<td>Bumble</td>
+<td>匹配 + 安全</td>
+<td>安全、驗證、語音/視頻先溝通、角色化開聊機制強。</td>
+</tr>
+<tr>
+<td align="right">26</td>
+<td>LinkedIn</td>
+<td>B2B 社交銷售</td>
+<td>職業身份、Page Messaging、InMail、線索搜索、賬號情報和 CRM 銷售強。</td>
+</tr>
+<tr>
+<td align="right">27</td>
+<td>Meta Business Suite</td>
+<td>多渠道商業收件箱</td>
+<td>Facebook、Instagram、Messenger、WhatsApp 的統一商業收件箱值得參考。</td>
+</tr>
+</tbody></table>
+<h3>為什麼包含一些“非零售 App”</h3>
+<p>未來的 IM 中心零售超級 App 不只需要購物能力，還需要：</p>
+<ul>
+<li><strong>Discord</strong> 的社區權限體系。</li>
+<li><strong>Slack</strong> 的工作流和團隊協作。</li>
+<li><strong>Tinder / Bumble</strong> 的身份、同意、匹配和安全設計。</li>
+<li><strong>Intercom / Zendesk</strong> 的客服營運。</li>
+<li><strong>LinkedIn</strong> 的 B2B 發現、專業身份和社交銷售。</li>
+</ul>
+<p>這些不是邊緣能力，而是很多零售型 App 缺失的關鍵模組。</p>
+<hr>
+<h2>3. 統一功能命名詞典</h2>
+<p>相似功能後續統一使用同一名稱。產品團隊可以把這一節當作 naming contract。</p>
+<table>
+<thead>
+<tr>
+<th>模組 / 子系統</th>
+<th>統一功能名稱</th>
+<th>含義</th>
+<th>強參考產品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心消息</td>
+<td>Direct Chat, Group Chat, Voice Message, Voice Call, Video Call, Media Sharing, File Sharing, Message Search, Message Translation, Chat Folder</td>
+<td>基礎人際溝通界面。</td>
+<td>WhatsApp, WeChat, LINE, Telegram, KakaoTalk</td>
+</tr>
+<tr>
+<td>對話控制</td>
+<td>Read Receipts, Typing Indicator, Presence, Pin Chat, Archive Chat, Mute Chat, Disappearing Message, Scheduled Message</td>
+<td>讓收件箱可管理的用戶控制功能。</td>
+<td>WhatsApp, Telegram, Instagram, LINE</td>
+</tr>
+<tr>
+<td>商業身份</td>
+<td>Business Profile, Verified Account, Official Account, Business Channel, Seller Profile, Creator Profile, Page Inbox</td>
+<td>商家、創作者、品牌、賣家的公開身份。</td>
+<td>WhatsApp Business, WeChat, LINE, KakaoTalk, LinkedIn, Meta Business Suite</td>
+</tr>
+<tr>
+<td>商業收件箱與 CRM</td>
+<td>Unified Inbox, Conversation Assignment, Conversation Labels, Customer Profile, Internal Notes, Conversation Status, Routing, SLA, Customer Timeline</td>
+<td>團隊處理大量對話的營運層。</td>
+<td>Intercom, Zendesk, Shopify Inbox, Meta Business Suite, WhatsApp Business</td>
+</tr>
+<tr>
+<td>聊天自動化</td>
+<td>Quick Replies, Auto-Greeting, Away Message, Bot Flow, Interactive Reply Button, Rich Menu, AI Suggested Reply, AI Agent</td>
+<td>掛在聊天上的自動化能力。</td>
+<td>WhatsApp Business, LINE, Intercom, Zendesk, Shopify Inbox, Telegram</td>
+</tr>
+<tr>
+<td>目錄電商</td>
+<td>Product Catalog, Product Detail Page, Product Card, Cart, Checkout, Payment Request, Discount Link, Product Bundle</td>
+<td>能進入聊天和內容場景的商業對象。</td>
+<td>WhatsApp Business, Shopify Inbox, Instagram, TikTok Shop, Shopee, Amazon</td>
+</tr>
+<tr>
+<td>社交電商</td>
+<td>Product Tag, Shoppable Video, Shoppable Live, Creator Affiliate, Product Review Note, Group Buying, Favorite, Wishlist, Share-to-Chat</td>
+<td>由社交證明、創作者、群組和內容驅動的購物。</td>
+<td>TikTok, Xiaohongshu, Instagram, Shopee, Pinduoduo</td>
+</tr>
+<tr>
+<td>訂單與物流</td>
+<td>Order Chat, Order Tracking, Delivery ETA, Courier Chat, Shipping Label, Return Request, Refund Request, Pickup Point, Proof of Delivery</td>
+<td>購買後的服務基礎設施。</td>
+<td>Amazon, Mercado Libre, Shopee, Vinted, Grab, Meituan</td>
+</tr>
+<tr>
+<td>支付與錢包</td>
+<td>Wallet, QR Payment, P2P Transfer, Escrow, Installments, Stored Card, Cash-on-Delivery, Loyalty Cash, Rewards Points</td>
+<td>資金流動和交易信任。</td>
+<td>WeChat, LINE Pay, Kakao Pay, Mercado Pago, GrabPay, Amazon, Shopify Shop</td>
+</tr>
+<tr>
+<td>社區</td>
+<td>Channel, Broadcast Channel, Server, Role, Permission, Thread, OpenChat, Announcement, Moderation Queue, Community Analytics</td>
+<td>多對多或一對多社交結構。</td>
+<td>Discord, Telegram, LINE, Instagram, WeChat, Slack</td>
+</tr>
+<tr>
+<td>發現</td>
+<td>Algorithmic Feed, Search, Nearby, Map, Trend, Recommendation, Personalized Deal, Product Ranking, Creator Discovery</td>
+<td>在用戶打開聊天前製造意圖的入口。</td>
+<td>TikTok, Instagram, Xiaohongshu, Amazon, Meituan, Pinduoduo</td>
+</tr>
+<tr>
+<td>小程式 / 開發平台</td>
+<td>Mini Program, Bot API, Webview App, App Directory, Integration Marketplace, Webhook, Permission Consent, Developer Review</td>
+<td>App 內 App 和開發者擴展層。</td>
+<td>WeChat, Telegram, LINE, Slack, Discord</td>
+</tr>
+<tr>
+<td>信任與安全</td>
+<td>Identity Verification, Photo Verification, Seller Rating, Buyer Protection, Report, Block, Spam Detection, Scam Warning, Risk Review, Policy Enforcement</td>
+<td>防止欺詐、騷擾、低質商家和危險互動。</td>
+<td>Tinder, Bumble, Amazon, Mercado Libre, Vinted, Facebook Marketplace, Discord</td>
+</tr>
+<tr>
+<td>創作者與內容</td>
+<td>Short Video, Story, Live, AR Lens, Creator Marketplace, Creator Affiliate, Broadcast Channel, Content Analytics</td>
+<td>注意力和轉化的內容層。</td>
+<td>TikTok, Instagram, Snapchat, Xiaohongshu, Amazon Live</td>
+</tr>
+<tr>
+<td>客服與服務</td>
+<td>Help Center, Ticket, Human Handoff, AI Agent, Knowledge Base, Macro, CSAT, Audit Log, Back-Office Ticket</td>
+<td>對話開始後的結構化問題解決。</td>
+<td>Intercom, Zendesk, Amazon, Shopify Inbox</td>
+</tr>
+<tr>
+<td>廣告與增長</td>
+<td>Message Ad, Click-to-Message Ad, Sponsored Content, Promoted Listing, Retargeting, Coupon Campaign, Broadcast Campaign, Lead Form</td>
+<td>商家和創作者增長引擎。</td>
+<td>Meta Business Suite, LINE Official Account, TikTok, Shopee, LinkedIn</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>4. 核心產品架構：IM 是作業系統</h2>
+<p>目標超級 App 不應該把 Inbox 放在角落。Inbox 應該是默認首頁。</p>
+<pre><code class="language-text">IM 中心零售超級 App
+
++--------------------------------------------------------------------------------+
+| 身份與信任                                                                     |
+| User ID | Business Profile | Verified Account | Seller Rating | Permissions     |
++-------------------------------------------+------------------------------------+
+                                            |
+                                            v
++--------------------------------------------------------------------------------+
+| INBOX OS                                                                       |
+| Personal Chats | Business Chats | Order Chats | Support Chats | Community Chats |
+| Pins | Folders | Search | Labels | Notifications | AI Summaries                  |
++-----------------------------+------------------+-----------------------------------+
+                              |                  |
+                              v                  v
++---------------------------------------+   +------------------------------------+
+| 對話動作層                            |   | 發現層                              |
+| Product Card | Payment Request        |   | Feed | Search | Nearby | Live     |
+| Cart | Coupon | Booking | Form        |   | Creator | Reviews | Map          |
++-----------------------------+---------+   +----------------------+-------------+
+                              |                                |
+                              v                                v
++--------------------------------------------------------------------------------+
+| 商業引擎                                                                       |
+| Product Catalog | Pricing | Inventory | Cart | Checkout | Wallet | Escrow      |
++-------------------------------------------+------------------------------------+
+                                            |
+                                            v
++--------------------------------------------------------------------------------+
+| 訂單、物流與服務                                                               |
+| Order Tracking | Delivery ETA | Courier Chat | Returns | Refunds | Help Center |
++-------------------------------------------+------------------------------------+
+                                            |
+                                            v
++--------------------------------------------------------------------------------+
+| 商業營運與平台層                                                               |
+| Unified Inbox | CRM | Analytics | Ads | AI Agent | Bot API | Mini Apps        |
++--------------------------------------------------------------------------------+
+</code></pre>
+<h3>設計原則</h3>
+<p>關鍵不是“給商城加一個聊天插件”，而是 <strong>讓每一個購物動作都可以在對話中被引用和執行</strong>。</p>
+<table>
+<thead>
+<tr>
+<th>零售對象</th>
+<th>在聊天中的行為</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>商品</td>
+<td>可分享、可比較、可提問、可推薦、可打包、可打折。</td>
+</tr>
+<tr>
+<td>購物車</td>
+<td>可共建、可保存、可發送、可協商、可恢復。</td>
+</tr>
+<tr>
+<td>訂單</td>
+<td>有持久 Order Chat，包含商家、配送、客服和狀態事件。</td>
+</tr>
+<tr>
+<td>賣家</td>
+<td>有 Business Profile、Seller Profile、評分、目錄、營業時間和政策。</td>
+</tr>
+<tr>
+<td>優惠券</td>
+<td>可發送、可領取、可過期、可個性化、可歸因。</td>
+</tr>
+<tr>
+<td>直播</td>
+<td>可轉成聊天、購物車、訂單、關注或客服。</td>
+</tr>
+<tr>
+<td>客服問題</td>
+<td>可從 AI Agent 升級到人工，同時保留交易上下文。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. 關鍵流程圖和產品 Schema</h2>
+<p>下面的圖全部使用 Markdown 安全文本圖，不依賴 Mermaid 或外部圖片，因此在 GitHub、Notion、Confluence、大多數 Markdown 閱讀器中都能穩定渲染。</p>
+<h3>Schema A：從對話到交易的閉環</h3>
+<pre><code class="language-text">[需求信號]
+     |
+     |  消息、搜索、Feed 瀏覽、收藏商品、直播評論、投訴
+     v
+[對話]
+     |
+     |  賣家 DM、好友推薦、群討論、AI Shopper
+     v
+[零售對象]
+     |
+     |  Product Card / Bundle / Coupon / Booking / Quote
+     v
+[交易]
+     |
+     |  Cart -&gt; Checkout -&gt; Wallet / Card / 貨到付款 / Escrow
+     v
+[Order Chat]
+     |
+     |  狀態更新、配送 ETA、Courier Chat、簽收證明
+     v
+[客服 / 退貨]
+     |
+     |  AI Agent -&gt; Human Handoff -&gt; Ticket -&gt; Refund / Replacement
+     v
+[關係]
+     |
+     |  評價、會員、復購、個性化 Campaign、Broadcast
+     +-------------------------------------------------------------+
+</code></pre>
+<p>**意義：**多數零售產品把這些階段拆開。IM 中心超級 App 應該把它們保留在同一條對話時間線裡。</p>
+<h3>Schema B：商業收件箱路由模型</h3>
+<pre><code class="language-text">客戶入口
+  Web chat | WhatsApp | LINE | Instagram DM | App DM | Marketplace question | Email
+        |
+        v
++--------------------------+
+| Message Normalization    |
+| user, channel, order,    |
+| product, language, risk  |
++------------+-------------+
+             |
+             v
++--------------------------+
+| AI / Rules Router        |
+| 意圖識別、優先級、SLA、風險 |
++----+----------+----------+
+     |          |
+     |          v
+     |    +------------------+
+     |    | AI Agent         |
+     |    | 回答、收集信息、建議 |
+     |    +--------+---------+
+     |             |
+     v             v
++--------------------------+
+| Human Agent Inbox        |
+| 分配、標籤、備註、宏、上下文 |
++------------+-------------+
+             |
+             v
++--------------------------+
+| System Actions           |
+| 退款、優惠券、訂單編輯、預約、加購 |
++------------+-------------+
+             |
+             v
++--------------------------+
+| Analytics &amp; Training     |
+| CSAT、轉化、響應時間、AI 缺口 |
++--------------------------+
+</code></pre>
+<p>**設計教訓：**客服不應該是脫離交易的工單系統，而應該是帶有商業動作權限的 conversation router。</p>
+<h3>Schema C：從發現到聊天的零售漏斗</h3>
+<pre><code class="language-text">發現入口
+  Algorithmic Feed
+  Search
+  Nearby / Map
+  Creator Profile
+  Product Review Note
+  Shoppable Live
+  Group Deal
+        |
+        v
+意圖對象
+  Product | Store | Creator | Service | Restaurant | Listing | Offer
+        |
+        v
+對話橋
+  Ask seller | Ask AI | Ask friend | Ask group | Comment | Broadcast reply
+        |
+        v
+動作
+  Save | Compare | Add to cart | Pay | Book | Negotiate | Follow | Share
+        |
+        v
+後續線程
+  Order chat | Support chat | Loyalty broadcast | Review request
+</code></pre>
+<p>**設計教訓：**零售發現必須有低摩擦的對話入口，因為用戶購買前通常需要確認、比較和獲得信任。</p>
+<h3>Schema D：Mini App / Bot 平台生命週期</h3>
+<pre><code class="language-text">開發者 / 商家
+        |
+        v
+[創建 Mini App / Bot / Integration]
+        |
+        v
+[平台審核]
+  身份、類目、政策、數據權限、支付權限
+        |
+        v
+[分發]
+  app directory, business profile, product card, group share, search, ads
+        |
+        v
+[用戶授權]
+  login, profile, location, payment, order, messaging permissions
+        |
+        v
+[運行時]
+  webview, bot actions, product API, wallet API, order API, notifications
+        |
+        v
+[治理]
+  analytics, moderation, risk review, abuse reports, developer penalties
+</code></pre>
+<p>**設計教訓：**小程式非常強，但也有風險。超級 App 必須做好權限授權、平台審核、運行時隔離和政策執行。</p>
+<h3>Schema E：社交零售的信任棧</h3>
+<pre><code class="language-text">TRUST STACK
+
+Level 1: 賬號信任
+  手機/郵箱驗證、身份驗證、設備風險、賬號年齡
+
+Level 2: 社交信任
+  共同好友、好友圖譜、社區聲譽、創作者歷史
+
+Level 3: 商家信任
+  認證商家、Seller Rating、履約歷史、響應率
+
+Level 4: 交易信任
+  Escrow、Buyer Protection、退款政策、簽收證明、爭議記錄
+
+Level 5: 內容信任
+  評價質量、垃圾內容檢測、虛假互動檢測、商品真實性
+
+Level 6: 對話信任
+  Scam Warning、站外交易警告、Report/Block、騷擾檢測
+</code></pre>
+<p>**設計教訓：**零售信任不能只靠評分。評分是滯後信號。消息風險、身份、配送、支付和內容質量必須一起工作。</p>
+<hr>
+<h2>6. 逐個 App 基準分析</h2>
+<h3>6.1 WeChat / Weixin</h3>
+<p>**選擇原因：**IM 中心超級 App 的最完整參考。</p>
+<p>**強模組：**Direct Chat, Group Chat, Official Account, Mini Program, Wallet, QR Payment, P2P Transfer, Product Catalog, Order Tracking, Search, Channel, Shoppable Live, Developer Platform。</p>
+<p>**有效性分析：**WeChat 最清楚地證明了消息可以成為作業系統。公眾號提供品牌身份和內容，小程式提供 App 式服務，微信支付提供交易層，聊天負責社交分發。騰訊也把小程式描述為輕量應用，讓用戶不用下載額外 App 就可以購物、支付和訪問服務。</p>
+<p>**應該複製：**Mini Program + Wallet + Official Account 的商家操作模型。</p>
+<p>**風險提醒：**這個模型非常強，但也容易變得複雜和不透明。新的超級 App 應該把權限、搜索、已保存服務和商家信任做得更清楚。</p>
+<p>**零售啟發：**不要分別建設“聊天”“商城”“服務”三個孤島。應該用同一個身份和同一個收件箱打開商業模組。</p>
+<p><strong>Sources:</strong> <a href="https://apps.apple.com/us/app/wechat/id414478124">WeChat App Store</a>, <a href="https://play.google.com/store/apps/details?id=com.tencent.mm">Google Play WeChat</a>, <a href="https://www.tencent.com/en-us/articles/2202220.html">Tencent TenPay Global Checkout announcement</a>, <a href="https://www.tencentcloud.com/document/product/1219/60341">Tencent Cloud mini program guide</a></p>
+<hr>
+<h3>6.2 LINE</h3>
+<p>**選擇原因：**日本、臺灣、泰國等市場中 IM + 商業消息生態強。</p>
+<p>**強模組：**Direct Chat, Group Chat, Voice Call, Video Call, Sticker, Business Channel, Rich Menu, Quick Replies, Broadcast Campaign, Coupons, Reward Cards, Wallet, QR Payment, Messaging API。</p>
+<p>**有效性分析：**LINE 的強點是讓商業動作看起來像聊天的自然組成部分。Rich Menu 尤其重要：它把商業聊天底部變成了一個持久導航面板，可以放預約、優惠券、商品分類、幫助和外部鏈接。</p>
+<p>**應該複製：**Rich Menu 作為聊天原生 storefront launcher。</p>
+<p>**風險提醒：**Rich Menu 容易變成雜亂菜單。目標產品應該根據用戶狀態動態變化：瀏覽中、購物車中、訂單已發貨、退款中、VIP、附近門店等。</p>
+<p>**零售啟發：**商業聊天不應該只是文本窗口，而應該是一個小型操作檯。</p>
+<p><strong>Sources:</strong> <a href="https://www.line.me/">LINE homepage</a>, <a href="https://developers.line.biz/en/docs/messaging-api/overview/">LINE Messaging API overview</a>, <a href="https://developers.line.biz/en/docs/messaging-api/using-rich-menus/">LINE rich menus</a>, <a href="https://developers.line.biz/en/docs/messaging-api/using-quick-reply/">LINE quick replies</a>, <a href="https://pay.line.me/portal/global/about/payment">LINE Pay</a></p>
+<hr>
+<h3>6.3 KakaoTalk</h3>
+<p>**選擇原因：**強國家級 IM，商業、支付、預約、訂單和諮詢嵌入消息生態。</p>
+<p>**強模組：**Direct Chat, Group Chat, OpenChat, Business Channel, Wallet, Bill Payment, Orders, Reservations, Consultation, Verified Channel。</p>
+<p>**有效性分析：**KakaoTalk 說明，一個 Messenger 可以成為日常基礎設施，而不必完全複製微信架構。KakaoTalk Channel 的價值在於把內容、權益、訂單、支付、預約和諮詢統一到一個商業身份下。</p>
+<p>**應該複製：**Business Channel 作為服務入口，而不只是廣播賬號。</p>
+<p>**風險提醒：**國家級超級 App 行為非常依賴本地市場。支付、監管、身份系統和商家接受度必須適配當地環境。</p>
+<p>**零售啟發：**最好的商業身份不是靜態頁面，而是訂單、客服、支付和預約的入口。</p>
+<p><strong>Sources:</strong> <a href="https://www.kakaocorp.com/page/service/service/kakaotalk?lang=en">KakaoTalk official service page</a>, <a href="https://www.kakaocorp.com/page/service/service/KakaoTalkChannel?lang=ENG">KakaoTalk Channel</a>, <a href="https://www.kakaocorp.com/page/service/service/KakaoPay?lang=en">Kakao Pay</a></p>
+<hr>
+<h3>6.4 WhatsApp Business</h3>
+<p>**選擇原因：**SMB 商業消息最重要的參考，必須作為獨立產品分析，不能和普通 WhatsApp 混在一起。</p>
+<p>**強模組：**Business Profile, Product Catalog, Quick Replies, Auto-Greeting, Away Message, Conversation Labels, Interactive Reply Button, Template Message, WhatsApp Flows, Cloud API, Business Messaging Policy。</p>
+<p>**有效性分析：**WhatsApp Business 的強點是把日常聊天習慣低摩擦地轉成商業互動。對小商家而言，Product Catalog、Quick Replies、Away Message、Conversation Labels 解決了立刻可見的營運問題。對大企業而言，Business Platform 和 Cloud API 提供了自動化、模板和規模化能力。</p>
+<p>**應該複製：**Product Catalog + Quick Replies + Conversation Labels 作為最小可行 chat-commerce 工具包。</p>
+<p>**風險提醒：**WhatsApp Business 強在消息，但作為完整零售作業系統不夠。新的超級 App 應該補充原生購物車、訂單狀態、商家分析、支付、會員和客服升級。</p>
+<p>**零售啟發：**第一層零售工具必須簡單到一個人開店也能用，同時可擴展到 API 驅動的大企業。</p>
+<p><strong>Sources:</strong> <a href="https://faq.whatsapp.com/825930685527017">WhatsApp Business features</a>, <a href="https://faq.whatsapp.com/1791149784551042">Quick replies</a>, <a href="https://faq.whatsapp.com/3398508707096369">Labels</a>, <a href="https://faq.whatsapp.com/405903568419894">Catalogs</a>, <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform">WhatsApp Business Platform</a>, <a href="https://whatsappbusiness.com/products/whatsapp-flows/">WhatsApp Flows</a></p>
+<hr>
+<h3>6.5 Telegram</h3>
+<p>**選擇原因：**開放式消息擴展能力強。</p>
+<p>**強模組：**Direct Chat, Group Chat, Channel, Bot API, Mini App, Bot Payment, File Sharing, Chat Folder, Broadcast, Developer Platform。</p>
+<p>**有效性分析：**Telegram 不是最強零售 App，但它是可編程消息生態的強參考。Bot 和 Mini Apps 允許開發者在聊天內部構建交互服務，Bot Payments API 支持賣家通過機器人收款。</p>
+<p>**應該複製：**Bot API + Mini App 的輕量服務擴展。</p>
+<p>**風險提醒：**如果只有開放能力，沒有強商業身份、政策治理和標準化商業 UX，體驗會碎片化。</p>
+<p>**零售啟發：**允許商家和開發者在聊天裡構建服務，但必須標準化 Product Card、Cart、Payment Request、Order Chat、Support Handoff。</p>
+<p><strong>Sources:</strong> <a href="https://core.telegram.org/">Telegram Bot API</a>, <a href="https://core.telegram.org/bots/webapps">Telegram Mini Apps</a>, <a href="https://core.telegram.org/bots/payments">Telegram Bot Payments</a></p>
+<hr>
+<h3>6.6 Discord</h3>
+<p>**選擇原因：**社區架構最佳參考。</p>
+<p>**強模組：**Server, Channel, Thread, Role, Permission, Voice Room, Moderation Queue, Bot, App Directory, Community Analytics。</p>
+<p>**有效性分析：**Discord 擅長結構化多對多互動。Role 和 Permission 是最值得遷移的能力：它們定義誰可以發言、管理、銷售、進入 VIP 頻道、參與活動或管理成員。</p>
+<p>**應該複製：**Role + Permission 用於零售社區、品牌社區、會員等級、創作者俱樂部、私密購物群。</p>
+<p>**風險提醒：**Discord 的靈活性也帶來上手複雜度。零售超級 App 應該提供模板：品牌社區、本地門店群、直播購物房、客服社區、分銷商社區。</p>
+<p>**零售啟發：**社區電商需要權限結構。沒有權限結構，群會變吵、不安全、難以商業化。</p>
+<p><strong>Sources:</strong> <a href="https://support.discord.com/hc/en-us/articles/214836687-Discord-Roles-and-Permissions">Discord roles and permissions</a>, <a href="https://support.discord.com/hc/en-us/articles/10543994968087-Channel-Permissions-Settings-101">Discord channel permissions</a>, <a href="https://support.discord.com/hc/en-us/articles/4403205878423-Threads-FAQ">Discord threads</a></p>
+<hr>
+<h3>6.7 Slack</h3>
+<p>**選擇原因：**工作溝通、工作流、集成和跨公司協作的參考。</p>
+<p>**強模組：**Channel, Thread, Workflow, App Directory, Integration Marketplace, Canvas, Search, Handoff, Internal Notes, Automation。</p>
+<p>**有效性分析：**Slack 不是消費者零售產品，但對商家營運非常重要。它說明對話應該觸發工作流：創建工單、分配人員、收集表單、更新 CRM、通知倉庫、審批退款或總結 case。</p>
+<p>**應該複製：**Workflow Builder + Canvas 作為掛在對話上的結構化營運工具。</p>
+<p>**風險提醒：**Slack 偏商業，可能顯得重。消費者超級 App 應該把複雜工作流隱藏成簡單商家動作。</p>
+<p>**零售啟發：**客戶看到的是聊天；商家背後需要分配、備註、審批、自動化和協作。</p>
+<p><strong>Sources:</strong> <a href="https://slack.com/features/workflow-automation">Slack Workflow Builder</a>, <a href="https://slack.com/features/canvas">Slack Canvas</a>, <a href="https://slack.com/help/articles/203950418-Use-a-canvas-in-Slack">Use a canvas in Slack</a></p>
+<hr>
+<h3>6.8 TikTok</h3>
+<p>**選擇原因：**算法發現和創作者零售轉化的現代標杆。</p>
+<p>**強模組：**Algorithmic Feed, Short Video, Shoppable Video, Shoppable Live, Creator Affiliate, Creator Marketplace, Product Tag, Shop, Comments, DM, Product Recommendation。</p>
+<p>**有效性分析：**TikTok 的強點不是消息，而是製造購買意圖。TikTok Shop 把娛樂、創作者信任、商品發現、直播購物和轉化連接起來，讓內容成為 storefront。</p>
+<p>**應該複製：**Shoppable Video + Creator Affiliate + Shoppable Live。</p>
+<p>**風險提醒：**Feed 優先系統可能帶來衝動消費、低信任和質量問題。IM 中心零售超級 App 應該把 TikTok 式發現連接到更安全的對話、商家驗證和售後支持。</p>
+<p>**零售啟發：**即使產品是 IM 中心，也必須有 Feed、Live、Creator、Review 等發現入口來製造需求。</p>
+<p><strong>Sources:</strong> <a href="https://seller.tiktok.com/">TikTok Shop seller site</a>, <a href="https://business.tiktokshop.com/us/creator">TikTok Shop creator tools</a>, <a href="https://ads.tiktok.com/creative/creatormarketplace">TikTok Creator Marketplace</a></p>
+<hr>
+<h3>6.9 Instagram</h3>
+<p>**選擇原因：**視覺社交電商和創作者-商家消息的強參考。</p>
+<p>**強模組：**DM, Business Chat, Broadcast Channel, Product Tag, Shoppable Post, Shoppable Reel, Creator Profile, Story, Feed, Comment-to-DM, Meta Business Suite Inbox。</p>
+<p>**有效性分析：**Instagram 擅長生活方式發現和創作者-品牌互動。Product Tags 和 Business Chat 降低內容到商業的摩擦。Broadcast Channels 則提供比普通 Feed 更親密的一對多創作者消息。</p>
+<p>**應該複製：**Product Tag + Broadcast Channel + Business Chat。</p>
+<p>**風險提醒：**Instagram 商業體驗分散在 Feed、Stories、Reels、DM、Shop 和 Meta 工具中。新超級 App 應該讓內容 -&gt; 聊天 -&gt; 購買路徑更線性。</p>
+<p>**零售啟發：**視覺發現不應該只通向商品頁，也應該讓用戶提問、比較、分享和通過對話購買。</p>
+<p><strong>Sources:</strong> <a href="https://creators.instagram.com/create/broadcast-channels">Instagram Broadcast Channels</a>, <a href="https://help.instagram.com/2022466637835789">Instagram product tags</a>, <a href="https://help.instagram.com/859283765089329/">Instagram business chat</a>, <a href="https://about.fb.com/news/2022/07/buy-products-on-instagram-in-chat/">Meta: buy products in Instagram chat</a></p>
+<hr>
+<h3>6.10 Snapchat</h3>
+<p>**選擇原因：**相機優先、AR、閱後即焚和 close-friend 社交參考。</p>
+<p>**強模組：**Camera, AR Lens, Story, Chat, Map, Spotlight, Ephemeral Message, Creator Lens, Public Profile。</p>
+<p>**有效性分析：**Snapchat 對零售最有價值的是 AR 商品體驗：虛擬試穿、商品演示、品牌互動和社交分享。</p>
+<p>**應該複製：**AR Lens 作為商品體驗模組。</p>
+<p>**風險提醒：**Snapchat 不是完整商業和客服系統。AR 必須連接 Product Card、Cart、Seller Chat 和 Order Chat 才能變成零售基礎設施。</p>
+<p>**零售啟發：**Camera Commerce 應該成為一級零售動作：scan、try on、compare、ask、buy。</p>
+<p><strong>Sources:</strong> <a href="https://ar.snap.com/">Snap AR</a>, <a href="https://businesshelp.snapchat.com/s/article/lenses">Snapchat sponsored lenses</a>, <a href="https://forbusiness.snapchat.com/advertising/ad-formats">Snapchat ad formats</a></p>
+<hr>
+<h3>6.11 Xiaohongshu / RED</h3>
+<p>**選擇原因：**由筆記、評價和真實感驅動的生活方式社交電商強參考。</p>
+<p>**強模組：**Product Review Note, Creator Profile, Algorithmic Feed, Search, Product Tag, Shoppable Content, Live Commerce, Save/Favorite, Comment。</p>
+<p>**有效性分析：**小紅書強在用戶經常把它當作購買前的決策引擎。其內容形式更接近“證明和推薦”，而不是純娛樂。對於需要信任、審美和生活方式匹配的零售類目特別重要。</p>
+<p>**應該複製：**Product Review Note 作為結構化社會證明單元。</p>
+<p>**風險提醒：**評價驅動電商容易出現假評價、軟廣和隱藏營銷。目標產品應區分 verified purchase reviews、creator content、merchant content 和 friend recommendations。</p>
+<p>**零售啟發：**最好的商品頁不一定是商品頁，可能是可信筆記、視頻、問答和對話的集合。</p>
+<p><strong>Sources:</strong> <a href="https://www.xiaohongshu.com/">Xiaohongshu official site</a>, <a href="https://appinchina.co/blog/the-complete-guide-to-e-commerce-on-rednote-xiaohongshu/">Xiaohongshu social commerce guide</a>, <a href="https://www.chinatradingdesk.com/xiaohongshu-marketing">China Trading Desk Xiaohongshu capabilities</a></p>
+<hr>
+<h3>6.12 Shopee</h3>
+<p>**選擇原因：**市場平台營運、直播電商和賣家聊天結合強。</p>
+<p>**強模組：**Product Catalog, Product Detail Page, Seller Chat, Shoppable Live, Product Ranking, Promotions, Order Tracking, Shipping, Return Request, Seller Analytics。</p>
+<p>**有效性分析：**Shopee 強在把基礎市場平台、娛樂和促銷結合起來。Seller Chat 支持售前售後，Shopee Live 提供實時互動和商品展示。</p>
+<p>**應該複製：**Seller Chat + Shoppable Live + marketplace logistics。</p>
+<p>**風險提醒：**市場密度可能造成低價疲勞。超級 App 應該用對話和信任提升質量，而不是隻比價格。</p>
+<p>**零售啟發：**直播購物必須連接聊天、優惠券、庫存和售後，才有商業價值。</p>
+<p><strong>Sources:</strong> <a href="https://seller.shopee.com.my/edu/article/20165/about-shopee-seller-chat">Shopee Seller Chat</a>, <a href="https://seller.shopee.com.my/edu/article/10780">Shopee Live features</a>, <a href="https://apps.apple.com/my/app/shopee-seller-center/id6749287561">Shopee Seller Center app</a></p>
+<hr>
+<h3>6.13 Pinduoduo</h3>
+<p>**選擇原因：**社交低價電商和拼團機制強。</p>
+<p>**強模組：**Group Buying, Share-to-Chat, Product Ranking, Personalized Deal, Gamification, Value Pricing, Merchant Upgrade, Social Referral。</p>
+<p>**有效性分析：**拼多多的貢獻不是傳統聊天，而是社交需求聚合。用戶通過組團或加入團來獲得更低價格，常常依賴社交分享。PDD 公開文件也把平台描述為提供高性價比商品和有趣互動購物體驗。</p>
+<p>**應該複製：**Group Buying 作為社交電商機制。</p>
+<p>**風險提醒：**拼團容易過度傾向低價和弱質量。新超級 App 應該把拼團和商品質量、商家信任、退換保護結合起來。</p>
+<p>**零售啟發：**Inbox 可以聚合需求。好友、群和社區不只是討論空間，也可以成為購買池。</p>
+<p><strong>Sources:</strong> <a href="https://investor.pddholdings.com/financial-information/annual-reports/">PDD Holdings annual report page</a>, <a href="https://www.sec.gov/Archives/edgar/data/1737806/000141057825000951/pdd-20241231x20f.htm">PDD 2024 Form 20-F</a></p>
+<hr>
+<h3>6.14 Amazon</h3>
+<p>**選擇原因：**零售基礎設施、推薦、物流、客服和 AI 購物助手標杆。</p>
+<p>**強模組：**Product Detail Page, Reviews, Recommendation, Search, Cart, Checkout, Stored Card, Order Tracking, Return Request, Customer Service Chat, Shoppable Live, AI Shopper。</p>
+<p>**有效性分析：**Amazon 不是 IM 中心，但它是零售執行力標杆。最強模組包括商品選擇、搜索、推薦、評價、快速結賬、物流、退換貨和客服。Amazon Live 增加直播購物，Rufus 增加對話式購物助手。</p>
+<p>**應該複製：**AI Shopper + reviews + order logistics + returns reliability。</p>
+<p>**風險提醒：**Amazon 是交易優先，不是關係優先。新的超級 App 可以用 Amazon 級零售執行力 + 持久商家/客戶對話來超越它。</p>
+<p>**零售啟發：**如果沒有優秀物流、退換、商品數據和客服，Chat Commerce 會失敗。</p>
+<p><strong>Sources:</strong> <a href="https://advertising.amazon.com/solutions/products/amazon-live">Amazon Live</a>, <a href="https://www.amazon.com/Rufus/b?ie=UTF8&node=121214013011">Amazon Rufus</a>, <a href="https://www.aboutamazon.com/news/retail/how-to-use-amazon-shopping-ai-assistant">About Amazon: Rufus shopping assistant</a>, <a href="https://www.amazon.com/gp/help/customer/contact-us">Amazon Customer Service</a>, <a href="https://buywithprime.amazon.com/">Buy with Prime</a></p>
+<hr>
+<h3>6.15 Shopify Shop + Shopify Inbox</h3>
+<p>**選擇原因：**獨立商家商業和聊天銷售之間的強連接。</p>
+<p>**強模組：**Product Catalog, Buyer App, Order Tracking, Shop Pay, Shop Cash, Customer Chat, Product Link, Discount Link, Customer Profile, AI Suggested Reply, Conversation Assignment。</p>
+<p>**有效性分析：**Shopify Inbox 非常相關，因為商家聊天時能看到顧客上下文：瀏覽過的商品、購物車狀態、歷史訂單、商品鏈接、折扣鏈接、人員分配和 AI 建議回覆。Shop App 則提供買家側訂單追蹤、發現和 Shop Pay。</p>
+<p>**應該複製：**Customer Profile + Product Link + Discount Link inside merchant chat。</p>
+<p>**風險提醒：**Shopify 是商家中心且分佈式。超級 App 應該讓買家側 Inbox、Order Thread 和商家側營運像同一個原生 App。</p>
+<p>**零售啟發：**賣家不應該再問“你說的是哪件商品？”聊天系統應該已經知道。</p>
+<p><strong>Sources:</strong> <a href="https://help.shopify.com/en/manual/online-sales-channels/shop/customer-experience">Shop app customer experience</a>, <a href="https://shop.app/">Shop app</a>, <a href="https://www.shopify.com/inbox">Shopify Inbox</a>, <a href="https://apps.shopify.com/inbox">Shopify Inbox app</a>, <a href="https://help.shopify.com/en/manual/inbox/conversations">Managing customer conversations</a>, <a href="https://help.shopify.com/en/manual/inbox/chat-settings-and-appearance/shopify-magic">Shopify Magic suggested replies</a></p>
+<hr>
+<h3>6.16 Mercado Libre</h3>
+<p>**選擇原因：**拉美市場中市場平台 + 金融科技 + 物流基礎設施強。</p>
+<p>**強模組：**Product Catalog, Product Detail Page, Marketplace Question, Post-Sale Messaging, Mercado Pago, Mercado Envíos, Order Tracking, Seller Tools, Support Chat, AI Suggested Response。</p>
+<p>**有效性分析：**Mercado Libre 是區域市場平台控制支付、物流和賣家工具的強參考。Post-Sale Messaging 尤其值得借鑑，因為它把買賣雙方溝通和訂單綁定起來。</p>
+<p>**應該複製：**Post-Sale Messaging + payment + shipping integration。</p>
+<p>**風險提醒：**市場平台消息通常需要被政策限制，以防欺詐。超級 App 必須平衡開放對話和反欺詐控制。</p>
+<p>**零售啟發：**支付和物流不是外部服務，它們本身就是信任功能。</p>
+<p><strong>Sources:</strong> <a href="https://developers.mercadolibre.com.ar/en_us/what-is-messaging">Mercado Libre messaging API</a>, <a href="https://global-selling.mercadolibre.com/learning-center/news/after-sales-service/">After-sales service</a>, <a href="https://play.google.com/store/apps/details?id=com.mercadolibre">Mercado Libre app</a>, <a href="https://global-selling.mercadolibre.com/learning-center/news/how-to-contact-us-and-get-support">Mercado Libre support</a>, <a href="https://global-selling.mercadolibre.com/learning-center/nota/tools-to-respond-to-questions-faster">AI suggested responses</a>, <a href="https://developers.mercadolibre.com.ar/en_us/shipment-handling">Shipments API</a></p>
+<hr>
+<h3>6.17 Facebook Marketplace + Messenger</h3>
+<p>**選擇原因：**C2C 市場與大型社交圖譜、消息界面結合。</p>
+<p>**強模組：**Marketplace Listing, Seller Profile, Marketplace Message, Business Inbox, Catalog, AI Listing Assist, AI Suggested Reply, Seller Summary, Report/Block。</p>
+<p>**有效性分析：**Facebook Marketplace 重要之處在於展示了社交身份和本地二手交易如何結合。Messenger 是協商層。Meta 也推出了幫助發佈商品和回覆買家問題的 AI Marketplace 功能。</p>
+<p>**應該複製：**Marketplace Message + Seller Summary + AI Listing Assist。</p>
+<p>**風險提醒：**C2C 市場容易出現欺詐。產品需要站外交易警告、支付保護、身份信任、賣家歷史和 Scam Detection。</p>
+<p>**零售啟發：**C2C 銷售因為對話而成立，也會因為信任和履約不足而失敗。</p>
+<p><strong>Sources:</strong> <a href="https://www.facebook.com/help/1166142028428322">Facebook Marketplace messages</a>, <a href="https://www.facebook.com/business/help/294426838452244">Meta Business Suite Inbox</a>, <a href="https://www.facebook.com/business/help/2482912625247140">Facebook Marketplace catalogs</a>, <a href="https://about.fb.com/news/2026/03/facebook-marketplace-new-meta-ai-tools-make-selling-faster-and-easier/">Meta AI Marketplace tools</a></p>
+<hr>
+<h3>6.18 Vinted</h3>
+<p>**選擇原因：**輕量 C2C 二手轉售模型、簡單發佈和物流設計強。</p>
+<p>**強模組：**Peer Listing, Seller Profile, Favorite, Offer, Buyer Protection, Shipping Label, Order Tracking, Support Chat, Item Verification。</p>
+<p>**有效性分析：**Vinted 的強點是簡單。賣家可以快速發佈，買家支付運費，預付 shipping labels 降低物流摩擦。對於超級 App，Vinted 說明普通用戶也可以成為賣家，而不需要學習完整商家後臺。</p>
+<p>**應該複製：**Lightweight Peer Listing + prepaid Shipping Label。</p>
+<p>**風險提醒：**二手交易需要爭議處理、真實性驗證和消息安全。輕量發佈不能意味著輕量信任。</p>
+<p>**零售啟發：**不是所有賣家都是商家。超級 App 應該支持 casual seller、professional seller、creator、local store、enterprise，並給不同複雜度。</p>
+<p><strong>Sources:</strong> <a href="https://www.vinted.com/how_it_works">Vinted how it works</a>, <a href="https://play.google.com/store/apps/details?id=fr.vinted">Vinted app</a>, <a href="https://www.vinted.co.uk/help/753-how-shipping-works">Vinted shipping</a>, <a href="https://www.vinted.co.uk/help/265">Vinted support</a></p>
+<hr>
+<h3>6.19 Grab</h3>
+<p>**選擇原因：**東南亞本地服務超級 App，物流、錢包、積分和商家服務強。</p>
+<p>**強模組：**Mobility, Food Delivery, Grocery, Local Delivery, Wallet, Rewards, Merchant Services, Delivery ETA, Driver Chat, Enterprise Services。</p>
+<p>**有效性分析：**Grab 展示了日常服務如何放在同一賬號、錢包和物流網絡下。對 IM 中心零售超級 App 來說，關鍵啟發是營運層：本地履約、配送狀態、司機/騎手消息和商家服務必須集成。</p>
+<p>**應該複製：**Local Delivery + Wallet + Rewards + merchant services。</p>
+<p>**風險提醒：**超級 App 功能過寬容易造成 UX 膨脹。Inbox 應該組織服務狀態：ride、food、grocery、parcel、support、loyalty。</p>
+<p>**零售啟發：**零售是本地的。配送、取貨、預約和附近庫存與商品瀏覽同樣重要。</p>
+<p><strong>Sources:</strong> <a href="https://www.grab.com/sg/">Grab official site</a>, <a href="https://play.google.com/store/apps/details?id=com.grabtaxi.passenger">Grab app</a>, <a href="https://www.grab.com/id/en/food/">GrabFood</a></p>
+<hr>
+<h3>6.20 Gojek</h3>
+<p>**選擇原因：**出行、餐飲、物流、購物和支付等日常服務打包能力強。</p>
+<p>**強模組：**Mobility, Food Delivery, Local Delivery, Shopping, Wallet, Driver Chat, Merchant Network, Daily Services。</p>
+<p>**有效性分析：**Gojek 的強點是把日常任務放進一個服務環境。它對 IM 設計的直接啟發不如 WeChat 或 LINE，但對零售必須依賴的服務層非常重要。</p>
+<p>**應該複製：**Service bundle with delivery and payment primitives。</p>
+<p>**風險提醒：**超級 App 不應該變成一堆無關服務圖標。對話層應該把服務連接起來。</p>
+<p>**零售啟發：**用聊天把服務模組變成關係模組：餐廳聊天、騎手聊天、商家聊天、客服聊天、復購聊天。</p>
+<p><strong>Sources:</strong> <a href="https://www.gojek.com/en-id">Gojek official site</a>, <a href="https://play.google.com/store/apps/details?id=com.gojek.app">Gojek app</a>, <a href="https://www.gojek.io/">Gojek company overview</a></p>
+<hr>
+<h3>6.21 Meituan</h3>
+<p>**選擇原因：**本地生活超級 App 的強參考之一。</p>
+<p>**強模組：**Food Delivery, Instant Retail, Group Deal, Restaurant Reservation, Hotel Booking, Travel Booking, Errand, Grocery, Map, Delivery ETA, Local Search。</p>
+<p>**有效性分析：**美團的價值在於本地商業密度：外賣、雜貨、餐廳、酒店、旅行、優惠券、跑腿和即時零售。它說明本地服務需要搜索、地圖、優惠、庫存、配送、預約和支持在一個環境裡。</p>
+<p>**應該複製：**Local Search + Instant Retail + Restaurant Reservation + Delivery ETA。</p>
+<p>**風險提醒：**本地商業密度容易造成導航複雜。聊天可以簡化它：每個門店、預訂、配送和客服問題都有穩定對話線程。</p>
+<p>**零售啟發：**對本地零售而言，App 要回答四個問題：附近有什麼、現在有沒有、誰能送、出問題誰解決。</p>
+<p><strong>Sources:</strong> <a href="https://play.google.com/store/apps/details?id=com.sankuai.meituan">Meituan app on Google Play</a>, <a href="https://apps.apple.com/us/app/%E7%BE%8E%E5%9B%A2-%E7%BE%8E%E5%A5%BD%E7%94%9F%E6%B4%BB%E5%B0%8F%E5%B8%AE%E6%89%8B/id423084029">Meituan App Store</a>, <a href="https://www.meituan.com/en-US/investor-relations">Meituan investor relations</a></p>
+<hr>
+<h3>6.22 Intercom</h3>
+<p>**選擇原因：**AI-first 客服和 Business Messenger 標杆。</p>
+<p>**強模組：**Business Messenger, AI Agent, Human Handoff, Unified Inbox, Ticket, Customer Profile, Help Center, AI Suggested Reply, Conversation Summary, Routing, Back-Office Ticket。</p>
+<p>**有效性分析：**Intercom 展示了客服如何變得對話化、自動化和上下文感知。AI Agent 和 Inbox 能力說明如何把自動化與人工團隊結合。</p>
+<p>**應該複製：**AI Agent + Human Handoff + Customer Timeline。</p>
+<p>**風險提醒：**客服系統通常是商家側，不夠消費者原生。超級 App 應該讓消費者側也清楚：發生了什麼、誰負責、需要什麼動作、什麼時候解決。</p>
+<p>**零售啟發：**客服是商業的一部分。客服弱，復購就會崩。</p>
+<p><strong>Sources:</strong> <a href="https://www.intercom.com/">Intercom helpdesk</a>, <a href="https://www.intercom.com/helpdesk/inbox">Intercom inbox</a>, <a href="https://www.intercom.com/help/en/articles/6955446-ai-features-available-in-the-inbox">Intercom AI inbox features</a>, <a href="https://fin.ai/help/en/articles/13975799-faqs">Fin AI</a></p>
+<hr>
+<h3>6.23 Zendesk</h3>
+<p>**選擇原因：**企業級客服營運和全渠道服務基準。</p>
+<p>**強模組：**Ticket, Omnichannel Inbox, Help Center, AI Agent, Routing, Macro, SLA, CSAT, Knowledge Base, Reporting, Audit Log。</p>
+<p>**有效性分析：**Zendesk 不是社交 App，但其支持模型非常關鍵。嚴肅客服需要工單結構、路由、狀態、自助服務、AI、報表和坐席協作。</p>
+<p>**應該複製：**Ticket + Help Center + AI + omnichannel routing。</p>
+<p>**風險提醒：**工單對用戶可能顯得官僚。IM 中心零售 App 中，Ticket 應該像自然客服線程，而不是割裂的 case number。</p>
+<p>**零售啟發：**每個 Order Chat 都應該能在不丟上下文的情況下升級成 Ticket。</p>
+<p><strong>Sources:</strong> <a href="https://www.zendesk.com/">Zendesk service platform</a>, <a href="https://www.zendesk.com/service/ai/">Zendesk AI</a>, <a href="https://support.zendesk.com/hc/en-us/articles/9204149016346-Understanding-AI-agent-tickets-for-AI-agent-only-conversations">Zendesk AI agent tickets</a>, <a href="https://support.zendesk.com/hc/en-us/articles/9409324793498-Creating-help-center-content-using-ticket-data-and-generative-AI">Zendesk generative help center content</a></p>
+<hr>
+<h3>6.24 Tinder</h3>
+<p>**選擇原因：**基於同意的匹配和信任門控聊天參考。</p>
+<p>**強模組：**Profile Card, Match, Controlled Chat Opening, Safety Center, Photo Verification, Face Check, Report, Block, Safety Tips。</p>
+<p>**有效性分析：**Tinder 的價值不是約會本身，而是它控制誰能在什麼時候、以什麼信任條件開聊。Photo Verified Chat 和安全資源對高風險社交互動有參考價值。</p>
+<p>**應該複製：**Trust-gated messaging。</p>
+<p>**風險提醒：**過度門控會拖慢正常商業流程。嚴格門控應只用於高風險動作：高價值商品、可疑賣家、站外鏈接、首次交易或身份敏感服務。</p>
+<p>**零售啟發：**匹配、同意和驗證也適用於零售：私人導購、二手交易、本地服務、高端社區和高價值交易。</p>
+<p><strong>Sources:</strong> <a href="https://policies.tinder.com/community-resources/safety-features">Tinder safety features</a>, <a href="https://www.help.tinder.com/hc/en-us/articles/4408385774989-Photo-Verified-Chat">Tinder Photo Verified Chat</a>, <a href="https://policies.tinder.com/faq-mandatory-liveness-check/intl/en/">Tinder Face Check FAQ</a></p>
+<hr>
+<h3>6.25 Bumble</h3>
+<p>**選擇原因：**安全和身份產品設計強。</p>
+<p>**強模組：**Profile Card, Match, Photo Verification, ID Verification, Voice Call, Video Call, Safety Center, Report, Block, Date Safety。</p>
+<p>**有效性分析：**Bumble 的價值是把安全當成產品層，而不是隻放在政策頁。Photo Verification、ID Verification、App 內語音/視頻可以減少過早暴露私人聯繫方式。</p>
+<p>**應該複製：**在暴露手機號前，支持 App 內 Voice Call / Video Call。</p>
+<p>**風險提醒：**安全功能必須在風險發生時可見，而不是藏在設置裡。</p>
+<p>**零售啟發：**本地零售、服務、二手交易和高價值購買中，用戶可能需要實時溝通，但不想暴露電話號碼。</p>
+<p><strong>Sources:</strong> <a href="https://support.bumble.com/hc/en-us/articles/28537051467293-Our-safety-features">Bumble safety features</a>, <a href="https://bumble.com/en/the-buzz/verify-bumble-match-profile">Bumble Photo Verification</a>, <a href="https://safety.bumble.com/">Bumble Safety Center</a></p>
+<hr>
+<h3>6.26 LinkedIn</h3>
+<p>**選擇原因：**專業身份和 B2B 社交銷售最強參考。</p>
+<p>**強模組：**Professional Profile, Company Page, Page Inbox, InMail, Lead Search, Account Search, Lead List, CRM Sync, Message Assist, Sales Assistant, Content Feed。</p>
+<p>**有效性分析：**LinkedIn 重要是因為不是所有商業都是消費者零售。B2B 銷售需要身份、可信度、職位、公司上下文、線索篩選和受控外聯。Sales Navigator 的 lead/company search 是商業發現的強參考。</p>
+<p>**應該複製：**Professional identity + lead search + Page Inbox。</p>
+<p>**風險提醒：**B2B 外聯容易變成垃圾消息。超級 App 應該強制質量、個性化、同意和 sender reputation。</p>
+<p>**零售啟發：**商業用戶不只需要 storefront，還需要 prospecting、account context、team inbox、message quality control 和 CRM sync。</p>
+<p><strong>Sources:</strong> <a href="https://business.linkedin.com/advertise/linkedin-pages/messaging-on-linkedin-pages">LinkedIn Pages messaging</a>, <a href="https://www.linkedin.com/help/linkedin/answer/a1356464">LinkedIn Page messages help</a>, <a href="https://business.linkedin.com/sell/sales-navigator">LinkedIn Sales Navigator</a>, <a href="https://business.linkedin.com/sell/sales-navigator/premium-versus-sales-navigator">Sales Navigator comparison</a>, <a href="https://www.linkedin.com/help/sales-navigator/answer/a102025">InMail in Sales Navigator</a></p>
+<hr>
+<h3>6.27 Meta Business Suite</h3>
+<p>**選擇原因：**跨社交和消息渠道的多渠道商業收件箱參考。</p>
+<p>**強模組：**Unified Inbox, Business Inbox, Page Inbox, Instagram DM, Messenger, WhatsApp, Comment Management, Auto-Response, Content Scheduling, Ads, Insights。</p>
+<p>**有效性分析：**Meta Business Suite 的價值在於統一 Facebook、Instagram、Messenger 和 WhatsApp 的商業溝通。它不是消費者超級 App，但它是實用的商業營運層。</p>
+<p>**應該複製：**Unified Inbox across multiple external and internal channels。</p>
+<p>**風險提醒：**統一收件箱必須保留 channel context。WhatsApp 客服、Instagram 創作者 DM、Facebook 評論、Marketplace 協商的期望不同。</p>
+<p>**零售啟發：**商家不想再多一個 inbox。他們想要一個能路由、自動化、銷售、支持和報表的 inbox。</p>
+<p><strong>Sources:</strong> <a href="https://www.facebook.com/business/help/294426838452244">Meta Business Suite Inbox</a>, <a href="https://www.facebook.com/business/help/419420149025345">Business messaging on Meta technologies</a>, <a href="https://play.google.com/store/apps/details?id=com.facebook.pages.app">Meta Business Suite app</a></p>
+<hr>
+<h2>7. 跨 App 有效性評分</h2>
+<h3>7.1 覆蓋矩陣</h3>
+<table>
+<thead>
+<tr>
+<th>App</th>
+<th align="right">IM Core</th>
+<th align="right">Business Chat</th>
+<th align="right">Community</th>
+<th align="right">Discovery / Creator</th>
+<th align="right">Retail</th>
+<th align="right">Payment</th>
+<th align="right">Logistics</th>
+<th align="right">Support / CRM</th>
+<th align="right">Trust / Safety</th>
+<th align="right">Platform</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WeChat / Weixin</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>LINE</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>KakaoTalk</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>WhatsApp Business</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Telegram</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Discord</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Slack</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>TikTok</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Instagram</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Snapchat</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Xiaohongshu / RED</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Shopee</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Pinduoduo</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Amazon</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Shopify Shop + Inbox</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Mercado Libre</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Facebook Marketplace + Messenger</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Vinted</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Grab</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Gojek</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Meituan</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Intercom</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Zendesk</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">4</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Tinder</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Bumble</td>
+<td align="right">3</td>
+<td align="right">1</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>LinkedIn</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Meta Business Suite</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">1</td>
+<td align="right">4</td>
+<td align="right">4</td>
+<td align="right">4</td>
+</tr>
+</tbody></table>
+<h3>7.2 各模組最佳參考</h3>
+<table>
+<thead>
+<tr>
+<th>模組</th>
+<th>最佳參考</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IM Core</td>
+<td>WhatsApp, Telegram, WeChat, LINE</td>
+<td>日常聊天、群、媒體、通話和可靠性。</td>
+</tr>
+<tr>
+<td>Business Chat</td>
+<td>WhatsApp Business, LINE, KakaoTalk, Shopify Inbox, Meta Business Suite</td>
+<td>商業身份、快捷動作、標籤、目錄、統一收件箱。</td>
+</tr>
+<tr>
+<td>Mini-App Platform</td>
+<td>WeChat, Telegram, LINE, Slack, Discord</td>
+<td>小程式、Bot、API、集成擴展能力強。</td>
+</tr>
+<tr>
+<td>Social Commerce</td>
+<td>TikTok, Xiaohongshu, Instagram, Shopee, Pinduoduo</td>
+<td>內容發現、直播購物、商品標籤、社會證明、拼團。</td>
+</tr>
+<tr>
+<td>Retail Infrastructure</td>
+<td>Amazon, Mercado Libre, Shopee, Shopify, Meituan</td>
+<td>目錄、結賬、物流、退換、評價、賣家營運。</td>
+</tr>
+<tr>
+<td>Local Commerce</td>
+<td>Meituan, Grab, Gojek</td>
+<td>Delivery ETA、本地庫存、地圖、跑腿、餐廳、服務。</td>
+</tr>
+<tr>
+<td>Support / CRM</td>
+<td>Intercom, Zendesk, Shopify Inbox, Meta Business Suite</td>
+<td>AI Agent、人工轉接、路由、工單、Customer Profile。</td>
+</tr>
+<tr>
+<td>Trust / Safety</td>
+<td>Tinder, Bumble, Amazon, Vinted, Mercado Libre, Discord</td>
+<td>驗證、買家保護、權限、舉報、審核。</td>
+</tr>
+<tr>
+<td>B2B Social Selling</td>
+<td>LinkedIn, Slack, Intercom, Meta Business Suite</td>
+<td>專業身份、線索搜索、Page Inbox、CRM、團隊工作流。</td>
+</tr>
+</tbody></table>
+<h3>7.3 功能成熟度圖</h3>
+<pre><code class="language-text">按功能簇看最高成熟度
+
+IM Core              WhatsApp / Telegram / WeChat        #####
+Business Messaging  WhatsApp Business / LINE / Intercom  #####
+Mini Apps &amp; Bots    WeChat / Telegram / Slack            #####
+Social Commerce     TikTok / Xiaohongshu / Instagram     #####
+Retail Operations   Amazon / Mercado Libre / Shopee      #####
+Local Commerce      Meituan / Grab / Gojek               #####
+Support Automation  Intercom / Zendesk                   #####
+Trust &amp; Safety      Bumble / Tinder / Amazon             ####-
+Peer Selling        Facebook Marketplace / Vinted        ####-
+B2B Selling         LinkedIn                             ####-
+</code></pre>
+<hr>
+<h2>8. 目標產品的零售功能階梯</h2>
+<p>產品不應該一次性建設全部模組，而應該從對話向外擴展。</p>
+<table>
+<thead>
+<tr>
+<th align="right">階段</th>
+<th>產品層級</th>
+<th>必要模組</th>
+<th>參考產品</th>
+<th>重要性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">0</td>
+<td>聊天基礎</td>
+<td>Direct Chat, Group Chat, Media Sharing, Search, Chat Folder</td>
+<td>WhatsApp, Telegram, LINE</td>
+<td>聊天不強，其他功能無法複利。</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td>商業消息</td>
+<td>Business Profile, Product Catalog, Quick Replies, Auto-Greeting, Conversation Labels</td>
+<td>WhatsApp Business, LINE</td>
+<td>讓小商家立刻可營運。</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>Chat Commerce</td>
+<td>Product Card, Cart, Payment Request, Discount Link, Checkout</td>
+<td>WhatsApp Business, Shopify Inbox, Instagram</td>
+<td>把聊天變成交易。</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>訂單中心服務</td>
+<td>Order Chat, Order Tracking, Delivery ETA, Return Request, Refund Request</td>
+<td>Amazon, Mercado Libre, Shopee, Vinted</td>
+<td>讓購買後的信任可見。</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>社交電商</td>
+<td>Product Tag, Shoppable Video, Shoppable Live, Creator Affiliate, Product Review Note, Group Buying</td>
+<td>TikTok, Xiaohongshu, Shopee, Pinduoduo</td>
+<td>製造需求和社會證明。</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>商家作業系統</td>
+<td>Unified Inbox, Assignment, Customer Profile, Internal Notes, Analytics, Ads, CRM Sync</td>
+<td>Intercom, Zendesk, Meta Business Suite, Shopify Inbox</td>
+<td>讓商家從一個人擴展到團隊。</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>超級 App 平台</td>
+<td>Mini Program, Bot API, Webhook, App Directory, Permission Consent, Developer Review</td>
+<td>WeChat, Telegram, LINE, Slack</td>
+<td>讓第三方擴展生態。</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>AI 商業層</td>
+<td>AI Shopper, AI Agent, AI Suggested Reply, AI Listing Assist, Risk Detection, Personalized Offer</td>
+<td>Amazon Rufus, Intercom, Shopify Inbox, Meta Marketplace</td>
+<td>讓系統自適應並降低營運成本。</td>
+</tr>
+</tbody></table>
+<h3>MVP 建議</h3>
+<p>不要從巨大的超級 App 網格開始。建議從下面的最小閉環開始：</p>
+<pre><code class="language-text">Inbox
+  -&gt; Business Profile
+  -&gt; Product Catalog
+  -&gt; Product Card in chat
+  -&gt; Payment Request
+  -&gt; Order Chat
+  -&gt; Quick Replies
+  -&gt; Conversation Labels
+  -&gt; Seller Rating
+  -&gt; Basic Return Request
+</code></pre>
+<p>這是最小但足以驗證 IM 中心零售 thesis 的版本。</p>
+<hr>
+<h2>9. 目標超級 App 模組藍圖</h2>
+<h3>9.1 Inbox OS</h3>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>必備版本</th>
+<th>高階版本</th>
+<th>參考產品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>收件箱分區</td>
+<td>Personal Chats, Business Chats, Order Chats, Support Chats</td>
+<td>根據緊急度、訂單狀態、商家、未讀收入風險自動分組</td>
+<td>WhatsApp, Telegram, Shopify Inbox</td>
+</tr>
+<tr>
+<td>對話記憶</td>
+<td>持久客戶/訂單/商品上下文</td>
+<td>AI summary、timeline、customer value、risk flags</td>
+<td>Intercom, Zendesk, Shopify Inbox</td>
+</tr>
+<tr>
+<td>聊天動作</td>
+<td>Product Card, Payment Request, Coupon, Booking</td>
+<td>根據意圖和角色動態展示動作</td>
+<td>WhatsApp Business, LINE, Shopify Inbox</td>
+</tr>
+<tr>
+<td>通知設計</td>
+<td>用戶可控提醒</td>
+<td>商家收入風險提醒、SLA 提醒、物流提醒</td>
+<td>Slack, Intercom, Meituan</td>
+</tr>
+</tbody></table>
+<h3>9.2 Merchant OS</h3>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>必備版本</th>
+<th>高階版本</th>
+<th>參考產品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Business Profile</td>
+<td>認證名稱、營業時間、地址、目錄、政策</td>
+<td>多門店、員工角色、服務菜單</td>
+<td>WhatsApp Business, KakaoTalk, LINE</td>
+</tr>
+<tr>
+<td>Catalog</td>
+<td>商品、服務、價格、媒體</td>
+<td>庫存、變體、組合、直播關聯商品</td>
+<td>WhatsApp Business, Shopify, Shopee</td>
+</tr>
+<tr>
+<td>Inbox operations</td>
+<td>標籤、分配、快捷回覆</td>
+<td>路由、宏、AI reply、SLA、內部備註</td>
+<td>Intercom, Zendesk, Shopify Inbox</td>
+</tr>
+<tr>
+<td>Campaigns</td>
+<td>Broadcast、Coupon、Retargeting</td>
+<td>基於行為的 journey automation</td>
+<td>LINE, Meta Business Suite, TikTok</td>
+</tr>
+<tr>
+<td>Analytics</td>
+<td>響應時間、轉化、目錄瀏覽</td>
+<td>Cohort retention、seller quality、agent productivity</td>
+<td>Meta Business Suite, Shopify, Intercom</td>
+</tr>
+</tbody></table>
+<h3>9.3 Retail Graph</h3>
+<p>Retail Graph 連接人、商家、商品、訂單、創作者和社區。</p>
+<pre><code class="language-text">[User] ---- follows ----&gt; [Creator]
+  |                         |
+  | buys                    | recommends
+  v                         v
+[Order] ---- contains ---&gt; [Product] ---- sold by ---&gt; [Business]
+  |                                                   |
+  | needs help                                       | owns
+  v                                                   v
+[Support Thread] &lt;----- served by ----- [Agent / AI Agent]
+  |
+  | creates review
+  v
+[Review Note] ---- influences ----&gt; [Friend / Group / Feed]
+</code></pre>
+<p>**設計含義：**推薦不應只基於商品相似度，還應結合社會證明、可信創作者、好友、訂單歷史、本地可用性和服務質量。</p>
+<h3>9.4 Social Commerce Layer</h3>
+<table>
+<thead>
+<tr>
+<th>能力</th>
+<th>必備版本</th>
+<th>高階版本</th>
+<th>參考產品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product Review Note</td>
+<td>圖文/視頻 + 商品標籤</td>
+<td>Verified-purchase layer、friend trust score、AI summary</td>
+<td>Xiaohongshu, Amazon</td>
+</tr>
+<tr>
+<td>Shoppable Video</td>
+<td>商品標籤、創作者頁</td>
+<td>Affiliate attribution、product bundles、AI highlights</td>
+<td>TikTok, Instagram</td>
+</tr>
+<tr>
+<td>Shoppable Live</td>
+<td>直播聊天、置頂商品、優惠券</td>
+<td>co-hosts、live cart、replay shopping、creator commission</td>
+<td>TikTok Shop, Shopee Live, Amazon Live</td>
+</tr>
+<tr>
+<td>Group Buying</td>
+<td>可分享 group deal</td>
+<td>friend pool、community pool、price unlock rules</td>
+<td>Pinduoduo</td>
+</tr>
+</tbody></table>
+<h3>9.5 Trust and Risk Subsystem</h3>
+<table>
+<thead>
+<tr>
+<th>風險</th>
+<th>產品控制</th>
+<th>參考產品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>假身份</td>
+<td>Identity Verification, Photo Verification, device risk</td>
+<td>Bumble, Tinder</td>
+</tr>
+<tr>
+<td>假賣家</td>
+<td>Verified Account, Seller Rating, transaction history</td>
+<td>Amazon, Mercado Libre, Facebook Marketplace</td>
+</tr>
+<tr>
+<td>聊天詐騙</td>
+<td>off-platform warning, suspicious link detection, report/block</td>
+<td>Facebook Marketplace, Tinder</td>
+</tr>
+<tr>
+<td>低質商品</td>
+<td>verified purchase reviews, return rate, dispute rate</td>
+<td>Amazon, Vinted</td>
+</tr>
+<tr>
+<td>社區濫用</td>
+<td>Role, Permission, Moderation Queue, timeout</td>
+<td>Discord</td>
+</tr>
+<tr>
+<td>自動化濫用</td>
+<td>template review, rate limit, sender reputation</td>
+<td>WhatsApp Business, LINE</td>
+</tr>
+</tbody></table>
+<h3>9.6 AI Layer</h3>
+<p>AI 不應該只是裝飾性的聊天機器人。它應該放在六個具體位置。</p>
+<table>
+<thead>
+<tr>
+<th>AI 模組</th>
+<th>用戶側行為</th>
+<th>商家側行為</th>
+<th>參考產品</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AI Shopper</td>
+<td>提問、比較商品、找優惠</td>
+<td>提升轉化和發現</td>
+<td>Amazon Rufus, Shop app agentic shopping</td>
+</tr>
+<tr>
+<td>AI Agent</td>
+<td>回答客服問題、收集信息</td>
+<td>分流重複工單、升級 case</td>
+<td>Intercom, Zendesk</td>
+</tr>
+<tr>
+<td>AI Suggested Reply</td>
+<td>給出回覆建議</td>
+<td>加快商家響應</td>
+<td>Shopify Inbox, Intercom</td>
+</tr>
+<tr>
+<td>AI Listing Assist</td>
+<td>生成標題、描述、價格建議</td>
+<td>加快賣家發佈</td>
+<td>Facebook Marketplace</td>
+</tr>
+<tr>
+<td>AI Risk Detection</td>
+<td>詐騙和政策風險提醒</td>
+<td>降低欺詐和信任損失</td>
+<td>Meta, Tinder-like safety systems</td>
+</tr>
+<tr>
+<td>AI Summary</td>
+<td>總結長對話和訂單 case</td>
+<td>加快交接和坐席效率</td>
+<td>Intercom, Slack</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>10. 下一代 IM 零售超級 App 的具體功能想法</h2>
+<h3>10.1 超過任何單一標杆產品的組合功能</h3>
+<table>
+<thead>
+<tr>
+<th>功能</th>
+<th>描述</th>
+<th>來自哪些參考</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Universal Order Chat</td>
+<td>每個訂單自動生成持久聊天，包含賣家、買家、配送、AI 客服、退款動作和狀態時間線。</td>
+<td>Amazon 物流 + Mercado Libre 消息 + Intercom 轉接 + WhatsApp 聊天。</td>
+</tr>
+<tr>
+<td>Dynamic Business Rich Menu</td>
+<td>商業聊天菜單根據用戶狀態變化：瀏覽中、購物車中、已發貨、退款中、VIP、附近門店。</td>
+<td>LINE Rich Menu + Shopify customer context + Meituan local state。</td>
+</tr>
+<tr>
+<td>Product Card with Conversation Memory</td>
+<td>商品卡展示價格、庫存、規格、賣家評分、歷史問題、好友評論、創作者筆記和退貨風險。</td>
+<td>Amazon PDP + Xiaohongshu notes + WhatsApp catalog + Shopify Inbox。</td>
+</tr>
+<tr>
+<td>Group Cart</td>
+<td>好友可以共建購物車、投票、分賬、解鎖拼團價，並把訂單更新路由到群聊。</td>
+<td>Pinduoduo group buying + WhatsApp groups + Amazon cart + wallet split。</td>
+</tr>
+<tr>
+<td>Seller Copilot</td>
+<td>AI 幫小商家回覆問題、生成 listing、推薦折扣、識別憤怒客戶、創建 follow-up campaign。</td>
+<td>Shopify Magic + Meta Marketplace AI + Intercom AI + LINE broadcasts。</td>
+</tr>
+<tr>
+<td>Trust-Gated Chat</td>
+<td>高風險聊天需要驗證、Escrow 或平台支付後才能執行敏感動作。</td>
+<td>Tinder/Bumble verification + Facebook Marketplace risk + Mercado Libre protection。</td>
+</tr>
+<tr>
+<td>Live-to-Inbox Commerce</td>
+<td>直播評論可以直接變成商品問題、購物車、優惠券或訂單聊天。</td>
+<td>TikTok Shop + Shopee Live + Intercom routing。</td>
+</tr>
+<tr>
+<td>Local Retail Radar</td>
+<td>從聊天裡搜索附近商品、服務、餐廳、取貨點和 Delivery ETA。</td>
+<td>Meituan + Grab + 本地意圖 + IM sharing。</td>
+</tr>
+<tr>
+<td>Role-Based Retail Communities</td>
+<td>品牌社區中有 staff、VIP、reseller、creator、moderator、verified buyer 等角色。</td>
+<td>Discord roles + LINE business accounts + TikTok creators。</td>
+</tr>
+<tr>
+<td>Conversational Returns</td>
+<td>用戶在 Order Chat 輸入“退貨”，AI 收集原因、檢查政策、創建 label，並升級異常。</td>
+<td>Amazon returns + Zendesk ticket + Vinted shipping label。</td>
+</tr>
+</tbody></table>
+<h3>10.2 UX 模式：一個 Inbox，多種 thread type</h3>
+<pre><code class="language-text">INBOX
+
+Personal
+  Alice
+  Family Group
+  Basketball Group
+
+Business
+  Nike Paris Store
+  Local Pharmacy
+  Home Repair Service
+
+Orders
+  Order #9281 - Out for delivery
+  Order #9144 - Return approved
+
+Support
+  Refund case - waiting for seller
+  Account verification - action needed
+
+Communities
+  Sneaker Drops
+  Beauty Deals
+  Local Neighborhood Market
+</code></pre>
+<p>Inbox 不應盲目混合所有內容，而應在同一界面中清楚標明線程類型。</p>
+<h3>10.3 UX 模式：訂單聊天時間線</h3>
+<pre><code class="language-text">ORDER CHAT: Sneakers - Order #9281
+
+[System] Order confirmed. Estimated delivery: Wednesday.
+[Seller] Thanks. We will ship today.
+[System] Package shipped. Tracking: ML-8821.
+[Courier] I am 10 minutes away.
+[Buyer] Please leave it at reception.
+[System] Delivered. Proof of delivery attached.
+[AI Support] Need help with this order? Return | Refund | Ask seller | Review
+[Buyer] Return this.
+[AI Support] What is the reason? Size | Damage | Wrong item | Other
+</code></pre>
+<p>這不是展示圖，而是目標產品應真正實現的對話結構。</p>
+<hr>
+<h2>11. 建設優先級</h2>
+<h3>11.1 強建議順序</h3>
+<p>建議按以下順序建設：</p>
+<ol>
+<li><strong>最佳級 Inbox</strong>：Direct Chat、Group Chat、Business Chats、Order Chats、Chat Folders。</li>
+<li><strong>Business Profile + Product Catalog</strong>：足夠簡單，小商家能立刻使用。</li>
+<li><strong>Product Card in chat</strong>：讓商品分享和購買意圖進入對話。</li>
+<li><strong>Order Chat</strong>：購買後的時間線、配送、客服、退貨。</li>
+<li><strong>Business Inbox tools</strong>：Quick Replies、Conversation Labels、Assignment、Customer Profile。</li>
+<li><strong>Payments and escrow</strong>：錢包、Payment Request、Buyer Protection。</li>
+<li><strong>Social discovery</strong>：Product Notes、Shoppable Video、Live Shopping、Group Buying。</li>
+<li><strong>AI support and Seller Copilot</strong>：等有足夠對話和訂單數據後再強化。</li>
+<li><strong>Mini-app platform</strong>：核心信任、商業和政策系統穩定後再開放。</li>
+</ol>
+<h3>11.2 不建議做的事</h3>
+<table>
+<thead>
+<tr>
+<th>錯誤做法</th>
+<th>為什麼失敗</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>從巨大 App 網格開始</td>
+<td>看起來像超級 App，但沒有行為重心。</td>
+</tr>
+<tr>
+<td>只把聊天當客服插件</td>
+<td>錯過主 thesis：聊天是關係層。</td>
+</tr>
+<tr>
+<td>不加本地適配地複製微信</td>
+<td>支付、監管、文化和商家接受度都不同。</td>
+</tr>
+<tr>
+<td>讓每個商家自定義所有流程</td>
+<td>造成結賬、客服、信任體驗不一致。</td>
+</tr>
+<tr>
+<td>在信任系統前先做 Feed Commerce</td>
+<td>容易帶來衝動消費、欺詐、低質和客服壓力。</td>
+</tr>
+<tr>
+<td>在工作流前先做 AI</td>
+<td>沒有權限、訂單動作和升級路徑的 AI 不能真正解決問題。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>12. 最終分組：個人使用 vs 商業使用</h2>
+<p>同一套模組應該服務不同角色，但權限和 UI 不同。這一節是超級 App 設計的關鍵。</p>
+<h3>12.1 個人使用</h3>
+<table>
+<thead>
+<tr>
+<th>個人用例</th>
+<th>需要的模組</th>
+<th>最佳參考</th>
+<th>產品含義</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>和朋友家人聊天</td>
+<td>Direct Chat, Group Chat, Media Sharing, Voice Call, Video Call</td>
+<td>WhatsApp, LINE, Telegram, WeChat</td>
+<td>聊天必須優秀，才能疊加商業。</td>
+</tr>
+<tr>
+<td>買前問朋友</td>
+<td>Share-to-Chat, Product Card, Group Chat, Poll, Favorite</td>
+<td>WeChat, WhatsApp, Pinduoduo</td>
+<td>商品卡必須自然進入個人聊天。</td>
+</tr>
+<tr>
+<td>發現商品</td>
+<td>Algorithmic Feed, Product Review Note, Search, Shoppable Video, Shoppable Live</td>
+<td>TikTok, Xiaohongshu, Instagram</td>
+<td>發現應連接到對話和購買。</td>
+</tr>
+<tr>
+<td>向商家購買</td>
+<td>Product Catalog, Cart, Payment Request, Checkout, Wallet</td>
+<td>WhatsApp Business, Shopify, Amazon</td>
+<td>購買不應脫離對話上下文。</td>
+</tr>
+<tr>
+<td>追蹤訂單</td>
+<td>Order Chat, Order Tracking, Delivery ETA, Courier Chat</td>
+<td>Amazon, Mercado Libre, Grab, Meituan</td>
+<td>訂單狀態屬於 Inbox。</td>
+</tr>
+<tr>
+<td>解決問題</td>
+<td>AI Agent, Human Handoff, Return Request, Refund Request</td>
+<td>Intercom, Zendesk, Amazon</td>
+<td>客服應該屬於訂單線程。</td>
+</tr>
+<tr>
+<td>保持安全</td>
+<td>Identity Verification, Seller Rating, Report, Block, Scam Warning</td>
+<td>Bumble, Tinder, Vinted, Facebook Marketplace</td>
+<td>安全必須在風險發生時出現。</td>
+</tr>
+<tr>
+<td>參與社區</td>
+<td>Channel, Broadcast Channel, Server, Role, Permission</td>
+<td>Discord, Telegram, LINE</td>
+<td>社區購物需要結構和審核。</td>
+</tr>
+</tbody></table>
+<h3>12.2 商業使用</h3>
+<table>
+<thead>
+<tr>
+<th>商業用例</th>
+<th>需要的模組</th>
+<th>最佳參考</th>
+<th>產品含義</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>展示商業身份</td>
+<td>Business Profile, Verified Account, Seller Profile, Official Account</td>
+<td>WhatsApp Business, WeChat, LINE, KakaoTalk</td>
+<td>商業身份必須可信且可操作。</td>
+</tr>
+<tr>
+<td>在聊天中銷售</td>
+<td>Product Catalog, Product Card, Quick Replies, Payment Request, Discount Link</td>
+<td>WhatsApp Business, Shopify Inbox, Instagram</td>
+<td>商家需要在消息編輯器裡完成商業動作。</td>
+</tr>
+<tr>
+<td>管理大量對話</td>
+<td>Unified Inbox, Conversation Labels, Assignment, Internal Notes, Customer Profile</td>
+<td>Intercom, Zendesk, Shopify Inbox, Meta Business Suite</td>
+<td>商家側需要營運深度。</td>
+</tr>
+<tr>
+<td>自動化重複工作</td>
+<td>Auto-Greeting, Away Message, Bot Flow, AI Suggested Reply, AI Agent</td>
+<td>LINE, WhatsApp Business, Intercom, Zendesk</td>
+<td>自動化應該輔助客戶，而不是困住客戶。</td>
+</tr>
+<tr>
+<td>做營銷活動</td>
+<td>Broadcast Campaign, Coupon Campaign, Click-to-Message Ad, Retargeting</td>
+<td>LINE, Meta Business Suite, TikTok</td>
+<td>Campaign 應該創造對話，而不只是曝光。</td>
+</tr>
+<tr>
+<td>支持客戶</td>
+<td>Ticket, Human Handoff, Knowledge Base, SLA, CSAT</td>
+<td>Intercom, Zendesk</td>
+<td>客服必須連接訂單和客戶上下文。</td>
+</tr>
+<tr>
+<td>建設社區</td>
+<td>Channel, Role, Permission, Moderator, VIP Group</td>
+<td>Discord, Telegram, LINE</td>
+<td>零售社區需要角色和治理。</td>
+</tr>
+<tr>
+<td>分析表現</td>
+<td>Conversation Analytics, Conversion, Response Time, Catalog Views, Support Metrics</td>
+<td>Shopify, Intercom, Meta Business Suite</td>
+<td>分析應把聊天行為和收入、留存連接起來。</td>
+</tr>
+<tr>
+<td>擴展平台</td>
+<td>Mini Program, Bot API, Webhook, App Directory, Developer Review</td>
+<td>WeChat, Telegram, Slack</td>
+<td>平台開放應在信任和商業標準穩定後進行。</td>
+</tr>
+</tbody></table>
+<h3>12.3 Hybrid 使用：超級 App 真正出現的位置</h3>
+<p>這些是個人行為和商業行為最高價值的交叉點。</p>
+<table>
+<thead>
+<tr>
+<th>Hybrid 功能</th>
+<th>個人價值</th>
+<th>商業價值</th>
+<th>為什麼重要</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product Card in chat</td>
+<td>向朋友詢問、比較、保存</td>
+<td>直接銷售、回答問題</td>
+<td>把對話轉成商業。</td>
+</tr>
+<tr>
+<td>Order Chat</td>
+<td>狀態清楚、客服方便</td>
+<td>更少服務斷層、更高信任</td>
+<td>讓購買後可見。</td>
+</tr>
+<tr>
+<td>Group Cart</td>
+<td>一起購買、分賬、投票</td>
+<td>更大客單價、拼團折扣</td>
+<td>把社交群變成需求池。</td>
+</tr>
+<tr>
+<td>Rich Menu</td>
+<td>快速訪問動作</td>
+<td>結構化自助服務</td>
+<td>讓商業聊天可導航。</td>
+</tr>
+<tr>
+<td>Product Review Note</td>
+<td>社會證明</td>
+<td>自然發現</td>
+<td>連接內容和商業。</td>
+</tr>
+<tr>
+<td>Shoppable Live</td>
+<td>娛樂和優惠</td>
+<td>高轉化事件銷售</td>
+<td>結合創作者、聊天和結賬。</td>
+</tr>
+<tr>
+<td>AI Shopper</td>
+<td>更快決策</td>
+<td>更高轉化</td>
+<td>降低選擇壓力。</td>
+</tr>
+<tr>
+<td>AI Agent</td>
+<td>更快獲得幫助</td>
+<td>降低客服成本</td>
+<td>解決重複問題。</td>
+</tr>
+<tr>
+<td>Trust-Gated Chat</td>
+<td>更安全的買賣</td>
+<td>更少欺詐和拒付</td>
+<td>C2C 和高價值交易必需。</td>
+</tr>
+<tr>
+<td>Mini Program</td>
+<td>不下載 App 即可訪問服務</td>
+<td>構建定製流程</td>
+<td>長期超級 App 平台層。</td>
+</tr>
+</tbody></table>
+<h3>12.4 最終產品立場</h3>
+<p>勝出的產品不應該是“WhatsApp 加一個商店”、“TikTok 加聊天”，也不是“Amazon 加消息”。</p>
+<p>它應該是：</p>
+<pre><code class="language-text">一個可信 Inbox，讓人、商家、創作者、訂單、商品、服務、支付和客服案例
+都可以互相對話。
+</code></pre>
+<p>這是 IM 中心零售超級 App 最強的戰略定義。</p>
+<hr>
+<h2>13. Source index</h2>
+<p>本報告儘量使用官方或一級來源。部分地區平台英文官方文件有限，因此補充使用了公開 App Store 頁面、投資者頁面、開發者文件和可信平台指南。</p>
+<ul>
+<li>WeChat / Tencent: <a href="https://apps.apple.com/us/app/wechat/id414478124">WeChat App Store</a>, <a href="https://play.google.com/store/apps/details?id=com.tencent.mm">Google Play WeChat</a>, <a href="https://www.tencent.com/en-us/articles/2202220.html">Tencent TenPay Global Checkout</a>, <a href="https://www.tencentcloud.com/document/product/1219/60341">Tencent Cloud mini program guide</a></li>
+<li>LINE: <a href="https://www.line.me/">LINE</a>, <a href="https://developers.line.biz/en/docs/messaging-api/overview/">Messaging API</a>, <a href="https://developers.line.biz/en/docs/messaging-api/using-rich-menus/">Rich Menus</a>, <a href="https://developers.line.biz/en/docs/messaging-api/using-quick-reply/">Quick Replies</a>, <a href="https://pay.line.me/portal/global/about/payment">LINE Pay</a></li>
+<li>Kakao: <a href="https://www.kakaocorp.com/page/service/service/kakaotalk?lang=en">KakaoTalk</a>, <a href="https://www.kakaocorp.com/page/service/service/KakaoTalkChannel?lang=ENG">KakaoTalk Channel</a>, <a href="https://www.kakaocorp.com/page/service/service/KakaoPay?lang=en">Kakao Pay</a></li>
+<li>WhatsApp Business / Meta: <a href="https://faq.whatsapp.com/825930685527017">Business features</a>, <a href="https://faq.whatsapp.com/405903568419894">Catalogs</a>, <a href="https://faq.whatsapp.com/1791149784551042">Quick replies</a>, <a href="https://faq.whatsapp.com/3398508707096369">Labels</a>, <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/about-the-platform">Business Platform</a>, <a href="https://whatsappbusiness.com/products/whatsapp-flows/">Flows</a></li>
+<li>Telegram: <a href="https://core.telegram.org/">Bot API</a>, <a href="https://core.telegram.org/bots/webapps">Mini Apps</a>, <a href="https://core.telegram.org/bots/payments">Payments</a></li>
+<li>Discord: <a href="https://support.discord.com/hc/en-us/articles/214836687-Discord-Roles-and-Permissions">Roles and Permissions</a>, <a href="https://support.discord.com/hc/en-us/articles/10543994968087-Channel-Permissions-Settings-101">Channel Permissions</a>, <a href="https://support.discord.com/hc/en-us/articles/4403205878423-Threads-FAQ">Threads</a></li>
+<li>Slack: <a href="https://slack.com/features/workflow-automation">Workflow Builder</a>, <a href="https://slack.com/features/canvas">Canvas</a>, <a href="https://slack.com/help/articles/203950418-Use-a-canvas-in-Slack">Use Canvas</a></li>
+<li>TikTok: <a href="https://seller.tiktok.com/">TikTok Shop</a>, <a href="https://business.tiktokshop.com/us/creator">TikTok Shop Creator</a>, <a href="https://ads.tiktok.com/creative/creatormarketplace">Creator Marketplace</a></li>
+<li>Instagram / Meta: <a href="https://creators.instagram.com/create/broadcast-channels">Broadcast Channels</a>, <a href="https://help.instagram.com/2022466637835789">Product Tags</a>, <a href="https://help.instagram.com/859283765089329/">Business Chat</a>, <a href="https://about.fb.com/news/2022/07/buy-products-on-instagram-in-chat/">Buy in Instagram Chat</a></li>
+<li>Snapchat: <a href="https://ar.snap.com/">Snap AR</a>, <a href="https://businesshelp.snapchat.com/s/article/lenses">Sponsored Lenses</a>, <a href="https://forbusiness.snapchat.com/advertising/ad-formats">Ad Formats</a></li>
+<li>Shopify: <a href="https://help.shopify.com/en/manual/online-sales-channels/shop/customer-experience">Shop customer experience</a>, <a href="https://shop.app/">Shop app</a>, <a href="https://www.shopify.com/inbox">Shopify Inbox</a>, <a href="https://apps.shopify.com/inbox">Inbox app listing</a>, <a href="https://help.shopify.com/en/manual/inbox/conversations">Managing conversations</a>, <a href="https://help.shopify.com/en/manual/inbox/chat-settings-and-appearance/shopify-magic">Shopify Magic replies</a></li>
+<li>Amazon: <a href="https://advertising.amazon.com/solutions/products/amazon-live">Amazon Live</a>, <a href="https://www.amazon.com/Rufus/b?ie=UTF8&node=121214013011">Rufus</a>, <a href="https://www.aboutamazon.com/news/retail/how-to-use-amazon-shopping-ai-assistant">About Amazon Rufus</a>, <a href="https://www.amazon.com/gp/help/customer/contact-us">Customer Service</a>, <a href="https://buywithprime.amazon.com/">Buy with Prime</a></li>
+<li>Mercado Libre: <a href="https://developers.mercadolibre.com.ar/en_us/what-is-messaging">Messaging</a>, <a href="https://global-selling.mercadolibre.com/learning-center/news/after-sales-service/">After-sales service</a>, <a href="https://play.google.com/store/apps/details?id=com.mercadolibre">App</a>, <a href="https://global-selling.mercadolibre.com/learning-center/news/how-to-contact-us-and-get-support">Support</a>, <a href="https://global-selling.mercadolibre.com/learning-center/nota/tools-to-respond-to-questions-faster">Suggested responses</a>, <a href="https://developers.mercadolibre.com.ar/en_us/shipment-handling">Shipments API</a></li>
+<li>Meta Business / Marketplace: <a href="https://www.facebook.com/help/1166142028428322">Marketplace messages</a>, <a href="https://www.facebook.com/business/help/294426838452244">Business Suite Inbox</a>, <a href="https://www.facebook.com/business/help/2482912625247140">Marketplace catalogs</a>, <a href="https://about.fb.com/news/2026/03/facebook-marketplace-new-meta-ai-tools-make-selling-faster-and-easier/">AI Marketplace tools</a></li>
+<li>Vinted: <a href="https://www.vinted.com/how_it_works">How it works</a>, <a href="https://play.google.com/store/apps/details?id=fr.vinted">Vinted app</a>, <a href="https://www.vinted.co.uk/help/753-how-shipping-works">Shipping</a>, <a href="https://www.vinted.co.uk/help/265">Support</a></li>
+<li>Grab: <a href="https://www.grab.com/sg/">Grab</a>, <a href="https://play.google.com/store/apps/details?id=com.grabtaxi.passenger">Grab app</a>, <a href="https://www.grab.com/id/en/food/">GrabFood</a></li>
+<li>Gojek: <a href="https://www.gojek.com/en-id">Gojek</a>, <a href="https://play.google.com/store/apps/details?id=com.gojek.app">Gojek app</a>, <a href="https://www.gojek.io/">Company overview</a></li>
+<li>Meituan: <a href="https://play.google.com/store/apps/details?id=com.sankuai.meituan">Google Play</a>, <a href="https://apps.apple.com/us/app/%E7%BE%8E%E5%9B%A2-%E7%BE%8E%E5%A5%BD%E7%94%9F%E6%B4%BB%E5%B0%8F%E5%B8%AE%E6%89%8B/id423084029">App Store</a>, <a href="https://www.meituan.com/en-US/investor-relations">Investor relations</a></li>
+<li>Intercom: <a href="https://www.intercom.com/">Intercom</a>, <a href="https://www.intercom.com/helpdesk/inbox">Inbox</a>, <a href="https://www.intercom.com/help/en/articles/6955446-ai-features-available-in-the-inbox">AI Inbox features</a>, <a href="https://fin.ai/help/en/articles/13975799-faqs">Fin AI</a></li>
+<li>Zendesk: <a href="https://www.zendesk.com/">Zendesk</a>, <a href="https://www.zendesk.com/service/ai/">Zendesk AI</a>, <a href="https://support.zendesk.com/hc/en-us/articles/9204149016346-Understanding-AI-agent-tickets-for-AI-agent-only-conversations">AI agent tickets</a>, <a href="https://support.zendesk.com/hc/en-us/articles/9409324793498-Creating-help-center-content-using-ticket-data-and-generative-AI">Generative help center content</a></li>
+<li>Tinder: <a href="https://policies.tinder.com/community-resources/safety-features">Safety features</a>, <a href="https://www.help.tinder.com/hc/en-us/articles/4408385774989-Photo-Verified-Chat">Photo Verified Chat</a>, <a href="https://policies.tinder.com/faq-mandatory-liveness-check/intl/en/">Face Check FAQ</a></li>
+<li>Bumble: <a href="https://support.bumble.com/hc/en-us/articles/28537051467293-Our-safety-features">Safety features</a>, <a href="https://bumble.com/en/the-buzz/verify-bumble-match-profile">Photo Verification</a>, <a href="https://safety.bumble.com/">Safety Center</a></li>
+<li>LinkedIn: <a href="https://business.linkedin.com/advertise/linkedin-pages/messaging-on-linkedin-pages">Pages Messaging</a>, <a href="https://www.linkedin.com/help/linkedin/answer/a1356464">Page messages help</a>, <a href="https://business.linkedin.com/sell/sales-navigator">Sales Navigator</a>, <a href="https://business.linkedin.com/sell/sales-navigator/premium-versus-sales-navigator">Sales Navigator comparison</a>, <a href="https://www.linkedin.com/help/sales-navigator/answer/a102025">InMail</a></li>
+</ul>
+
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
