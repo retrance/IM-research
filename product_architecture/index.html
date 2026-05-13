@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IM 產品方向與功能架構</title>
+    <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=our-im-architecture">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>IM 產品方向與功能架構</strong>
+          <span>定位、核心路徑、功能模組與建設順序</span>
+        </div>
+        <nav class="nav" aria-label="頁面切換">
+          <a href="../app_structures/index.html">首頁</a>
+          <a href="../compare_features/index.html">功能比較</a>
+          <a class="active" href="index.html">產品架構</a>
+          <a href="../reports/report.html">完整報告</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero-section" id="positioning">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <span class="eyebrow">產品定位</span>
+            <h1>公開社群、頻道內容與關係沉澱的統一入口</h1>
+            <p class="lead">產品定位是通用社群 IM：手機端優先、對外公開、從外部內容引流到頻道與討論群，再透過主題分區、私聊、激勵機制與創作者工具形成長期留存。</p>
+            <div class="pill-row" aria-label="產品定位標籤">
+              <span class="pill">公開入口</span>
+              <span class="pill">頻道到社群</span>
+              <span class="pill">主題分區</span>
+              <span class="pill">收件箱作業系統</span>
+              <span class="pill">創作者與企業工具</span>
+              <span class="pill">信任與風控底座</span>
+            </div>
+          </div>
+          <aside class="hero-panel">
+            <h2>核心判斷</h2>
+            <p>產品以公開社群與內容導流為主軸，登入後主入口承接訊息、頻道、群組與私聊，讓內容、社群和商業服務都回到對話關係。</p>
+          </aside>
+        </div>
+      </section>
+
+      <section id="north-star">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">北極星路徑</span>
+            <h2>外部流量進來後，要被帶進可持續互動的社群結構</h2>
+          </div>
+          <p class="muted">這是產品應圍繞的核心成長與留存路徑：公開內容負責引流，頻道負責沉澱內容，討論群負責互動，私聊與激勵機制負責關係留存。</p>
+        </div>
+        <div class="flow-strip" aria-label="核心使用者路徑">
+          <div class="flow-step">
+            <span class="step-index">01</span>
+            <strong>外部內容引流</strong>
+            <p>社群媒體、搜尋結果、合作平台或 QR Code 把使用者帶到公開頁。</p>
+          </div>
+          <div class="flow-step active">
+            <span class="step-index">02</span>
+            <strong>頻道承接</strong>
+            <p>公開頻道頁可預覽內容，並提供關注頻道與進入討論群的明確動作。</p>
+          </div>
+          <div class="flow-step active">
+            <span class="step-index">03</span>
+            <strong>討論群與主題分區</strong>
+            <p>進群第一屏呈現公告、問答、行情、活動、資源等主題入口。</p>
+          </div>
+          <div class="flow-step">
+            <span class="step-index">04</span>
+            <strong>關係沉澱</strong>
+            <p>私聊、好友、積分任務、邀請與商業服務把一次流量變成長期關係。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">模組關係</span>
+            <h2>八個核心模組圍繞社群閉環運作</h2>
+          </div>
+          <p class="muted">身份先建立使用者與商業主體；頻道承接公開內容；群組與主題承接討論；收件箱統一承接私聊、群組、頻道與商業對話；搜尋、積分、創作者與平台、信任治理支撐增長與留存。</p>
+        </div>
+
+        <div class="architecture-grid">
+          <div class="architecture-map" aria-label="八個核心模組關係圖">
+            <div class="map-node north">
+              <span class="node-icon"><img src="../app_structures/assets/icons/ui/user.svg" alt=""></span>
+              <strong>身份與帳號</strong>
+              <p>手機登入、公開身份、商業身份與合作身份映射</p>
+            </div>
+            <div class="map-node west">
+              <span class="node-icon"><img src="../app_structures/assets/icons/ui/radio.svg" alt=""></span>
+              <strong>頻道內容</strong>
+              <p>文章、公告、投票、外鏈卡片、活動內容</p>
+            </div>
+            <div class="map-node east">
+              <span class="node-icon"><img src="../app_structures/assets/icons/ui/users.svg" alt=""></span>
+              <strong>群組與主題分區</strong>
+              <p>主題分區、角色、審核、公告與活動</p>
+            </div>
+            <div class="map-hub">
+              <span class="hub-icon"><img src="../app_structures/assets/icons/ui/inbox.svg" alt=""></span>
+              <strong>收件箱與通訊核心</strong>
+              <p>私聊、群組、頻道與商業對話共用通訊底座</p>
+            </div>
+            <div class="map-node south-west">
+              <span class="node-icon"><img src="../app_structures/assets/icons/ui/search.svg" alt=""></span>
+              <strong>搜尋與發現</strong>
+              <p>公開內容、頻道、群組、主題、標籤與外鏈摘要</p>
+            </div>
+            <div class="map-node south">
+              <span class="node-icon"><img src="../app_structures/assets/icons/ui/wallet.svg" alt=""></span>
+              <strong>積分錢包</strong>
+              <p>新手任務、紅包、活動獎勵、會員抵扣</p>
+            </div>
+            <div class="map-node south-east">
+              <span class="node-icon"><img src="../app_structures/assets/icons/ui/briefcase.svg" alt=""></span>
+              <strong>創作者與平台</strong>
+              <p>頻道分析、認證、多管理員、合作接入與歸檔</p>
+            </div>
+            <div class="trust-rail">
+              <img src="../app_structures/assets/icons/ui/shield.svg" alt="">
+              <strong>信任與治理</strong>
+              <span>身份驗證 · 權限 · 檢舉封鎖 · 內容審核 · 模板與外鏈白名單 · 審計日誌</span>
+            </div>
+          </div>
+
+          <div class="principle-list">
+            <article class="principle">
+              <span>01</span>
+              <div>
+                <h3>身份先確定</h3>
+                <p>個人身份、商業身份與合作身份共用同一套帳號和權限，後續所有頻道、群組、私聊和商業服務都依附身份。</p>
+              </div>
+            </article>
+            <article class="principle">
+              <span>02</span>
+              <div>
+                <h3>頻道負責公開內容</h3>
+                <p>外部流量先落到公開頻道；頻道沉澱文章、公告、外鏈卡片和活動，再把需要互動的使用者導入群組。</p>
+              </div>
+            </article>
+            <article class="principle">
+              <span>03</span>
+              <div>
+                <h3>群組承接討論</h3>
+                <p>群組處理多人互動，主題分區把公告、問答、活動和資源拆開，避免大群訊息流失控。</p>
+              </div>
+            </article>
+            <article class="principle">
+              <span>04</span>
+              <div>
+                <h3>收件箱承接關係</h3>
+                <p>私聊、群組、頻道通知、客服和合作應用回到同一個收件箱；搜尋、積分和治理在這條路徑上提供發現、激勵與安全邊界。</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="modules">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">功能架構</span>
+            <h2>八個核心模組的產品邊界</h2>
+          </div>
+          <p class="muted">八個模組一一對應模組關係圖；列表按「身份 → 通訊 → 內容 → 社群 → 發現 → 治理 → 留存 → 商業化」排列。</p>
+        </div>
+        <div class="module-grid">
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/user.svg" alt=""></span>
+            <h3>身份與帳號</h3>
+            <p>手機登入、username、個人檔案、公開身份、商業身份、第三方合作身份映射。</p>
+            <b>關鍵資料</b>
+            <ul>
+              <li>使用者、裝置、登入狀態</li>
+              <li>個人與商業檔案</li>
+              <li>封鎖、同意、可見性設定</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/message-circle.svg" alt=""></span>
+            <h3>收件箱與通訊核心</h3>
+            <p>私聊、群組訊息、媒體、回覆、反應、已讀狀態、未讀數、通知與收件箱分類。</p>
+            <b>設計要點</b>
+            <ul>
+              <li>私聊、群組、頻道和商業對話共用底座</li>
+              <li>訊息狀態、通知和未讀數要一致</li>
+              <li>商業對話必須有清楚標示與權限</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/radio.svg" alt=""></span>
+            <h3>頻道內容</h3>
+            <p>一對多發布、公開預覽、文章、公告、投票、外鏈卡片與討論群導流；短影音與直播歸入後期頻道內容形態。</p>
+            <b>產品邊界</b>
+            <ul>
+              <li>頻道定位為內容陣地</li>
+              <li>回覆與討論導向群組或私聊</li>
+              <li>公開 URL 是增長漏斗入口</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/users.svg" alt=""></span>
+            <h3>群組與主題分區</h3>
+            <p>大群、公開群、成員審核、管理員權限、禁言、公告、活動、主題列表與主題訊息流。</p>
+            <b>資料邊界</b>
+            <ul>
+              <li>群組、成員、角色、權限</li>
+              <li>主題、公告、置頂、活動</li>
+              <li>審核佇列與操作日誌</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/search.svg" alt=""></span>
+            <h3>搜尋與發現</h3>
+            <p>搜尋公開使用者、頻道、群組、主題、標籤和外鏈摘要；用興趣標籤支撐發現與商業洞察。</p>
+            <b>隱私原則</b>
+            <ul>
+              <li>私聊僅限個人範圍搜尋</li>
+              <li>公開內容才進索引</li>
+              <li>行為標籤可關閉與降權</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/shield.svg" alt=""></span>
+            <h3>信任與治理</h3>
+            <p>身份驗證、檢舉封鎖、反垃圾、外鏈安全、內容審核、模板審核、限流與帳號聲譽。</p>
+            <b>必須共用</b>
+            <ul>
+              <li>私聊、群組、頻道共用風險事件</li>
+              <li>Bot、合作接入與外鏈走同一套權限</li>
+              <li>創作者與企業有審計記錄</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/wallet.svg" alt=""></span>
+            <h3>積分錢包</h3>
+            <p>把註冊激活、每日回訪、發言、邀請、活動、紅包和會員升級接成可追蹤的站內激勵系統。</p>
+            <b>設計方式</b>
+            <ul>
+              <li>用新手任務替代低質感抽獎</li>
+              <li>紅包與活動提高群組熱度</li>
+              <li>積分帳本要可審計</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/briefcase.svg" alt=""></span>
+            <h3>創作者與平台</h3>
+            <p>頻道分析、認證、多管理員、合作身份接入、Bot、Mini App、合作事件回傳與合規歸檔。</p>
+            <b>啟用順序</b>
+            <ul>
+              <li>先服務創作者與企業營運</li>
+              <li>再開放合作接入與自動化</li>
+              <li>短影音、直播與付費內容跟隨創作者方案開放</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="screens">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">介面設計</span>
+            <h2>手機端核心路徑</h2>
+          </div>
+          <p class="muted">手機端以主列表、頻道頁、群組主題列表和單一 Topic 訊息流承接核心路徑；重點是資訊層級、主要動作與導流關係。</p>
+        </div>
+
+        <div class="screen-grid">
+          <article class="phone-card">
+            <div class="phone-frame">
+              <div class="phone-status"></div>
+              <div class="phone-header">
+                <strong>訊息</strong>
+                <span class="tiny-actions">
+                  <img src="../app_structures/assets/icons/ui/search.svg" alt="">
+                  <img src="../app_structures/assets/icons/ui/send.svg" alt="">
+                </span>
+              </div>
+              <div class="folder-row">
+                <span class="selected">全部</span>
+                <span>頻道</span>
+                <span>群組</span>
+                <span>私聊</span>
+              </div>
+              <div class="thread-row highlighted">
+                <span class="avatar blue">頻</span>
+                <div><b>加密市場頻道</b><small>今日週報已發布...</small></div>
+                <em>3</em>
+              </div>
+              <div class="thread-row">
+                <span class="avatar green">問</span>
+                <div><b>新手問答 · 社群</b><small>Alex：怎麼看今天行情</small></div>
+                <em>12</em>
+              </div>
+              <div class="thread-row">
+                <span class="avatar purple">Bo</span>
+                <div><b>Bob</b><small>你：文件我晚點補上</small></div>
+              </div>
+              <div class="thread-row">
+                <span class="avatar amber">運</span>
+                <div><b>營運團隊</b><small>本週頻道數據更新</small></div>
+              </div>
+            </div>
+            <h3>主列表 / 混合收件箱</h3>
+            <p>頻道、群組、私聊與商業對話在同一入口可切換，降低多社群噪音。</p>
+          </article>
+
+          <article class="phone-card">
+            <div class="phone-frame">
+              <div class="phone-status"></div>
+              <div class="channel-cover">
+                <span class="avatar blue">頻</span>
+                <strong>加密市場頻道</strong>
+                <small>82,000 位關注者</small>
+                <button type="button">已關注</button>
+              </div>
+              <div class="post-card">
+                <small>今天 14:22</small>
+                <b>市場週報 · 第 12 期</b>
+                <p>本週 BTC 橫盤整理，下週關注關鍵支撐位...</p>
+                <span>342 反應 · 89 討論</span>
+              </div>
+              <div class="post-card compact">
+                <small>昨天 09:15</small>
+                <b>重要公告</b>
+                <p>社群 AMA 週五晚上開始。</p>
+              </div>
+              <div class="bottom-cta">進入討論群</div>
+            </div>
+            <h3>頻道頁</h3>
+            <p>內容消費和社群互動分開，底部動作把流量導入討論。</p>
+          </article>
+
+          <article class="phone-card">
+            <div class="phone-frame">
+              <div class="phone-status"></div>
+              <div class="phone-header stacked">
+                <strong>加密討論社群</strong>
+                <small>3,248 成員 · 142 在線</small>
+              </div>
+              <div class="topic-label">主題分區</div>
+              <div class="topic-row pinned"><b>公告</b><small>活動安排與社群規則</small></div>
+              <div class="topic-row"><b>新手問答</b><small>Alex：怎麼看今天行情</small></div>
+              <div class="topic-row"><b>行情討論</b><small>BTC 今天能否突破？</small></div>
+              <div class="topic-row"><b>活動與合作</b><small>週五 AMA 報名中</small></div>
+              <div class="topic-row"><b>工具與資源</b><small>分享一個鏈上工具</small></div>
+            </div>
+            <h3>群組主題列表</h3>
+            <p>大群入口先呈現主題，協助使用者快速進入對應討論。</p>
+          </article>
+
+          <article class="phone-card">
+            <div class="phone-frame">
+              <div class="phone-status"></div>
+              <div class="phone-header stacked">
+                <strong>新手問答</strong>
+                <small>加密討論社群 · 342 則訊息</small>
+              </div>
+              <div class="message incoming">
+                <span class="avatar green">Al</span>
+                <p>怎麼看今天的 BTC？<small>Alex · 13:02</small></p>
+              </div>
+              <div class="message outgoing">
+                <p>短期仍是震盪，先看支撐是否守住。<small>13:05 ✓✓</small></p>
+              </div>
+              <div class="message incoming">
+                <span class="avatar amber">Ma</span>
+                <p><b>回覆你</b>同意，等確認再進。<small>Maria · 13:07</small></p>
+              </div>
+              <div class="composer">發送訊息...</div>
+            </div>
+            <h3>主題訊息流</h3>
+            <p>標準 IM 交互留在主題內，支援回覆、反應、媒體與附件。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="growth-content">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">入口與成長</span>
+            <h2>公開入口、內容分發與商業轉化</h2>
+          </div>
+          <p class="muted">這一層負責把外部流量導入頻道與社群，讓內容、搜尋、標籤和商業合作形成可追蹤的增長閉環。</p>
+        </div>
+
+        <div class="module-grid">
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/search.svg" alt=""></span>
+            <h3>公開落地頁與進站路徑</h3>
+            <p>每個公開頻道、公開群組和活動頁都要有可分享 URL，訪客可以先預覽內容，再選擇關注、加入討論或安裝 App。</p>
+            <b>入口類型</b>
+            <ul>
+              <li>外部內容連結：社群媒體、搜尋結果、合作網站導入頻道頁</li>
+              <li>好友邀請連結：直接帶入群組、頻道或活動頁</li>
+              <li>QR / 實體場景：線下活動、簡報、海報導入指定社群</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/megaphone.svg" alt=""></span>
+            <h3>外鏈卡片與資訊過濾</h3>
+            <p>頻道承接資訊分發，外部文章、影片、工具頁和合作內容都以卡片形式進入頻道，再透過內容類型過濾降低訊息噪音。</p>
+            <b>內容形態</b>
+            <ul>
+              <li>Rich Preview：標題、摘要、來源、封面圖和安全提示</li>
+              <li>內容過濾：文章、影片、話題、公告、活動分流顯示</li>
+              <li>資訊入口：聚合已關注頻道中的文章類與外鏈類內容</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/chart-no-axes-combined.svg" alt=""></span>
+            <h3>標籤資料與商業化</h3>
+            <p>搜尋行為與標籤資料先支撐內容查找與頻道推薦，再延伸到受眾洞察、合作轉化和後期廣告產品。</p>
+            <b>資料分層</b>
+            <ul>
+              <li>顯式上下文：關注頻道、加入群組、頻道分類、#hashtag</li>
+              <li>行為信號：搜尋詞、外鏈點擊、Topic 停留、回訪頻率</li>
+              <li>公開內容分析：僅限公開頻道與公開 Topic，私聊不進商業分析</li>
+            </ul>
+          </article>
+
+          <article class="module-card">
+            <span class="module-icon"><img src="../app_structures/assets/icons/ui/sparkles.svg" alt=""></span>
+            <h3>後期社群增強</h3>
+            <p>核心 IM、頻道閉環與搜尋及標籤基礎完成後，再加入社群營運和創作者變現能力。</p>
+            <b>延伸能力</b>
+            <ul>
+              <li>頻道瀏覽器：按分類、熱度、地區和主題探索公開頻道</li>
+              <li>活動 / RSVP：支援直播、線下活動、AMA 和週期性聚會</li>
+              <li>創作者工具：頻道數據分析、付費頻道、自定義表情</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="business">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">商業與平台</span>
+            <h2>先服務創作者與企業，再用會員和平台接入放大生態</h2>
+          </div>
+        </div>
+
+        <div class="business-grid">
+          <article class="tier-card">
+            <span>Free</span>
+            <h3>免費使用者</h3>
+            <p>基礎 IM、公開頻道、群組、搜尋、基礎收件箱分類與基礎積分任務。主要目標是網路效應與社群活躍。</p>
+          </article>
+          <article class="tier-card highlighted">
+            <span>Creator / Business</span>
+            <h3>創作者與企業</h3>
+            <p>頻道分析、認證、多管理員、合作事件回傳、合規歸檔與操作日誌先啟用；短影音、直播和付費內容作為後續創作者能力。</p>
+          </article>
+          <article class="tier-card">
+            <span>Premium</span>
+            <h3>個人會員</h3>
+            <p>更長訊息歷史、更大檔案、自定義收件箱分類、徽章、專屬貼圖、無廣告與積分倍率。</p>
+          </article>
+          <article class="tier-card">
+            <span>Platform</span>
+            <h3>合作接入</h3>
+            <p>合作身份、Bot 通知、Mini App 和轉化回傳共用同一套授權、審核與風險控制。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="sequence">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">建設順序</span>
+            <h2>建設順序按產品風險排序</h2>
+          </div>
+        </div>
+
+        <div class="sequence-grid">
+          <article class="sequence-card">
+            <span class="sequence-index">先做</span>
+            <h3>通訊底座與社群閉環</h3>
+            <p>登入、收件箱、私聊、群組、主題分區、頻道公開頁、頻道到群組導流、基礎搜尋與檢舉封鎖。</p>
+          </article>
+          <article class="sequence-card">
+            <span class="sequence-index">接著做</span>
+            <h3>增長與留存</h3>
+            <p>邀請連結、公開內容 SEO、新手任務、積分錢包、紅包、頻道內容類型過濾與創作者基礎數據。</p>
+          </article>
+          <article class="sequence-card">
+            <span class="sequence-index">再擴展</span>
+            <h3>創作者、企業與平台</h3>
+            <p>認證、頻道分析、付費內容、頻道短影音 / 直播發布、合作事件回傳、合作身份接入、Bot 權限、Mini App 權限與合規歸檔。</p>
+          </article>
+          <article class="sequence-card caution">
+            <span class="sequence-index">暫緩</span>
+            <h3>重內容平台與重商城</h3>
+            <p>資訊編輯系統、重電商首頁、獨立短影音 Tab、直播廣場與算法推薦 Feed 列為後期評估範圍，前期聚焦 IM 核心閉環。</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
