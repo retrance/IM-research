@@ -1,0 +1,974 @@
+.playground-page {
+  --ip-ink: #101828;
+  --ip-muted: #667085;
+  --ip-panel: rgba(255, 255, 255, 0.68);
+  --ip-panel-strong: rgba(255, 255, 255, 0.9);
+  --ip-line: rgba(15, 23, 42, 0.1);
+  --ip-blue: #2563eb;
+  --ip-cyan: #0891b2;
+  --ip-green: #16a34a;
+  --ip-amber: #d97706;
+  --ip-red: #dc2626;
+  --ip-violet: #7c3aed;
+  --ip-shadow: 0 24px 70px rgba(15, 23, 42, 0.14);
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.09) 0%, transparent 34%),
+    linear-gradient(225deg, rgba(8, 145, 178, 0.08) 0%, transparent 32%),
+    linear-gradient(135deg, #f8fbff 0%, #fff 42%, #f3faf8 100%);
+}
+
+.interaction-root {
+  width: min(1500px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 26px 0 72px;
+}
+
+.loading-shell {
+  min-height: 62vh;
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  color: var(--ip-muted);
+}
+
+.loading-ring {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 99, 235, 0.14);
+  border-top-color: var(--ip-blue);
+  animation: ip-spin 900ms linear infinite;
+}
+
+.ip-shell {
+  display: grid;
+  gap: 18px;
+}
+
+.ip-glass,
+.ip-selector,
+.ip-phone-wrap,
+.ip-evidence {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background: var(--ip-panel);
+  box-shadow: var(--ip-shadow);
+  backdrop-filter: blur(26px) saturate(175%);
+  -webkit-backdrop-filter: blur(26px) saturate(175%);
+}
+
+.ip-glass,
+.ip-selector,
+.ip-evidence {
+  border-radius: 18px;
+}
+
+.ip-selector {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.15fr;
+  gap: 14px;
+  padding: 14px;
+}
+
+.ip-field {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.ip-field label {
+  color: #475467;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.ip-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--ip-ink);
+  padding: 0 12px;
+  font: inherit;
+}
+
+.ip-architecture-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.ip-tab {
+  min-height: 42px;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.56);
+  color: #475467;
+  padding: 9px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 160ms ease, background 160ms ease, color 160ms ease, border 160ms ease;
+}
+
+.ip-tab:hover,
+.ip-tab.active {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.32);
+  background: #fff;
+  color: var(--ip-blue);
+}
+
+.ip-main-grid {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.95fr) minmax(420px, 1.05fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.ip-phone-wrap {
+  position: sticky;
+  top: 58px;
+  border-radius: 28px;
+  padding: 14px 18px 18px;
+}
+
+.ip-phone-stage {
+  display: grid;
+  grid-template-columns: minmax(270px, 360px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.ip-phone {
+  position: relative;
+  width: min(100%, 360px, 42vh);
+  aspect-ratio: 390 / 792;
+  margin: 0 auto;
+  border: 10px solid #101828;
+  border-radius: 44px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(245, 248, 255, 0.92)),
+    #fff;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.32),
+    0 28px 60px rgba(15, 23, 42, 0.28);
+  overflow: hidden;
+}
+
+.ip-phone::before {
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  z-index: 6;
+  width: 112px;
+  height: 27px;
+  border-radius: 999px;
+  background: #101828;
+  transform: translateX(-50%);
+}
+
+.ip-phone-screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background:
+    linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0.96)),
+    #fff;
+}
+
+.ip-status {
+  height: 42px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  padding: 0 26px 8px;
+  color: #344054;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ip-mobile-header {
+  display: grid;
+  gap: 3px;
+  padding: 10px 18px 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.ip-platform-telegram .ip-phone-screen {
+  background: #f3f7fb;
+}
+
+.ip-platform-telegram .ip-mobile-header {
+  color: #fff;
+  border-bottom: 0;
+  background: #2aabee;
+}
+
+.ip-platform-telegram .ip-mobile-header span {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.ip-platform-whatsapp .ip-phone-screen {
+  background: #efe7dd;
+}
+
+.ip-platform-whatsapp .ip-mobile-header {
+  color: #fff;
+  border-bottom: 0;
+  background: #075e54;
+}
+
+.ip-platform-whatsapp .ip-mobile-header span {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.ip-platform-discord .ip-phone {
+  border-color: #111214;
+}
+
+.ip-platform-discord .ip-phone-screen {
+  background: #313338;
+}
+
+.ip-platform-discord .ip-status {
+  color: #dbdee1;
+}
+
+.ip-platform-discord .ip-mobile-header {
+  color: #f2f3f5;
+  border-bottom: 1px solid #1f2023;
+  background: #2b2d31;
+}
+
+.ip-platform-discord .ip-mobile-header span {
+  color: #b5bac1;
+}
+
+.ip-platform-line .ip-phone-screen {
+  background: #8cabd8;
+}
+
+.ip-platform-line .ip-mobile-header {
+  color: #fff;
+  border-bottom: 0;
+  background: #06c755;
+}
+
+.ip-platform-line .ip-mobile-header span {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.ip-platform-ours .ip-phone-screen {
+  background:
+    linear-gradient(180deg, rgba(249, 250, 251, 0.92), rgba(236, 253, 245, 0.88)),
+    #fff;
+}
+
+.ip-mobile-header b {
+  font-size: 17px;
+  line-height: 1.1;
+}
+
+.ip-mobile-header span {
+  color: var(--ip-muted);
+  font-size: 12px;
+}
+
+.ip-mobile-body {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  padding: 12px;
+}
+
+.ip-platform-whatsapp .ip-mobile-body {
+  padding-top: 44px;
+}
+
+.ip-platform-whatsapp .ip-mobile-body::before {
+  content: "Status    Channels";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  border-bottom: 1px solid rgba(17, 27, 33, 0.08);
+  color: #075e54;
+  font-size: 12px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.52);
+}
+
+.ip-platform-discord .ip-mobile-body {
+  padding-left: 58px;
+}
+
+.ip-platform-discord .ip-mobile-body::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 46px;
+  background: #1e1f22;
+}
+
+.ip-platform-discord .ip-mobile-body::after {
+  content: "";
+  position: absolute;
+  top: 16px;
+  left: 11px;
+  width: 24px;
+  height: 24px;
+  border-radius: 10px;
+  background: #5865f2;
+  box-shadow:
+    0 38px 0 #313338,
+    0 76px 0 #313338,
+    0 114px 0 #313338,
+    0 152px 0 #313338;
+}
+
+.ip-platform-line .ip-mobile-body {
+  padding-bottom: 74px;
+}
+
+.ip-mobile-scroll {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  align-content: start;
+  gap: 10px;
+}
+
+.ip-phone-card,
+.ip-feed-card,
+.ip-list-row,
+.ip-topic-row,
+.ip-menu-tile,
+.ip-onboarding-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
+}
+
+.ip-phone-card,
+.ip-feed-card,
+.ip-onboarding-card {
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.ip-list-row,
+.ip-topic-row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 58px;
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.ip-avatar {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--ip-blue), var(--ip-cyan));
+}
+
+.ip-platform-telegram .ip-avatar {
+  border-radius: 50%;
+  background: #2aabee;
+}
+
+.ip-platform-whatsapp .ip-avatar {
+  border-radius: 50%;
+  background: #25d366;
+}
+
+.ip-platform-discord .ip-avatar {
+  border-radius: 50%;
+  background: #5865f2;
+}
+
+.ip-platform-line .ip-avatar {
+  border-radius: 50%;
+  background: #06c755;
+}
+
+.ip-row-text {
+  min-width: 0;
+}
+
+.ip-row-text b {
+  display: block;
+  color: var(--ip-ink);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.ip-row-text span,
+.ip-feed-card span,
+.ip-phone-card span {
+  color: var(--ip-muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.ip-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.ip-chip {
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #475467;
+  font-size: 11px;
+  line-height: 1;
+  padding: 7px 9px;
+}
+
+.ip-feed-card {
+  display: grid;
+  gap: 8px;
+}
+
+.ip-feed-card,
+.ip-list-row,
+.ip-topic-row,
+.ip-menu-tile {
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.ip-feed-card b {
+  font-size: 14px;
+}
+
+.ip-feed-card p {
+  margin: 0;
+  color: #475467;
+  font-size: 12px;
+}
+
+.ip-platform-telegram .ip-feed-card,
+.ip-platform-telegram .ip-list-row,
+.ip-platform-telegram .ip-topic-row,
+.ip-platform-telegram .ip-onboarding-card {
+  border-color: rgba(42, 171, 238, 0.14);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 14px rgba(42, 171, 238, 0.08);
+}
+
+.ip-platform-whatsapp .ip-feed-card,
+.ip-platform-whatsapp .ip-list-row,
+.ip-platform-whatsapp .ip-topic-row,
+.ip-platform-whatsapp .ip-onboarding-card {
+  border-color: transparent;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 2px 7px rgba(34, 34, 34, 0.08);
+}
+
+.ip-platform-discord .ip-feed-card,
+.ip-platform-discord .ip-list-row,
+.ip-platform-discord .ip-topic-row,
+.ip-platform-discord .ip-onboarding-card,
+.ip-platform-discord .ip-menu-tile {
+  border-color: #232428;
+  border-radius: 8px;
+  background: #2b2d31;
+  box-shadow: none;
+}
+
+.ip-platform-discord .ip-row-text b,
+.ip-platform-discord .ip-feed-card b,
+.ip-platform-discord .ip-menu-tile b,
+.ip-platform-discord .ip-onboarding-card b {
+  color: #f2f3f5;
+}
+
+.ip-platform-discord .ip-row-text span,
+.ip-platform-discord .ip-feed-card span,
+.ip-platform-discord .ip-feed-card p,
+.ip-platform-discord .ip-menu-tile span {
+  color: #b5bac1;
+}
+
+.ip-platform-line .ip-feed-card,
+.ip-platform-line .ip-list-row,
+.ip-platform-line .ip-topic-row,
+.ip-platform-line .ip-onboarding-card,
+.ip-platform-line .ip-menu-tile {
+  border-color: rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 2px 8px rgba(40, 60, 80, 0.12);
+}
+
+.ip-messages {
+  display: grid;
+  gap: 9px;
+  padding-top: 2px;
+}
+
+.ip-message {
+  max-width: 82%;
+  border-radius: 16px;
+  padding: 10px 11px;
+  color: #344054;
+  font-size: 12px;
+  background: rgba(241, 245, 249, 0.95);
+}
+
+.ip-message.me {
+  justify-self: end;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ip-blue), #38bdf8);
+}
+
+.ip-message small {
+  display: block;
+  margin-top: 5px;
+  color: rgba(102, 112, 133, 0.9);
+  font-size: 10px;
+}
+
+.ip-message.me small {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ip-platform-whatsapp .ip-message {
+  border-radius: 8px 8px 8px 2px;
+  background: #fff;
+}
+
+.ip-platform-whatsapp .ip-message.me {
+  border-radius: 8px 8px 2px 8px;
+  color: #111b21;
+  background: #d9fdd3;
+}
+
+.ip-platform-whatsapp .ip-message.me small {
+  color: #667781;
+}
+
+.ip-platform-telegram .ip-message {
+  border-radius: 14px 14px 14px 4px;
+  background: #fff;
+}
+
+.ip-platform-telegram .ip-message.me {
+  border-radius: 14px 14px 4px 14px;
+  background: #d8ecff;
+  color: #17212b;
+}
+
+.ip-platform-telegram .ip-message.me small {
+  color: #5488a7;
+}
+
+.ip-platform-discord .ip-message,
+.ip-platform-discord .ip-message.me {
+  max-width: 100%;
+  border-radius: 0;
+  padding: 7px 0;
+  color: #dbdee1;
+  background: transparent;
+}
+
+.ip-platform-discord .ip-message small,
+.ip-platform-discord .ip-message.me small {
+  color: #949ba4;
+}
+
+.ip-platform-line .ip-message {
+  border-radius: 16px 16px 16px 3px;
+  background: #fff;
+}
+
+.ip-platform-line .ip-message.me {
+  border-radius: 16px 16px 3px 16px;
+  color: #102a19;
+  background: #8de055;
+}
+
+.ip-platform-line .ip-message.me small {
+  color: rgba(16, 42, 25, 0.62);
+}
+
+.ip-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.ip-menu-tile {
+  min-height: 68px;
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.ip-menu-tile b {
+  display: block;
+  font-size: 12px;
+}
+
+.ip-bottom-action {
+  padding: 12px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.ip-platform-discord .ip-bottom-action {
+  border-top-color: #1f2023;
+  background: #2b2d31;
+}
+
+.ip-platform-whatsapp .ip-bottom-action {
+  background: rgba(239, 231, 221, 0.96);
+}
+
+.ip-platform-line .ip-bottom-action {
+  background: rgba(140, 171, 216, 0.96);
+}
+
+.ip-primary {
+  width: 100%;
+  min-height: 43px;
+  border: 0;
+  border-radius: 16px;
+  color: #fff;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--ip-blue), var(--ip-cyan));
+  box-shadow: 0 14px 26px rgba(37, 99, 235, 0.22);
+  cursor: pointer;
+}
+
+.ip-platform-whatsapp .ip-primary {
+  background: #25d366;
+  box-shadow: 0 12px 22px rgba(37, 211, 102, 0.22);
+}
+
+.ip-platform-telegram .ip-primary {
+  background: #2aabee;
+  box-shadow: 0 12px 22px rgba(42, 171, 238, 0.24);
+}
+
+.ip-platform-discord .ip-primary {
+  background: #5865f2;
+  box-shadow: 0 12px 22px rgba(88, 101, 242, 0.28);
+}
+
+.ip-platform-line .ip-primary {
+  background: #06c755;
+  box-shadow: 0 12px 22px rgba(6, 199, 85, 0.24);
+}
+
+.ip-secondary-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 9px;
+}
+
+.ip-secondary-actions button {
+  flex: 1;
+  min-height: 36px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.74);
+  color: #475467;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ip-step-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.ip-step-card {
+  padding: 14px;
+  border: 1px solid var(--ip-line);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.ip-step-card h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.ip-step-card p {
+  margin: 0;
+  color: #475467;
+  font-size: 13px;
+}
+
+.ip-progress {
+  display: grid;
+  gap: 9px;
+}
+
+.ip-progress button {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+  border: 0;
+  border-radius: 13px;
+  background: transparent;
+  color: #475467;
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ip-progress button.active {
+  background: rgba(37, 99, 235, 0.08);
+  color: var(--ip-blue);
+}
+
+.ip-dot {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.08);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.ip-progress button.active .ip-dot {
+  color: #fff;
+  background: var(--ip-blue);
+}
+
+.ip-evidence {
+  padding: 18px;
+}
+
+.ip-panel-section {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.ip-panel-section:first-child {
+  padding-top: 0;
+}
+
+.ip-panel-section:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.ip-panel-copy {
+  margin: 0;
+  color: #344054;
+  font-size: 14px;
+}
+
+.ip-panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ip-panel-title h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.ip-panel-title span {
+  color: var(--ip-muted);
+  font-size: 12px;
+}
+
+.ip-fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.ip-fact {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.54);
+  padding: 10px;
+}
+
+.ip-fact b {
+  display: block;
+  color: #475467;
+  font-size: 11px;
+}
+
+.ip-fact span {
+  color: var(--ip-ink);
+  font-size: 13px;
+}
+
+.ip-tradeoff {
+  display: grid;
+  gap: 7px;
+  padding: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.ip-tradeoff + .ip-tradeoff {
+  margin-top: 9px;
+}
+
+.ip-type {
+  width: max-content;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.ip-type.Advantage {
+  color: #166534;
+  background: rgba(22, 163, 74, 0.12);
+}
+
+.ip-type.Risk {
+  color: #991b1b;
+  background: rgba(220, 38, 38, 0.12);
+}
+
+.ip-type.Constraint {
+  color: #92400e;
+  background: rgba(217, 119, 6, 0.14);
+}
+
+.ip-type.Unknown,
+.ip-type.Hypothesis {
+  color: #5b21b6;
+  background: rgba(124, 58, 237, 0.12);
+}
+
+.ip-tradeoff p {
+  margin: 0;
+  color: #344054;
+  font-size: 13px;
+}
+
+.ip-tradeoff small {
+  color: var(--ip-muted);
+  font-size: 11px;
+}
+
+.ip-decision-grid {
+  display: grid;
+  gap: 9px;
+}
+
+.ip-decision {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.56);
+  padding: 12px;
+}
+
+.ip-decision b {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--ip-ink);
+}
+
+.ip-decision p {
+  margin: 0 0 8px;
+  color: #475467;
+  font-size: 13px;
+}
+
+.ip-decision small {
+  display: block;
+  color: var(--ip-muted);
+  font-size: 11px;
+}
+
+.ip-row-arrow {
+  color: #98a2b3;
+}
+
+.ip-mobile-scroll {
+  animation: ip-step-in 220ms ease both;
+}
+
+@keyframes ip-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ip-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 1180px) {
+  .ip-main-grid,
+  .ip-phone-stage,
+  .ip-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .ip-phone-wrap {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .interaction-root {
+    width: min(100% - 24px, 1500px);
+    padding-top: 16px;
+  }
+
+  .ip-phone-wrap,
+  .ip-evidence {
+    padding: 16px;
+  }
+
+  .ip-fact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ip-phone {
+    border-width: 8px;
+    border-radius: 38px;
+  }
+}

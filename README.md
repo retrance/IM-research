@@ -6,10 +6,16 @@
   Main feature comparison presentation. It contains the 27-app benchmark, interactive module comparison, recommended product route, product modules, architecture direction, and scenario coverage.
 
 - `reports/report.html`  
-  HTML version of the full research report. It shares the presentation stylesheet from `compare_features/styles.css`.
+  HTML version of the full research report. It uses the shared site styles plus `assets/css/pages/report.css`.
 
 - `app_structures/index.html`  
-  App structure visualization. It uses its own scripts, styles, icons, and vendor assets under `app_structures/`.
+  App structure visualization. It uses its own script, shared CSS, page-specific CSS, icons, and vendor assets.
+
+- `product_architecture/index.html`  
+  Product direction, module architecture, interface sketches, and build order.
+
+- `interaction_playground/index.html`  
+  Interactive playground for comparing interaction patterns across apps.
 
 ## Source Material
 
@@ -20,6 +26,12 @@
   Supporting research archive.
 
 ## Asset Folder
+
+- `assets/css/`  
+  Shared site styles, shared components, and page-specific styles under `assets/css/pages/`.
+
+- `assets/js/site-nav.js`  
+  Shared top navigation renderer and compact topbar behavior. Pages can opt into `data-topbar-mode="compact-on-scroll"` or `static` on `<body>`.
 
 - `app_structures/assets/`  
   Icons and vendor libraries used by `app_structures/index.html`.
