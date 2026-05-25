@@ -1333,11 +1333,11 @@ function bootPlayground() {
   try {
     renderPlayground();
   } catch (error) {
-    console.error("模塊流程分析 failed to render.", error);
+    console.error("互動 Demo failed to render.", error);
     const root = document.getElementById("interaction-root");
     if (root) {
       root.replaceChildren(createNode("div", { className: "loading-shell" }, [
-        createNode("p", { text: "互動架構比較器載入失敗，請查看瀏覽器 Console 的錯誤訊息。" })
+        createNode("p", { text: "互動 Demo 載入失敗，請查看瀏覽器 Console 的錯誤訊息。" })
       ]));
     }
   }
