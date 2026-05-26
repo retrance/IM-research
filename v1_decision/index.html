@@ -7,7 +7,8 @@
     <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../assets/css/site.css?v=shared-ui-20260521">
     <link rel="stylesheet" href="../assets/css/components.css?v=shared-ui-20260521">
-    <link rel="stylesheet" href="../assets/css/pages/v1-decision.css?v=v1-decision-20260525-reco">
+    <link rel="stylesheet" href="../assets/css/pages/v1-decision.css?v=v1-decision-20260526-lean">
+    <link rel="stylesheet" href="../assets/css/liquid-glass.css?v=ios26-20260526">
   </head>
   <body class="v1-decision-page">
     <header class="topbar is-compact">
@@ -25,31 +26,18 @@
         <div class="hero-shell">
           <div class="hero-copy">
             <span class="eyebrow">決策總覽</span>
-            <h1>核准一條 V1 路線：內容導向的社群 IM</h1>
-            <div class="executive-summary">
-              <div>
-                <span>推薦 V1 Route</span>
-                <strong>Content-led community IM</strong>
-              </div>
-              <div>
-                <span>核心閉環</span>
-                <strong>外部入口 → 頻道預覽 → 加入 → 主題討論 → 收件箱留存 → 回訪</strong>
-              </div>
-              <div>
-                <span>本次動作</span>
-                <strong>Approve 路線，Adjust 五個預設，或 Reject 另選路線</strong>
-              </div>
-            </div>
+            <h1>定案五個 V1 預設</h1>
+            <p class="lead">確認預設、範圍與建置順序；不同意就直接改預設。</p>
             <div class="hero-actions" aria-label="頁內章節">
-              <a href="#core-loop">核心閉環</a>
-              <a href="#architecture-decisions">推薦決策</a>
-              <a href="#build-sequence">建置順序</a>
+              <a href="#architecture-decisions">看五個預設</a>
+              <a href="#v1-scope">看 V1 範圍</a>
+              <a href="#build-sequence">看建置順序</a>
             </div>
           </div>
 
           <aside class="decision-card">
-            <span class="card-label">五個推薦預設</span>
-            <h2>Approve / Adjust / Reject</h2>
+            <span class="card-label">決策動作</span>
+            <h2>核准 / 調整 / 否決</h2>
             <ol class="default-list">
               <li>頻道 → 討論：混合路徑</li>
               <li>大群第一屏：主題列表優先</li>
@@ -57,10 +45,6 @@
               <li>公開邊界：頻道 profile + 精選貼文</li>
               <li>治理：基本 admin + report/block/mute</li>
             </ol>
-            <div class="meeting-goal">
-              <strong>核准後</strong>
-              <span>直接進 PRD、MVP 驗證與建置順序拆解。</span>
-            </div>
           </aside>
         </div>
 
@@ -72,125 +56,70 @@
           <span>主題互動</span>
           <span>收件箱 / 私聊留存</span>
         </div>
-
-        <div class="reasoning-grid">
-          <article>
-            <span>推薦</span>
-            <p>V1 做「內容導向的社群 IM」，而不是大而全的社群平台或純私訊工具。</p>
-          </article>
-          <article>
-            <span>因為</span>
-            <p>既有架構已收斂到「外部入口 → 頻道 → 主題討論 → 收件箱」；這條路能同時解決進站、互動與回訪。</p>
-          </article>
-          <article>
-            <span>證據</span>
-            <p>產品架構頁已定義外部進站到關係留存的北極星路徑；競品比較顯示沒有單一 app 覆蓋完整路線；互動 Demo 指出頻道內容與群組主題是決策關鍵流。</p>
-          </article>
-          <article>
-            <span>風險</span>
-            <p>主題結構若太早過重，會增加加入摩擦；若太輕，公開社群會被訊息流噪音稀釋。</p>
-          </article>
-          <article>
-            <span>假設</span>
-            <p>使用者願意先預覽頻道內容，再因明確討論入口加入社群。此假設需 MVP 驗證。</p>
-          </article>
-          <article>
-            <span>什麼會改變建議</span>
-            <p>若測試顯示使用者主要需求是純私聊或純內容瀏覽，V1 應縮回 WhatsApp-like 私訊或頻道-only 路線。</p>
-          </article>
-        </div>
       </section>
 
       <section id="core-loop">
         <div class="section-head">
           <div>
             <span class="eyebrow">V1 核心閉環</span>
-            <h2>推薦預設：只做能讓閉環端到端成立的模組</h2>
+            <h2>只做能讓閉環成立的模組</h2>
           </div>
-          <p class="muted">判斷原則：模組若不能支撐「公開入口 → 討論 → 關係留存 → 回訪」，就不進 V1，避免第一版變成 Telegram + Discord + Reddit + LINE 的混合體。</p>
+          <p class="muted">判斷原則：不能支撐「入口 → 討論 → 回訪」的功能，不進 V1。</p>
         </div>
 
         <div class="loop-grid">
           <article class="loop-step">
             <span class="step-index">01</span>
             <h3>外部入口</h3>
-            <p><strong>使用者：</strong>從內容、邀請或搜尋進入。</p>
-            <p><strong>產品：</strong>打開公開入口，不要求立即登入。</p>
-            <p><strong>重點：</strong>降低第一步摩擦。</p>
+            <p>先看得到，再決定是否加入。</p>
           </article>
 
           <article class="loop-step">
             <span class="step-index">02</span>
             <h3>公開頻道預覽</h3>
-            <p><strong>使用者：</strong>加入前先看頻道身份與內容。</p>
-            <p><strong>產品：</strong>呈現 profile、貼文與清楚 CTA。</p>
-            <p><strong>重點：</strong>先建立信任，再要求加入。</p>
+            <p>用 profile、貼文與 CTA 建立信任。</p>
           </article>
 
           <article class="loop-step">
             <span class="step-index">03</span>
             <h3>關注 / 加入</h3>
-            <p><strong>使用者：</strong>選擇 follow 或 join。</p>
-            <p><strong>產品：</strong>建立成員狀態與回訪路徑。</p>
-            <p><strong>重點：</strong>把瀏覽轉成關係。</p>
+            <p>把瀏覽轉成可回訪的關係。</p>
           </article>
 
           <article class="loop-step">
             <span class="step-index">04</span>
             <h3>討論入口</h3>
-            <p><strong>使用者：</strong>從內容 CTA 進入討論。</p>
-            <p><strong>產品：</strong>導向主題列表或指定主題。</p>
-            <p><strong>重點：</strong>避免直接掉入大群噪音。</p>
+            <p>從內容 CTA 進主題，而不是直接進噪音流。</p>
           </article>
 
           <article class="loop-step">
             <span class="step-index">05</span>
             <h3>主題互動</h3>
-            <p><strong>使用者：</strong>選擇主題並發言。</p>
-            <p><strong>產品：</strong>提供主題訊息流與基本治理。</p>
-            <p><strong>重點：</strong>讓大群互動可找、可管、可回訪。</p>
+            <p>讓多人討論可找、可管、可回訪。</p>
           </article>
 
           <article class="loop-step">
             <span class="step-index">06</span>
             <h3>收件箱留存</h3>
-            <p><strong>使用者：</strong>回到收件箱看更新與私聊。</p>
-            <p><strong>產品：</strong>用類型標籤、未讀、篩選維持秩序。</p>
-            <p><strong>重點：</strong>IM 的留存場域是收件箱。</p>
+            <p>用未讀、標籤與篩選維持秩序。</p>
           </article>
 
           <article class="loop-step return-step">
             <span class="step-index">07</span>
             <h3>回訪</h3>
-            <p><strong>使用者：</strong>因私聊、主題或頻道更新回來。</p>
-            <p><strong>產品：</strong>通知 deep link 回正確位置。</p>
-            <p><strong>重點：</strong>把一次互動變成循環。</p>
+            <p>通知回到正確頻道、主題或聊天。</p>
           </article>
         </div>
 
-        <div class="logic-notes">
-          <article>
-            <span>Evidence-backed</span>
-            <p>產品架構頁把外部內容引流列為北極星第一步，並把收件箱定位為私聊、群組、頻道與商業對話的承接底座。這支持「公開入口 → 討論 → 關係留存」的路線。</p>
-          </article>
-          <article>
-            <span>Evidence-backed</span>
-            <p>互動 Demo 的 channel-content 與 group-topics 情境顯示，頻道內容與主題分流是最需要先決策的兩段流程。</p>
-          </article>
-          <article>
-            <span>Risk</span>
-            <p>如果主題分類太重，加入摩擦會上升；如果分類太輕，大群會回到雜訊訊息流。</p>
-          </article>
-        </div>
       </section>
 
       <section id="module-loop-map">
         <div class="section-head">
           <div>
             <span class="eyebrow">模組對閉環地圖</span>
-            <h2>推薦切法：核心閉環先做，支援模組只做到可用</h2>
+            <h2>核心先做，支援只做到可用</h2>
           </div>
-          <p class="muted">V1 的模組優先級不是功能重要性排序，而是閉環必要性排序。能讓使用者完成閉環的是 V1；能優化營運或商業化的是 Later。</p>
+          <p class="muted">V1 只按閉環必要性排序，不按功能想像排序。</p>
         </div>
 
         <div class="module-map">
@@ -201,22 +130,22 @@
               <article>
                 <img src="../app_structures/assets/icons/ui/user.svg" alt="">
                 <strong>身份</strong>
-                <p>因為公開預覽、加入、私聊與治理都需要基本身份邊界。</p>
+                <p>登入、加入、私聊、治理。</p>
               </article>
               <article>
                 <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
                 <strong>頻道</strong>
-                <p>因為它是外部內容進站後的信任與內容承接面。</p>
+                <p>公開入口與內容承接。</p>
               </article>
               <article>
                 <img src="../app_structures/assets/icons/ui/users.svg" alt="">
                 <strong>群組 / 主題</strong>
-                <p>因為公開內容必須轉成可參與、可管理的多人互動。</p>
+                <p>把內容轉成多人互動。</p>
               </article>
               <article>
                 <img src="../app_structures/assets/icons/ui/inbox.svg" alt="">
                 <strong>收件箱</strong>
-                <p>因為 IM 的留存場域是聊天列表、未讀、私聊與回訪。</p>
+                <p>未讀、私聊、回訪入口。</p>
               </article>
             </div>
           </div>
@@ -263,9 +192,9 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">關鍵架構決策</span>
-            <h2>不是列問題，而是給出可核准的推薦預設</h2>
+            <h2>五個需要核准的預設</h2>
           </div>
-          <p class="muted">以下五張卡片是 PRD 前必須對齊的架構預設。老闆不需要從零解題，只需要 approve、adjust 或 reject。</p>
+          <p class="muted">每張卡只做一件事：核准、調整或否決。</p>
         </div>
 
         <div class="decision-list">
@@ -276,16 +205,14 @@
             </div>
             <h3>頻道內容如何導向討論？</h3>
             <div class="decision-memo">
-              <p class="recommended-default"><strong>推薦預設：</strong>混合路徑：公開頻道預覽 → 討論 CTA → 主題優先群組。</p>
+              <p class="recommended-default"><strong>預設：</strong>公開頻道預覽 → 討論 CTA → 主題優先群組。</p>
               <div class="action-choice">
-                <div><strong>Approve</strong><span>作為 V1 預設。</span></div>
-                <div><strong>Adjust</strong><span>允許頻道貼文下有限留言預覽。</span></div>
-                <div><strong>Reject</strong><span>改用純貼文留言或純連結群組。</span></div>
+                <div><strong>核准</strong><span>作為 V1 預設。</span></div>
+                <div><strong>調整</strong><span>加入有限留言預覽。</span></div>
+                <div><strong>否決</strong><span>改純留言或純群組。</span></div>
               </div>
-              <p><strong>為什麼此預設：</strong>低摩擦公開入口 + 結構化討論，避免內容停在單向廣播或群組噪音。</p>
-              <p><strong>證據：</strong>Telegram 支援頻道到討論的原生 loop；Discord / forum-like 產品顯示 topic separation 對大型討論有價值；既有產品架構已指向 channel → group/topic → inbox。<em>來源：互動 Demo、內容頻道閉環、產品架構</em></p>
-              <p><strong>風險：</strong>結構增加可能提高加入摩擦。</p>
-              <p><strong>假設：</strong>使用者看完頻道內容後，願意透過明確 CTA 進入主題討論。</p>
+              <p><strong>依據：</strong>Telegram 驗證頻道到討論；Discord / Forum 驗證主題分流。</p>
+              <p><strong>風險：</strong>結構過重會增加加入摩擦。</p>
             </div>
           </article>
 
@@ -296,16 +223,14 @@
             </div>
             <h3>進入大型群組後第一屏看什麼？</h3>
             <div class="decision-memo">
-              <p class="recommended-default"><strong>推薦預設：</strong>主題列表優先，並露出輕量公告 / 規則。</p>
+              <p class="recommended-default"><strong>預設：</strong>主題列表優先，露出輕量公告 / 規則。</p>
               <div class="action-choice">
-                <div><strong>Approve</strong><span>群組第一屏使用主題列表。</span></div>
-                <div><strong>Adjust</strong><span>指定 V1 預設主題模板。</span></div>
-                <div><strong>Reject</strong><span>改成完整訊息流或 onboarding first。</span></div>
+                <div><strong>核准</strong><span>第一屏用主題列表。</span></div>
+                <div><strong>調整</strong><span>指定預設主題模板。</span></div>
+                <div><strong>否決</strong><span>改訊息流或導覽優先。</span></div>
               </div>
-              <p><strong>為什麼此預設：</strong>新使用者先知道去哪裡，再進入訊息流；避免第一眼被大群噪音淹沒。</p>
-              <p><strong>證據：</strong>Telegram Topics 與 Discord Forum-like 結構都用分區降低討論混雜；產品架構已把「群組與主題分區」列為討論承接層。<em>來源：互動 Demo、產品架構</em></p>
-              <p><strong>風險：</strong>初版 topic taxonomy 可能錯。</p>
-              <p><strong>假設：</strong>營運可以提供 3-6 個預設主題模板，讓社群冷啟動不空轉。</p>
+              <p><strong>依據：</strong>Topics / Forum 都用分區降低大群混雜。</p>
+              <p><strong>風險：</strong>初版主題分類可能錯。</p>
             </div>
           </article>
 
@@ -315,16 +240,14 @@
             </div>
             <h3>收件箱如何組織私聊、群組與頻道？</h3>
             <div class="decision-memo">
-              <p class="recommended-default"><strong>推薦預設：</strong>統一收件箱 + 清楚類型標籤 + 篩選。</p>
+              <p class="recommended-default"><strong>預設：</strong>統一收件箱 + 類型標籤 + 篩選。</p>
               <div class="action-choice">
-                <div><strong>Approve</strong><span>維持一個主收件箱。</span></div>
-                <div><strong>Adjust</strong><span>把 Channels / Chats 做成預設分頁。</span></div>
-                <div><strong>Reject</strong><span>改成完全分離的 Updates 模式。</span></div>
+                <div><strong>核准</strong><span>維持一個主收件箱。</span></div>
+                <div><strong>調整</strong><span>加 Chats / Channels 分頁。</span></div>
+                <div><strong>否決</strong><span>改完全分離 Updates。</span></div>
               </div>
-              <p><strong>為什麼此預設：</strong>IM 的主心智在聊天列表；統一入口保留關係密度，標籤與篩選控制噪音。</p>
-              <p><strong>證據：</strong>WhatsApp、LINE、Telegram 都依靠聊天列表維持關係入口；產品架構把收件箱定義為私聊、群組、頻道與商業對話的通訊核心。<em>來源：功能比較、產品架構</em></p>
-              <p><strong>風險：</strong>未讀與通知邏輯若不清楚，頻道更新會壓過私人聊天。</p>
-              <p><strong>假設：</strong>類型標籤與篩選足以處理 V1 的訊息秩序。</p>
+              <p><strong>依據：</strong>IM 關係主要回到聊天列表。</p>
+              <p><strong>風險：</strong>頻道更新可能壓過私人聊天。</p>
             </div>
           </article>
 
@@ -334,16 +257,14 @@
             </div>
             <h3>登入 / 加入前公開什麼？</h3>
             <div class="decision-memo">
-              <p class="recommended-default"><strong>推薦預設：</strong>公開頻道 profile + 精選公開貼文；討論需登入 / 加入。</p>
+              <p class="recommended-default"><strong>預設：</strong>公開頻道 profile + 精選貼文；討論需加入。</p>
               <div class="action-choice">
-                <div><strong>Approve</strong><span>公開 profile 與 selected posts。</span></div>
-                <div><strong>Adjust</strong><span>允許少量討論摘要公開。</span></div>
-                <div><strong>Reject</strong><span>改成登入前無預覽或完整公開。</span></div>
+                <div><strong>核准</strong><span>公開 profile 與精選貼文。</span></div>
+                <div><strong>調整</strong><span>開放少量討論摘要。</span></div>
+                <div><strong>否決</strong><span>改無預覽或全公開。</span></div>
               </div>
-              <p><strong>為什麼此預設：</strong>公開預覽建立加入前信任，但把多人討論留在登入 / 加入後，降低治理與隱私風險。</p>
-              <p><strong>證據：</strong>產品架構把公開頻道預覽列為核心入口；安全治理研究指出公開社群必須先定義可見性、檢舉、封鎖與管理邊界。<em>來源：產品架構、平台安全治理</em></p>
-              <p><strong>風險：</strong>公開內容規則若不清楚，會造成索引、分享與撤回爭議。</p>
-              <p><strong>假設：</strong>精選公開貼文足以建立加入前信任。</p>
+              <p><strong>依據：</strong>預覽降低進入門檻；討論保留加入邊界。</p>
+              <p><strong>風險：</strong>公開內容規則要先定清楚。</p>
             </div>
           </article>
 
@@ -353,16 +274,14 @@
             </div>
             <h3>Day one 需要哪些治理？</h3>
             <div class="decision-memo">
-              <p class="recommended-default"><strong>推薦預設：</strong>管理員 + 檢舉 / 封鎖 / 靜音 + 移除成員 + 主題層級 moderation 基礎。</p>
+              <p class="recommended-default"><strong>預設：</strong>管理員 + 檢舉 / 封鎖 / 靜音 + 移除成員。</p>
               <div class="action-choice">
-                <div><strong>Approve</strong><span>把基本治理列入 day one。</span></div>
-                <div><strong>Adjust</strong><span>延後 moderation log 或 topic-level 控制。</span></div>
-                <div><strong>Reject</strong><span>改成最小管理員或完整安全系統。</span></div>
+                <div><strong>核准</strong><span>Day one 納入基本治理。</span></div>
+                <div><strong>調整</strong><span>延後 log 或 topic 控制。</span></div>
+                <div><strong>否決</strong><span>改最小管理或完整系統。</span></div>
               </div>
-              <p><strong>為什麼此預設：</strong>公開社群 IM 沒有基本安全與控制邊界，很難被營運與使用者信任。</p>
-              <p><strong>證據：</strong>平台安全治理研究把信任治理列為公開社群底座；競品比較顯示 Discord、Telegram 等大型社群產品都依賴管理與治理能力維持可用性。<em>來源：平台安全治理、功能比較</em></p>
-              <p><strong>風險：</strong>治理過重會拖慢 V1；治理過輕會讓公開社群不可用。</p>
-              <p><strong>假設：</strong>V1 的社群規模仍可由人工管理與基本工具承接。</p>
+              <p><strong>依據：</strong>公開社群需要最低安全邊界。</p>
+              <p><strong>風險：</strong>太重拖慢 V1，太輕不可用。</p>
             </div>
           </article>
         </div>
@@ -372,9 +291,9 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">V1 範圍</span>
-            <h2>推薦切線：足以寫 PRD，不凍結所有未來可能</h2>
+            <h2>V1 / Later / Out</h2>
           </div>
-          <p class="muted">這張表的目的不是完整產品藍圖，而是工程 handoff 的第一版切線。Later 不是否定，而是不讓 V1 失焦。</p>
+          <p class="muted">只保留第一版必須交付的能力。</p>
         </div>
 
         <div class="scope-table-wrap">
@@ -390,43 +309,43 @@
             <tbody>
               <tr>
                 <th>身份</th>
-                <td>電話 / email 或基本帳號登入；username / display name；頭像；基本公開 / 私密身份邊界。切線理由：加入、私聊與治理都需要身份。</td>
+                <td>電話 / email 或基本登入；username / display name；頭像；公開 / 私密身份邊界。</td>
                 <td>商業身份；認證帳號；多 persona；第三方身份映射。</td>
                 <td>完整 KYC；複雜組織身份。</td>
               </tr>
               <tr>
                 <th>頻道</th>
-                <td>公開頻道頁；頻道 profile；貼文列表；follow / join；可分享 URL；討論 CTA。切線理由：頻道是外部入口的信任承接面。</td>
+                <td>公開頻道頁；頻道 profile；貼文列表；follow / join；可分享 URL；討論 CTA。</td>
                 <td>Analytics；付費頻道；進階創作者工具；內容排程。</td>
                 <td>短影音 feed；直播；完整內容推薦系統。</td>
               </tr>
               <tr>
                 <th>群組 / 主題</th>
-                <td>群組頁；主題列表；主題訊息流；基本成員列表；管理員控制；主題層級通知基礎。切線理由：大群需要結構才能可用。</td>
+                <td>群組頁；主題列表；主題訊息流；基本成員列表；管理員控制；主題通知基礎。</td>
                 <td>角色與權限；進階 onboarding；活動系統；forum-like 進階結構。</td>
                 <td>Discord-level server system；複雜角色自動化。</td>
               </tr>
               <tr>
                 <th>收件箱</th>
-                <td>統一收件箱；私聊；群聊；頻道更新項目；未讀數；類型標籤 / 篩選。切線理由：關係沉澱與回訪都回到收件箱。</td>
+                <td>統一收件箱；私聊；群聊；頻道更新項目；未讀數；類型標籤 / 篩選。</td>
                 <td>Priority inbox；smart inbox；business inbox；AI summary。</td>
                 <td>完整 CRM inbox；enterprise routing。</td>
               </tr>
               <tr>
                 <th>搜尋 / 發現</th>
-                <td>搜尋頻道；搜尋群組；搜尋聊天；基本公開連結進入。切線理由：支援入口，不做推薦系統。</td>
+                <td>搜尋頻道；搜尋群組；搜尋聊天；基本公開連結進入。</td>
                 <td>推薦；熱門發現；進階篩選；SEO 公開頁。</td>
                 <td>完整社交 feed discovery。</td>
               </tr>
               <tr>
                 <th>信任 / 治理</th>
-                <td>管理員；檢舉；封鎖；靜音；移除成員；基本 moderation log。切線理由：公開社群不能沒有 day-one 安全邊界。</td>
+                <td>管理員；檢舉；封鎖；靜音；移除成員；基本 moderation log。</td>
                 <td>角色權限；自動審核；audit log；信任分層規則。</td>
                 <td>完整企業合規系統。</td>
               </tr>
               <tr>
                 <th>通知</th>
-                <td>私訊通知；群組 / 主題通知；頻道更新通知；靜音設定。切線理由：通知只服務回訪，不做智能分發。</td>
+                <td>私訊通知；群組 / 主題通知；頻道更新通知；靜音設定。</td>
                 <td>進階 per-topic 設定；digest；smart notification；priority rules。</td>
                 <td>AI-driven notification routing。</td>
               </tr>
@@ -439,46 +358,36 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">建議建置順序</span>
-            <h2>路線核准後，建議照閉環依賴順序建置</h2>
+            <h2>照依賴順序建置</h2>
           </div>
-          <p class="muted">這不是完整 roadmap，而是把 V1 推薦路線轉成 PRD 與工程拆解的建置順序。先把通訊底座立起來，再接公開入口、社群討論、回訪與最低安全邊界。</p>
+          <p class="muted">先底座，再入口、討論、回訪、治理。</p>
         </div>
 
         <div class="build-sequence">
           <article>
             <span>Phase 1</span>
-            <h3>Communication foundation</h3>
-            <p>Identity、inbox shell、private chat、basic message model。</p>
-            <strong>先做原因</strong>
-            <p>收件箱與訊息模型是所有關係留存、群組與通知的底座。</p>
+            <h3>通訊底座</h3>
+            <p>Identity、inbox shell、private chat、message model。</p>
           </article>
           <article>
             <span>Phase 2</span>
-            <h3>Public entry</h3>
+            <h3>公開入口</h3>
             <p>Public channel page、channel profile、post list、shareable URL。</p>
-            <strong>先做原因</strong>
-            <p>讓外部內容有可落地的公開頁，才能驗證加入前信任。</p>
           </article>
           <article>
             <span>Phase 3</span>
-            <h3>Community discussion</h3>
+            <h3>社群討論</h3>
             <p>Group、topic list、topic message flow、discussion CTA。</p>
-            <strong>先做原因</strong>
-            <p>把頻道內容轉成結構化討論，驗證核心差異化。</p>
           </article>
           <article>
             <span>Phase 4</span>
-            <h3>Retention loop</h3>
+            <h3>回訪閉環</h3>
             <p>Unread、notifications、mute、deep link back to channel/topic/chat。</p>
-            <strong>先做原因</strong>
-            <p>把一次互動帶回收件箱與正確上下文，形成回訪。</p>
           </article>
           <article>
             <span>Phase 5</span>
-            <h3>Safety minimum</h3>
+            <h3>最低治理</h3>
             <p>Admin、report、block、mute、remove member、moderation log。</p>
-            <strong>先做原因</strong>
-            <p>公開社群不能等到上線後才補最低治理邊界。</p>
           </article>
         </div>
       </section>
@@ -487,39 +396,35 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">剩餘假設</span>
-            <h2>只保留會影響 V1 路線的假設</h2>
+            <h2>只追四個會改路線的假設</h2>
           </div>
-          <p class="muted">這些不是要老闆現場全部解完，而是核准推薦路線後，PRD 與 MVP 驗證必須追的風險。</p>
+          <p class="muted">用實測驗證，不在會議中猜答案。</p>
         </div>
 
         <div class="assumption-grid">
           <article>
             <span>假設 01</span>
             <h3>公開頻道預覽足以提高加入意願</h3>
-            <p><strong>為什麼重要：</strong>如果預覽不能建立信任，content-led 入口就不成立。</p>
-            <p><strong>如何驗證：</strong>用 2-3 個真實內容頻道測試公開頁 → join / follow CTA。</p>
-            <p><strong>若為假：</strong>V1 應縮小公開預覽，改強化邀請與私域導入。</p>
+            <p><strong>驗證：</strong>2-3 個真實頻道測公開頁 → join / follow。</p>
+            <p><strong>若為假：</strong>縮小公開預覽，強化邀請導入。</p>
           </article>
           <article>
             <span>假設 02</span>
             <h3>主題列表能降低大群進入成本</h3>
-            <p><strong>為什麼重要：</strong>這決定 V1 是否要在群組第一屏預設 Topics。</p>
-            <p><strong>如何驗證：</strong>比較「訊息流 first」與「主題 first」的首次回覆與停留行為。</p>
-            <p><strong>若為假：</strong>改為公告 + 熱門訊息流 first，主題退到第二層。</p>
+            <p><strong>驗證：</strong>比較訊息流 first 與主題 first。</p>
+            <p><strong>若為假：</strong>公告 + 熱門訊息流 first。</p>
           </article>
           <article>
             <span>假設 03</span>
             <h3>統一收件箱不會被頻道更新污染</h3>
-            <p><strong>為什麼重要：</strong>若收件箱太吵，IM 關係留存會被破壞。</p>
-            <p><strong>如何驗證：</strong>在 MVP 中測試類型標籤、篩選與預設靜音策略。</p>
-            <p><strong>若為假：</strong>V1 改成 Chats / Channels 分頁，或頻道更新預設進 Updates。</p>
+            <p><strong>驗證：</strong>測類型標籤、篩選、預設靜音。</p>
+            <p><strong>若為假：</strong>改 Chats / Channels 分頁。</p>
           </article>
           <article>
             <span>假設 04</span>
             <h3>基本治理足以支撐第一批公開社群</h3>
-            <p><strong>為什麼重要：</strong>治理不足會直接影響可用性與品牌風險。</p>
-            <p><strong>如何驗證：</strong>先用小規模社群測試檢舉、封鎖、移除與 topic moderation。</p>
-            <p><strong>若為假：</strong>提前加入角色權限或更嚴格的加入審核。</p>
+            <p><strong>驗證：</strong>小社群測檢舉、封鎖、移除。</p>
+            <p><strong>若為假：</strong>提前加入角色權限或審核。</p>
           </article>
         </div>
       </section>

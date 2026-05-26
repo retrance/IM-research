@@ -20,7 +20,7 @@ This project is an IM product research and decision site.
 
 The current research has already compared 27 products and identified candidate modules and reference products.
 
-The next deliverable is a V1 Product Route Decision Site.
+The primary deliverable is a V1 Product Route Decision Site.
 
 The site should help the decision maker understand:
 
@@ -87,6 +87,17 @@ The reader should understand within 30 seconds:
 
 ---
 
+## Communication Rules
+
+- Team-facing pages are for the team and decision makers, not agent working notes.
+- Use smooth, plain Traditional Chinese. Say "決策者", "團隊", "本次會議", or "核准 / 調整 / 否決"; do not say "老闆".
+- Keep visible page text concise and useful. Remove repeated route statements once the direction is clear.
+- Check repeated concepts, not only repeated words. If two blocks answer the same question, merge or delete one.
+- Prefer diagrams, strips, tables, badges, or short cards over paragraphs when they communicate the decision faster.
+- Do not show AI process, reconstruction notes, implementation caveats, or internal methodology unless explicitly asked.
+
+---
+
 ## Self-Review Loop
 
 Before finishing any task, review your own work against these questions:
@@ -99,6 +110,8 @@ Before finishing any task, review your own work against these questions:
 6. Is the content concise enough for an executive meeting?
 7. Does the V1 scope avoid trying to build Telegram + Discord + Reddit + LINE at once?
 8. Can this output help write the PRD immediately after approval?
+9. Is any visible page text actually useful to the team, rather than explaining the agent's process?
+10. Can any section be shorter or more visual without losing meaning?
 
 If the answer is no, revise before finalizing.
 
@@ -132,12 +145,18 @@ If the repo does not contain enough evidence, mark the statement as Hypothesis o
 
 Use the existing visual system.
 
+- Mobile-first, premium, Gen Z fintech feel with quiet blue/cyan accents.
+- iOS 26 / Liquid Glass-inspired but restrained: use glass for top navigation, high-level panels, and selected floating controls.
+- Do not stack glass boxes inside glass boxes; keep content panels readable and calm.
+- Keep typography hierarchy clear; avoid cluttered cards, oversized hero type, and heavy scrollbars.
+
 Prefer:
 
 - clear hierarchy
 - executive summary
 - decision cards
 - concise recommendation blocks
+- visual flow strips and comparison cards
 - V1 / Later / Out-of-scope tables
 - compact evidence tags
 - risks and assumptions
@@ -149,6 +168,16 @@ Avoid:
 - over-interactive demos
 - long research paragraphs
 - too many open-ended questions
+- repeated route statements, internal methodology, or agent process notes
+
+- Use `frontend-design` for new interfaces, redesigns, or high-impact visual direction decisions; skip it for copy, evidence, data, or narrow layout fixes unless design exploration is requested.
+
+## Development Rules
+
+- Use existing components and shared CSS when possible.
+- `assets/css/liquid-glass.css` is the final visual calibration layer and should load after page-specific CSS.
+- Do not add dependencies without explaining why.
+- Run lint/build checks when the project provides them; if scripts do not exist, say so.
 
 ---
 

@@ -1616,6 +1616,54 @@ function renderArchitectureComparison(scenario, activeArchitecture) {
   );
 }
 
+function renderJudgeStrip(architecture) {
+  const items = [
+    ["步驟", `${architecture.steps.length}`],
+    ["第一承諾", architecture.facts.firstCommitment],
+    ["加入後", architecture.facts.fullStreamExposed],
+    ["分流深度", architecture.derived.onboardingDepth]
+  ];
+  return createNode("div", { className: "ip-judge-strip" },
+    items.map(([label, value]) => createNode("div", { className: "ip-judge-item" }, [
+      createNode("small", { text: label }),
+      createNode("strong", { text: value })
+    ]))
+  );
+}
+
+function renderFlowVerdict(architecture) {
+  const items = [
+    ["入口摩擦", architecture.derived.onboardingDepth],
+    ["訊息噪音", architecture.derived.messageDensity],
+    ["承諾點", architecture.derived.conversion],
+    ["路徑", architecture.derived.path]
+  ];
+  return createNode("div", { className: "ip-verdict-grid" },
+    items.map(([label, value]) => createNode("article", { className: "ip-verdict" }, [
+      createNode("span", { text: label }),
+      createNode("strong", { text: value })
+    ]))
+  );
+}
+
+function renderTakeaways(architecture) {
+  return createNode("div", { className: "ip-takeaway-list" },
+    architecture.tradeoffs.slice(0, 3).map((item) => createNode("article", { className: `ip-takeaway ${item.type}` }, [
+      createNode("span", { text: typeLabel(item.type) }),
+      createNode("p", { text: item.claim })
+    ]))
+  );
+}
+
+function renderDecisionOptions(scenario) {
+  return createNode("div", { className: "ip-option-list" },
+    scenario.openDecision.options.map((item) => createNode("article", { className: "ip-option" }, [
+      createNode("b", { text: item.name }),
+      createNode("p", { text: item.tradeoff })
+    ]))
+  );
+}
+
 function typeLabel(type) {
   const labels = {
     Advantage: "優勢",
@@ -1628,46 +1676,22 @@ function typeLabel(type) {
 }
 
 function renderEvidence(scenario, architecture) {
-  const facts = observableFactsFor(architecture);
   return createNode("aside", { className: "ip-evidence", ariaLabel: "決策證據面板" }, [
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("意圖", "來自場景設定"),
-      createNode("p", { className: "ip-panel-copy", text: scenario.intent }),
-      createNode("p", {
-        className: "ip-method-note",
-        text: "重建原則：依官方說明與公開產品流程重建主路徑；手機 mockup 盡量保留每一步的主要資訊層級與 CTA 位置，不使用未授權截圖。"
-      })
+      renderPanelTitle("流程判斷", architecture.name),
+      renderJudgeStrip(architecture)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("同任務橫向比較", "點選卡片切換手機流程"),
-      renderArchitectureComparison(scenario, architecture)
+      renderPanelTitle("順不順，看這裡", "不重複步驟"),
+      renderFlowVerdict(architecture)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("可觀察流程事實", "由目前流程產生"),
-      createNode("div", { className: "ip-fact-grid" }, facts.map(([label, value]) => createNode("div", { className: "ip-fact" }, [
-        createNode("b", { text: label }),
-        createNode("span", { text: value })
-      ])))
+      renderPanelTitle("看完要判斷", scenario.openDecision.question),
+      renderDecisionOptions(scenario)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("有證據的取捨", "無證據者標為假設 / 未知"),
-      architecture.tradeoffs.map((item) => createNode("article", { className: "ip-tradeoff" }, [
-        createNode("span", { className: `ip-type ${item.type}`, text: typeLabel(item.type) }),
-        createNode("p", { text: item.claim }),
-        createNode("small", { text: `證據來源：${item.evidence}` }),
-        createNode("small", { text: `備註：${item.notes}` })
-      ]))
-    ]),
-    createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("待決策問題", scenario.openDecision.question),
-      createNode("div", { className: "ip-decision-grid" },
-        scenario.openDecision.options.map((item) => createNode("article", { className: "ip-decision" }, [
-          createNode("b", { text: item.name }),
-          createNode("p", { text: item.description }),
-          createNode("small", { text: `已知取捨：${item.tradeoff}` }),
-          createNode("small", { text: `證據來源：${item.evidence}` })
-        ]))
-      )
+      renderPanelTitle("對 V1 的啟示", "只留取捨"),
+      renderTakeaways(architecture)
     ])
   ]);
 }
