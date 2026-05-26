@@ -11,6 +11,7 @@ const SOURCES = {
   whatsappCommunities: "Meta / WhatsApp Communities 官方說明",
   discordOnboarding: "Discord 官方 Community Onboarding FAQ",
   discordForum: "Discord 官方 Forum Channels FAQ",
+  discordRules: "Discord 官方 Rules Screening FAQ",
   lineRichMenu: "LINE Developers Rich Menu / Messaging API"
 };
 
@@ -22,6 +23,311 @@ const DATA = {
     ["收斂產品架構", SOURCES.architecture]
   ],
   modules: [
+    {
+      id: "external-community-entry",
+      name: "外部連結加入社群",
+      summary: "同樣是從外部連結進入社群，不同產品在預覽、加入承諾、規則、主題入口與聊天暴露上的摩擦差異很大。",
+      scenarios: [
+        {
+          id: "invite-link-to-community",
+          name: "外部邀請連結 → 加入社群",
+          intent: "這條流程把同一個任務橫向比較：使用者從社群媒體、官網或朋友轉發的連結進入，看到什麼資訊、在哪裡按加入、加入前是否需要規則或個人檔案設定，以及加入後是否直接暴露完整訊息流。",
+          openDecision: {
+            question: "V1 的外部社群連結應該採哪種加入路徑？",
+            options: [
+              {
+                name: "Telegram 型：低摩擦預覽 + 底部加入",
+                description: "外部連結直接進入群組 / 頻道預覽，使用者看名稱、成員數、部分內容後按底部加入。",
+                tradeoff: "加入最快，但大型社群如果沒有 Topics 或置頂規則，容易直接進入訊息流。",
+                evidence: `${SOURCES.telegramChannels}；Telegram FAQ：public groups 可被加入並承接大型討論。`
+              },
+              {
+                name: "Discord 型：邀請頁 + 規則 + 新手導覽",
+                description: "先接受邀請，再通過規則篩選 / 頻道與角色設定，最後進入指定頻道或 Forum。",
+                tradeoff: "摩擦較高，但最能控制大型社群的第一屏與治理。",
+                evidence: `${SOURCES.discordRules}；${SOURCES.discordOnboarding}；${SOURCES.discordForum}`
+              },
+              {
+                name: "WhatsApp 型：群組邀請連結直進聊天",
+                description: "連結打開 WhatsApp 群組預覽，按加入群組後直接進入完整群聊。",
+                tradeoff: "最短路徑，但公開社群治理、電話號碼暴露與內容預覽能力弱。",
+                evidence: "Meta 說明 group invite link 加入需要 admin 控制；WhatsApp 群組 invite via link 是管理員分享連結的核心路徑。"
+              },
+              {
+                name: "LINE OpenChat 型：加入前設定社群內身份",
+                description: "OpenChat 是獨立 Talk Room，加入前通常需要設定此聊天室使用的暱稱 / 頭像並同意規則。",
+                tradeoff: "能保護主帳號身份，但會增加一次加入前表單摩擦。",
+                evidence: "LINE OpenChat Terms 定義 OpenChat / Talk Room，OpenChat 僅在指定地區可用，且使用者需遵守服務條款。"
+              }
+            ]
+          },
+          architectures: [
+            {
+              id: "telegram-invite-link",
+              name: "Telegram 外部連結 → 群組",
+              tag: "最快加入",
+              color: "blue",
+              steps: [
+                step("tg-link-1", "外部 t.me 邀請頁", "使用者在 X / 官網 / 朋友訊息點 t.me 連結；若在瀏覽器，先看到 Telegram 網頁預覽與開啟 Telegram。", "開啟 Telegram", {
+                  header: "t.me/alpha_market",
+                  subheader: "Telegram 邀請預覽",
+                  chips: ["外部連結", "App 深層連結", "可先核對名稱"],
+                  cards: [
+                    card("Alpha Market 討論群", "公開群組 · 48,321 位成員", "群組預覽"),
+                    card("關於", "行情討論、公告同步、活動問答。", "說明")
+                  ],
+                  bottom: "開啟 Telegram"
+                }),
+                step("tg-link-2", "群組預覽頁", "Telegram app 內顯示群組名稱、成員數、簡介與部分訊息；主要 CTA 在底部加入群組。", "加入群組", {
+                  header: "Alpha Market 討論群",
+                  subheader: "48,321 位成員 · 公開群組",
+                  chips: ["成員數", "置頂規則", "訊息預覽"],
+                  cards: [
+                    card("置頂", "閱讀規則：禁止廣告、詐騙連結、重複刷屏。", "置頂"),
+                    card("Mina", "今天 AMA 問題集中到 #問答 topic。", "最新訊息")
+                  ],
+                  bottom: "加入群組"
+                }),
+                step("tg-link-3", "加入後直接進聊天", "按加入群組後，使用者直接進到群聊；如果群組開 Topics，會先看到 Topics 或可切換 Topics view。", "開啟 Topics", {
+                  header: "Alpha Market 討論群",
+                  subheader: "你已加入群組",
+                  messages: [
+                    msg("系統", "你已加入 Alpha Market 討論群"),
+                    msg("Moderator", "新朋友請先看 pinned rules。"),
+                    msg("Alex", "ETH 那段討論移到 #行情。")
+                  ],
+                  bottom: "開啟 Topics"
+                }),
+                step("tg-link-4", "Topics / 討論分流", "大型群可以用 Topics 分流，但這通常是加入後的群內結構，而不是加入前 onboarding。", "重新播放", {
+                  header: "Topics",
+                  subheader: "Alpha Market 討論群",
+                  topics: [
+                    row("公告", "置頂規則與官方更新", "📌"),
+                    row("行情", "短線討論與圖表", "📈"),
+                    row("問答", "新手問題集中", "?")
+                  ],
+                  bottom: "重新播放"
+                })
+              ],
+              facts: facts({
+                entryType: "t.me 外部 invite / public username",
+                firstCommitment: "加入群組",
+                accountBeforePreview: "通常可先看 web/app preview；發言需 Telegram 身份",
+                joinBeforeReply: "是，加入後才能正常發言",
+                boundaryVisible: "中：群組與頻道邊界清楚，但大型群第一屏依設定不同",
+                discussionStructure: "外部連結 → 群組預覽 → 加入 → 群聊 / Topics",
+                fullStreamExposed: "中：加入後很快進完整訊息流",
+                moderation: "管理員、置頂、Topics、檢舉、慢速模式等",
+                notificationRisk: "中：加入後群訊息與通知需自行管理"
+              }),
+              tradeoffs: [
+                trade("Advantage", "加入路徑短，加入群組是清楚的第一個承諾點。", "Telegram FAQ；公開群組 / 大型群能力", "Telegram 支援大型群與 public groups，適合外部連結快速導入。"),
+                trade("Risk", "加入後可能直接暴露完整訊息流；Topics 若不是第一屏，新人仍可能迷路。", "流程觀察 / 產品判斷", "大型社群需要 pinned rules 或 Topics 才能降低噪音。"),
+                trade("Constraint", "頻道留言要靠 linked discussion group；不是所有頻道天然都有留言討論。", SOURCES.telegramChannels, "Telegram API 說明 channel comments 依賴 linked discussion group。")
+              ],
+              derived: derived("中", "低", "外部連結 → 預覽 → 加入群組 → 群聊 / Topics", "加入群組")
+            },
+            {
+              id: "discord-invite-server",
+              name: "Discord 邀請 → 伺服器",
+              tag: "最強分流",
+              color: "violet",
+              steps: [
+                step("dc-link-1", "邀請落地頁", "使用者點 discord.gg 連結，先看到伺服器名稱、icon、成員數與接受邀請。", "接受邀請", {
+                  header: "你收到一個邀請",
+                  subheader: "Alpha Market",
+                  chips: ["伺服器 icon", "線上成員", "接受邀請"],
+                  cards: [
+                    card("Alpha Market", "48,321 位成員 · 8,420 人在線", "邀請預覽"),
+                    card("從這裡開始", "規則、公告、行情討論", "預設頻道")
+                  ],
+                  bottom: "接受邀請"
+                }),
+                step("dc-link-2", "規則篩選", "若社群啟用規則篩選，新成員進入後底部會要求完成步驟，需同意規則後才能說話、反應或私訊。", "同意並送出", {
+                  header: "伺服器規則",
+                  subheader: "發言前需要完成",
+                  chips: ["必須同意", "暫時不能發言", "安全閘門"],
+                  cards: [
+                    card("規則 1", "禁止廣告、詐騙連結或冒充投資建議。", "必填"),
+                    card("規則 2", "行情討論請放到正確的 Forum 貼文。", "必填")
+                  ],
+                  bottom: "同意並送出"
+                }),
+                step("dc-link-3", "頻道與角色", "Community Onboarding 讓新人回答問題，選擇角色 / 頻道，避免加入後不知道該去哪裡。", "完成設定", {
+                  header: "頻道與角色",
+                  subheader: "自訂你的社群體驗",
+                  onboarding: [
+                    "你想在這個社群做什麼？",
+                    "行情討論",
+                    "新手問答",
+                    "活動通知",
+                    "開發者頻道"
+                  ],
+                  bottom: "完成設定"
+                }),
+                step("dc-link-4", "伺服器頻道列表", "完成新手導覽後進入伺服器，左側頻道列表已出現預設頻道與選到的頻道。", "開啟 Forum", {
+                  header: "Alpha Market",
+                  subheader: "# start-here",
+                  list: [
+                    row("# announcements", "官方更新與活動", "#"),
+                    row("# start-here", "規則與導覽", "#"),
+                    row("Forum · market-talk", "分 topic 討論", "F")
+                  ],
+                  bottom: "開啟 Forum"
+                }),
+                step("dc-link-5", "Forum 主題討論", "Forum Channels 把討論放在 posts 中，每個 topic 有 tags / guidelines，避免訊息被洗掉。", "重新播放", {
+                  header: "market-talk",
+                  subheader: "Forum · 需要標籤",
+                  topics: [
+                    row("BTC 週線布局", "128 則回覆 · 分析", "₿"),
+                    row("AMA 問題收集", "置頂 · 活動", "🎙"),
+                    row("新手協助", "已解決 34 題", "?")
+                  ],
+                  bottom: "重新播放"
+                })
+              ],
+              facts: facts({
+                entryType: "discord.gg 邀請連結",
+                firstCommitment: "接受邀請",
+                accountBeforePreview: "可看邀請預覽；進伺服器需 Discord 帳號",
+                joinBeforeReply: "是，且可能需先通過 Rules Screening",
+                boundaryVisible: "高：規則、角色、頻道與 forum 都是明確表面",
+                discussionStructure: "邀請 → 規則 → 頻道與角色 → 頻道 / Forum",
+                fullStreamExposed: "否：可用 onboarding 控制第一屏",
+                moderation: "規則篩選、角色、頻道、forum tags、AutoMod / Raid Protection",
+                notificationRisk: "中：頻道多，但可用新手導覽控制可見頻道"
+              }),
+              tradeoffs: [
+                trade("Advantage", "對大型社群最能控制第一屏與新人路徑。", SOURCES.discordOnboarding, "Discord 官方說 onboarding 讓新人選 roles / channels 並個人化 channel list。"),
+                trade("Advantage", "Forum Channels 讓特定 topic 留在 posts 中，不容易被訊息流埋掉。", SOURCES.discordForum, "官方說 forum 可讓討論按 topic 組織，避免彼此蓋過。"),
+                trade("Risk", "規則篩選與新手導覽增加步驟，可能造成加入掉點。", SOURCES.discordRules, "Discord 官方 FAQ 也提醒 rules screening 會增加加入步驟。")
+              ],
+              derived: derived("低", "高", "邀請 → 規則 → 新手導覽 → Forum", "接受邀請 / 規則")
+            },
+            {
+              id: "whatsapp-group-invite",
+              name: "WhatsApp 群組邀請",
+              tag: "最短但最少預覽",
+              color: "green",
+              steps: [
+                step("wa-link-1", "外部邀請連結", "使用者點 chat.whatsapp.com 邀請連結；若在瀏覽器，會先看到開啟 WhatsApp 的頁面。", "開啟 WhatsApp", {
+                  header: "chat.whatsapp.com",
+                  subheader: "WhatsApp 邀請連結",
+                  chips: ["瀏覽器轉接", "需要 App", "最少預覽"],
+                  cards: [
+                    card("Alpha Market 群組", "在 WhatsApp 開啟這個群組邀請。", "邀請連結"),
+                    card("安全提醒", "公開邀請連結可能被轉發到原本脈絡之外。", "風險")
+                  ],
+                  bottom: "開啟 WhatsApp"
+                }),
+                step("wa-link-2", "群組邀請預覽", "WhatsApp app 內顯示群名、icon、部分參與者 / 成員資訊，主 CTA 是加入群組。", "加入群組", {
+                  header: "Alpha Market 群組",
+                  subheader: "WhatsApp 群組邀請",
+                  chips: ["群組名稱", "參與者", "加入群組"],
+                  cards: [
+                    card("Alpha Market 群組", "加密市場討論", "1,024 位參與者"),
+                    card("提醒", "你的電話號碼可能會被群組成員看到。", "隱私")
+                  ],
+                  bottom: "加入群組"
+                }),
+                step("wa-link-3", "加入後進完整聊天", "加入後直接進群組聊天；沒有內建 topic list，訊息流與置頂公告承接新手導覽。", "傳送訊息", {
+                  header: "Alpha Market 群組",
+                  subheader: "你透過邀請連結加入",
+                  messages: [
+                    msg("系統", "你已透過這個群組的邀請連結加入"),
+                    msg("Admin", "請先閱讀群組公告與規則。"),
+                    msg("Mina", "今天行情在這串集中討論。")
+                  ],
+                  bottom: "傳送訊息"
+                })
+              ],
+              facts: facts({
+                entryType: "chat.whatsapp.com 邀請連結 / QR",
+                firstCommitment: "加入群組",
+                accountBeforePreview: "需要 WhatsApp app / account 才能完整加入",
+                joinBeforeReply: "是，加入後直接進群聊",
+                boundaryVisible: "低：群組與私人聊天同屬 chat 心智",
+                discussionStructure: "邀請連結 → 群組預覽 → 加入群組 → 聊天流",
+                fullStreamExposed: "是：加入後直接進完整聊天",
+                moderation: "管理員控制、核准新成員、移除成員、靜音 / 檢舉 / 封鎖",
+                notificationRisk: "高：群聊更新直接進聊天列表"
+              }),
+              tradeoffs: [
+                trade("Advantage", "路徑最短，適合熟人或私域社群快速加入。", "WhatsApp invite link guides；Meta groups update", "群組管理員可分享 invite link，使用者按 Join group 進入。"),
+                trade("Risk", "公開社群不適合直接公開群連結，因為電話號碼、spam 與治理風險更高。", "Meta groups update", "Meta 強調 admins 需要更多控制誰能加入 group。"),
+                trade("Constraint", "沒有原生 topic-first onboarding；大型公開討論容易直接暴露完整訊息流。", "流程觀察 / 產品判斷", "更像私域群聊，不像內容導向公開社群入口。")
+              ],
+              derived: derived("高", "低", "邀請連結 → 加入群組 → 聊天", "加入群組")
+            },
+            {
+              id: "line-openchat-link",
+              name: "LINE OpenChat 邀請",
+              tag: "匿名身份閘門",
+              color: "green",
+              steps: [
+                step("line-link-1", "OpenChat 外部連結", "使用者點 LINE OpenChat 連結；OpenChat 有地區限制，非支援地區會先看到不可用 / 選地區提示。", "開啟 LINE", {
+                  header: "LINE OpenChat",
+                  subheader: "openchat.line.me",
+                  chips: ["地區檢查", "OpenChat", "邀請連結"],
+                  cards: [
+                    card("Alpha Market OpenChat", "以主題為核心的社群聊天", "公開 OpenChat"),
+                    card("地區", "OpenChat 可用性取決於帳號地區。", "可用性")
+                  ],
+                  bottom: "開啟 LINE"
+                }),
+                step("line-link-2", "OpenChat 身份設定", "加入前設定此 OpenChat 使用的暱稱 / 頭像，與 LINE 主帳號身份分開呈現。", "設定暱稱與頭像", {
+                  header: "加入 OpenChat",
+                  subheader: "設定這個聊天室中的身份",
+                  menu: [
+                    tile("暱稱", "MarketFox"),
+                    tile("頭像", "選擇圖片"),
+                    tile("隱私", "使用 OpenChat 身份")
+                  ],
+                  bottom: "設定暱稱與頭像"
+                }),
+                step("line-link-3", "規則 / 加入確認", "使用者同意 OpenChat 規則或等待管理員審核；這一步保護匿名社群但增加摩擦。", "同意並加入", {
+                  header: "OpenChat 規則",
+                  subheader: "加入前確認",
+                  chips: ["服務條款", "聊天室規則", "可檢舉"],
+                  cards: [
+                    card("聊天室規則", "禁止廣告、個資與無關宣傳。", "必填"),
+                    card("OpenChat", "訊息會發布在 Talk Room。", "服務條款")
+                  ],
+                  bottom: "同意並加入"
+                }),
+                step("line-link-4", "進入 Talk Room", "加入後進入 OpenChat Talk Room，使用剛設定的社群內 profile 發言。", "重新播放", {
+                  header: "Alpha Market OpenChat",
+                  subheader: "Talk Room",
+                  messages: [
+                    msg("Admin", "歡迎加入，請先看公告。"),
+                    msg("MarketFox", "大家今天討論哪個主題？", true),
+                    msg("Mina", "行情集中到置頂連結。")
+                  ],
+                  bottom: "重新播放"
+                })
+              ],
+              facts: facts({
+                entryType: "LINE OpenChat 連結 / QR / 搜尋",
+                firstCommitment: "設定身份 / 同意規則",
+                accountBeforePreview: "需要 LINE 帳號與支援地區",
+                joinBeforeReply: "是，需加入 Talk Room 才能發言",
+                boundaryVisible: "高：OpenChat profile 與 Talk Room 明確不同於好友聊天",
+                discussionStructure: "OpenChat 連結 → 身份設定 → 規則 / 審核 → Talk Room",
+                fullStreamExposed: "否：先經身份 / 規則閘門",
+                moderation: "OpenChat 管理員、服務條款、檢舉、聊天室規則",
+                notificationRisk: "中：OpenChat 與 LINE 聊天心智相近但有獨立身份"
+              }),
+              tradeoffs: [
+                trade("Advantage", "加入前 profile gate 能降低主帳號身份暴露，適合半公開興趣社群。", "LINE OpenChat Terms", "LINE 定義 OpenChat / Talk Room，使用者在服務內發布內容。"),
+                trade("Risk", "地區可用性與加入前 profile / rules 會增加摩擦。", "LINE OpenChat site", "OpenChat 官方入口會依 country / region 限制可加入範圍。"),
+                trade("Constraint", "流程較適合匿名社群，不適合作為最短的外部內容轉化路徑。", "產品判斷", "比 Telegram / WhatsApp 多一層 profile commitment。")
+              ],
+              derived: derived("中", "中", "OpenChat 連結 → 身份設定 → 規則 → Talk Room", "設定身份")
+            }
+          ]
+        }
+      ]
+    },
     {
       id: "channel-content",
       name: "頻道內容",
@@ -1101,6 +1407,15 @@ function observableFactsFor(architecture) {
   ];
 }
 
+function comparisonFactsFor(architecture) {
+  return [
+    ["步驟", `${architecture.steps.length}`],
+    ["第一承諾", architecture.facts.firstCommitment],
+    ["直接進訊息流", architecture.facts.fullStreamExposed],
+    ["討論結構", architecture.facts.discussionStructure]
+  ];
+}
+
 function renderPlayground() {
   const root = document.getElementById("interaction-root");
   const { module, scenario, architecture, stepIndex, step } = activeContext();
@@ -1281,6 +1596,26 @@ function renderPanelTitle(title, meta) {
   ]);
 }
 
+function renderArchitectureComparison(scenario, activeArchitecture) {
+  return createNode("div", { className: "ip-compare-grid" },
+    scenario.architectures.map((item) => createNode("button", {
+      type: "button",
+      className: `ip-compare-card ${item.id === activeArchitecture.id ? "active" : ""}`,
+      onClick: () => setPlaygroundState({ architectureId: item.id, stepIndex: 0 })
+    }, [
+      createNode("span", { className: `ip-compare-tag ip-accent-${item.color}`, text: item.tag }),
+      createNode("b", { text: item.name }),
+      createNode("span", { className: "ip-flow-line", text: item.facts.discussionStructure }),
+      createNode("div", { className: "ip-mini-facts" },
+        comparisonFactsFor(item).map(([label, value]) => createNode("span", { className: "ip-mini-fact" }, [
+          createNode("small", { text: label }),
+          createNode("strong", { text: value })
+        ]))
+      )
+    ]))
+  );
+}
+
 function typeLabel(type) {
   const labels = {
     Advantage: "優勢",
@@ -1297,7 +1632,15 @@ function renderEvidence(scenario, architecture) {
   return createNode("aside", { className: "ip-evidence", ariaLabel: "決策證據面板" }, [
     createNode("section", { className: "ip-panel-section" }, [
       renderPanelTitle("意圖", "來自場景設定"),
-      createNode("p", { className: "ip-panel-copy", text: scenario.intent })
+      createNode("p", { className: "ip-panel-copy", text: scenario.intent }),
+      createNode("p", {
+        className: "ip-method-note",
+        text: "重建原則：依官方說明與公開產品流程重建主路徑；手機 mockup 盡量保留每一步的主要資訊層級與 CTA 位置，不使用未授權截圖。"
+      })
+    ]),
+    createNode("section", { className: "ip-panel-section" }, [
+      renderPanelTitle("同任務橫向比較", "點選卡片切換手機流程"),
+      renderArchitectureComparison(scenario, architecture)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
       renderPanelTitle("可觀察流程事實", "由目前流程產生"),
