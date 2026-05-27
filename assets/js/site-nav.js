@@ -4,7 +4,7 @@
     { id: "v1-decision", label: "V1 決策", href: "v1_decision/index.html" },
     { id: "compare-features", label: "功能比較", href: "compare_features/index.html" },
     { id: "product-architecture", label: "產品架構", href: "product_architecture/index.html" },
-    { id: "interaction-playground", label: "互動 Demo", href: "interaction_playground/index.html" },
+    { id: "interaction-playground", label: "流程比較", href: "interaction_playground/index.html" },
     { id: "report", label: "完整報告", href: "reports/report.html" },
   ];
 

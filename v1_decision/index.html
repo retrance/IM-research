@@ -7,7 +7,7 @@
     <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../assets/css/site.css?v=shared-ui-20260521">
     <link rel="stylesheet" href="../assets/css/components.css?v=shared-ui-20260521">
-    <link rel="stylesheet" href="../assets/css/pages/v1-decision.css?v=v1-decision-20260526-lean">
+    <link rel="stylesheet" href="../assets/css/pages/v1-decision.css?v=v1-decision-20260526-architecture-map">
     <link rel="stylesheet" href="../assets/css/liquid-glass.css?v=ios26-20260526">
   </head>
   <body class="v1-decision-page">
@@ -113,77 +113,220 @@
 
       </section>
 
-      <section id="module-loop-map">
+      <section id="route-reference-choice">
         <div class="section-head">
           <div>
-            <span class="eyebrow">模組對閉環地圖</span>
-            <h2>核心先做，支援只做到可用</h2>
+            <span class="eyebrow">Route Segment → Reference Choice</span>
+            <h2>先選每段 pattern，再組成我們自己的架構</h2>
           </div>
-          <p class="muted">V1 只按閉環必要性排序，不按功能想像排序。</p>
+          <p class="muted">下表把競品比較收斂成 V1 架構選擇；下一段是這些選擇組成後的完整流。</p>
         </div>
 
-        <div class="module-map">
-          <div class="module-center">
-            <span>核心閉環模組</span>
-            <h3>必須進 V1，否則產品路線不成立</h3>
-            <div class="core-modules">
-              <article>
-                <img src="../app_structures/assets/icons/ui/user.svg" alt="">
-                <strong>身份</strong>
-                <p>登入、加入、私聊、治理。</p>
-              </article>
-              <article>
-                <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
-                <strong>頻道</strong>
-                <p>公開入口與內容承接。</p>
-              </article>
-              <article>
-                <img src="../app_structures/assets/icons/ui/users.svg" alt="">
-                <strong>群組 / 主題</strong>
-                <p>把內容轉成多人互動。</p>
-              </article>
-              <article>
-                <img src="../app_structures/assets/icons/ui/inbox.svg" alt="">
-                <strong>收件箱</strong>
-                <p>未讀、私聊、回訪入口。</p>
-              </article>
+        <div class="route-reference-wrap">
+          <table class="route-reference-table">
+            <thead>
+              <tr>
+                <th>Route segment</th>
+                <th>Interaction job</th>
+                <th>Selected reference pattern</th>
+                <th>Adopted pattern</th>
+                <th>Rejected pattern</th>
+                <th>Architecture implication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>外部內容 / 邀請</th>
+                <td>把外部意圖導到可預覽的公開入口。</td>
+                <td>Telegram public link；WhatsApp QR / share link。</td>
+                <td>公開 URL、邀請、QR、搜尋都先落到可判斷的入口。</td>
+                <td>直接丟進完整群聊。</td>
+                <td>需要 External Entry 作為公開流量承接層。</td>
+              </tr>
+              <tr>
+                <th>公開頻道預覽</th>
+                <td>在加入前建立信任與內容脈絡。</td>
+                <td>Telegram / WhatsApp Channels。</td>
+                <td>頻道 profile、精選公開貼文、follow / join CTA。</td>
+                <td>完全無預覽；或把完整討論全公開。</td>
+                <td>Public Channel 是公開表面，不是群聊替代品。</td>
+              </tr>
+              <tr>
+                <th>關注 / 加入</th>
+                <td>把瀏覽轉成可回訪關係，同時保留身份邊界。</td>
+                <td>Telegram join；LINE OpenChat identity boundary。</td>
+                <td>follow 頻道、join 社群、加入後才進討論身份。</td>
+                <td>未加入就發言；或加入前表單過重。</td>
+                <td>Join / Follow State 是公開與社群的承諾邊界。</td>
+              </tr>
+              <tr>
+                <th>結構化討論</th>
+                <td>把內容 CTA 接到有上下文的社群空間。</td>
+                <td>Telegram linked discussion group；Discord server context。</td>
+                <td>群組首頁承接成員狀態、規則與討論入口。</td>
+                <td>頻道底下直接長留言串；或 Discord-level server system。</td>
+                <td>Community Group 是頻道與主題層之間的脈絡容器。</td>
+              </tr>
+              <tr>
+                <th>主題互動</th>
+                <td>讓大型討論可找、可管、可回訪。</td>
+                <td>Telegram Topics + Discord Forum。</td>
+                <td>Topic list first、topic message flow、topic notification。</td>
+                <td>單一大群訊息流。</td>
+                <td>Topic Layer 是 V1 的主要互動結構，不是 Later 裝飾。</td>
+              </tr>
+              <tr>
+                <th>收件箱 / 私聊留存</th>
+                <td>讓私聊、群組未讀與頻道更新回到同一個 IM 心智。</td>
+                <td>WhatsApp / LINE / Telegram inbox。</td>
+                <td>統一收件箱、類型標籤、私聊與群組未讀。</td>
+                <td>完全分裂成內容 app；或頻道更新壓過私聊。</td>
+                <td>Inbox / Relationship Layer 是留存層，不只是通知列表。</td>
+              </tr>
+              <tr>
+                <th>治理橫層</th>
+                <td>讓公開入口到關係留存都有最低安全邊界。</td>
+                <td>Discord governance + Telegram admin basics。</td>
+                <td>admin、report、block、mute、remove member、moderation log。</td>
+                <td>Day one 無治理；或完整企業合規系統。</td>
+                <td>Governance 必須跨 Public Channel 到 Inbox，不是單一頁面功能。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="final-v1-architecture-map">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Final V1 Architecture Map</span>
+            <h2>把選定 pattern 串成第一版 IM 架構</h2>
+          </div>
+          <p class="muted">這張圖說明：我們如何把外部入口、公開頻道、主題化討論、收件箱留存與治理能力串成第一版 IM 架構。</p>
+        </div>
+
+        <div class="architecture-flow-map" aria-label="Final V1 Architecture Map">
+          <div class="surface-lanes" aria-hidden="true">
+            <span class="lane-public">Public Surface</span>
+            <span class="lane-boundary">Commitment Boundary</span>
+            <span class="lane-community">Community Surface</span>
+            <span class="lane-relationship">Relationship Surface</span>
+          </div>
+
+          <div class="flow-nodes">
+            <a class="arch-node" href="../interaction_playground/index.html?module=external-community-entry" aria-label="External Entry reference flow comparison">
+              <span class="node-kicker">01</span>
+              <h3>External Entry</h3>
+              <p class="node-role">Role: Bring outside intent into preview.</p>
+              <ul>
+                <li>external content</li>
+                <li>invite link</li>
+                <li>QR / share / search</li>
+              </ul>
+              <span class="reference-tag">Reference: Telegram public link</span>
+            </a>
+
+            <a class="arch-node" href="../interaction_playground/index.html?module=channel-content" aria-label="Public Channel reference flow comparison">
+              <span class="node-kicker">02</span>
+              <h3>Public Channel</h3>
+              <p class="node-role">Role: Build trust before follow or join.</p>
+              <ul>
+                <li>channel profile</li>
+                <li>selected public posts</li>
+                <li>follow / join CTA</li>
+              </ul>
+              <span class="reference-tag">Reference: Telegram / WhatsApp Channels</span>
+            </a>
+
+            <div class="arch-node">
+              <span class="node-kicker">03</span>
+              <h3>Join / Follow State</h3>
+              <p class="node-role">Role: Set the first commitment boundary.</p>
+              <ul>
+                <li>follow channel</li>
+                <li>join community</li>
+                <li>identity boundary</li>
+              </ul>
+              <span class="reference-tag">Reference: Telegram join + LINE boundary</span>
+            </div>
+
+            <div class="arch-node">
+              <span class="node-kicker">04</span>
+              <h3>Community Group</h3>
+              <p class="node-role">Role: Hold member state and group context.</p>
+              <ul>
+                <li>group home</li>
+                <li>member state</li>
+                <li>group context</li>
+              </ul>
+              <span class="reference-tag">Reference: Telegram group + Discord server</span>
+            </div>
+
+            <a class="arch-node" href="../interaction_playground/index.html?module=group-topics" aria-label="Topic Layer reference flow comparison">
+              <span class="node-kicker">05</span>
+              <h3>Topic Layer</h3>
+              <p class="node-role">Role: Keep large discussions findable.</p>
+              <ul>
+                <li>topic list first</li>
+                <li>topic message flow</li>
+                <li>notification / moderation</li>
+              </ul>
+              <span class="reference-tag">Reference: Telegram Topics + Discord Forum</span>
+            </a>
+
+            <div class="arch-node">
+              <span class="node-kicker">06</span>
+              <h3>Inbox / Relationship Layer</h3>
+              <p class="node-role">Role: Keep chats, unread, and updates together.</p>
+              <ul>
+                <li>unified inbox</li>
+                <li>private chat</li>
+                <li>group unread / channel entries</li>
+              </ul>
+              <span class="reference-tag">Reference: WhatsApp / LINE / Telegram inbox</span>
+            </div>
+
+            <div class="arch-node return-node">
+              <span class="node-kicker">07</span>
+              <h3>Return Loop</h3>
+              <p class="node-role">Role: Route notifications back to context.</p>
+              <ul>
+                <li>notification</li>
+                <li>unread</li>
+                <li>deep link to channel / topic / chat</li>
+              </ul>
+              <span class="reference-tag">Reference: IM unread + deep links</span>
             </div>
           </div>
 
-          <div class="module-side support">
-            <span>支援模組</span>
-            <article>
-              <strong>搜尋 / 發現</strong>
-              <p>V1 只做能找到頻道、群組與聊天的基本能力；推薦與 SEO 先不做。</p>
-            </article>
-            <article>
-              <strong>信任 / 治理</strong>
-              <p>V1 只做公開社群最低可用治理：管理員、檢舉、封鎖、靜音、移除。</p>
-            </article>
-            <article>
-              <strong>通知</strong>
-              <p>V1 只保證私聊、群組 / 主題、頻道更新能回到正確位置。</p>
-            </article>
+          <div class="governance-row">
+            <a class="governance-rail" href="../interaction_playground/index.html?module=trust-governance" aria-label="Governance reference flow comparison">
+              <div class="governance-ports" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div>
+                <span class="node-kicker">Safety rail</span>
+                <h3>Governance Layer</h3>
+                <p class="node-role">Role: Cross-cutting safety foundation from public surface to relationship retention.</p>
+              </div>
+              <ul>
+                <li>admin / report / block</li>
+                <li>mute / remove member</li>
+                <li>moderation log</li>
+              </ul>
+              <span class="reference-tag">Reference: Discord governance + Telegram admin basics</span>
+            </a>
           </div>
 
-          <div class="module-side later">
-            <span>後續 / 擴展</span>
-            <article>
-              <strong>創作者工具</strong>
-              <p>進階排程、分析、多管理員放 Later；V1 先證明頻道到討論的閉環。</p>
-            </article>
-            <article>
-              <strong>錢包 / 積分</strong>
-              <p>激勵層會放大複雜度；除非核心社群閉環已被證明，否則不進 V1。</p>
-            </article>
-            <article>
-              <strong>API / Bot</strong>
-              <p>平台能力先保留方向，不作為第一版可交付範圍。</p>
-            </article>
-            <article>
-              <strong>進階分析</strong>
-              <p>不要用假儀表板製造確定性；V1 只需要基本事件紀錄支援驗證。</p>
-            </article>
+          <div class="architecture-legend" aria-label="surface legend">
+            <span><strong>Public Surface</strong> 外部入口 + 公開頻道</span>
+            <span><strong>Commitment Boundary</strong> 關注 / 加入</span>
+            <span><strong>Community Surface</strong> 群組 + 主題層</span>
+            <span><strong>Relationship Surface</strong> 收件箱 + 回訪</span>
           </div>
         </div>
       </section>
@@ -201,7 +344,7 @@
           <article class="architecture-card">
             <div class="card-topline">
               <span>決策 01</span>
-              <a href="../interaction_playground/index.html">開啟互動 Demo</a>
+              <a href="../interaction_playground/index.html?module=channel-content">開啟流程比較</a>
             </div>
             <h3>頻道內容如何導向討論？</h3>
             <div class="decision-memo">
@@ -219,7 +362,7 @@
           <article class="architecture-card">
             <div class="card-topline">
               <span>決策 02</span>
-              <a href="../interaction_playground/index.html">開啟互動 Demo</a>
+              <a href="../interaction_playground/index.html?module=group-topics">開啟流程比較</a>
             </div>
             <h3>進入大型群組後第一屏看什麼？</h3>
             <div class="decision-memo">

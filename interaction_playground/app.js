@@ -1352,12 +1352,25 @@ function derived(messageDensity, onboardingDepth, path, conversion) {
   return { messageDensity, onboardingDepth, path, conversion };
 }
 
-const playgroundState = {
-  moduleId: DATA.modules[0].id,
-  scenarioId: DATA.modules[0].scenarios[0].id,
-  architectureId: DATA.modules[0].scenarios[0].architectures[0].id,
-  stepIndex: 0
-};
+function createInitialPlaygroundState() {
+  const params = new URLSearchParams(window.location.search);
+  const module = DATA.modules.find((item) => item.id === params.get("module")) || DATA.modules[0];
+  const scenario = module.scenarios.find((item) => item.id === params.get("scenario")) || module.scenarios[0];
+  const architecture = scenario.architectures.find((item) => item.id === params.get("architecture")) || scenario.architectures[0];
+  const requestedStep = Number.parseInt(params.get("step"), 10);
+  const stepIndex = Number.isInteger(requestedStep)
+    ? Math.min(Math.max(requestedStep, 0), architecture.steps.length - 1)
+    : 0;
+
+  return {
+    moduleId: module.id,
+    scenarioId: scenario.id,
+    architectureId: architecture.id,
+    stepIndex
+  };
+}
+
+const playgroundState = createInitialPlaygroundState();
 
 function activeContext() {
   const module = DATA.modules.find((item) => item.id === playgroundState.moduleId) || DATA.modules[0];
@@ -1388,8 +1401,19 @@ function appendChildren(parent, children) {
   });
 }
 
+function updatePlaygroundUrl() {
+  const { module, scenario, architecture, stepIndex } = activeContext();
+  const params = new URLSearchParams(window.location.search);
+  params.set("module", module.id);
+  params.set("scenario", scenario.id);
+  params.set("architecture", architecture.id);
+  params.set("step", String(stepIndex));
+  window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}${window.location.hash}`);
+}
+
 function setPlaygroundState(next) {
   Object.assign(playgroundState, next);
+  updatePlaygroundUrl();
   renderPlayground();
 }
 
@@ -1700,11 +1724,11 @@ function bootPlayground() {
   try {
     renderPlayground();
   } catch (error) {
-    console.error("互動 Demo failed to render.", error);
+    console.error("Reference Flow Comparison failed to render.", error);
     const root = document.getElementById("interaction-root");
     if (root) {
       root.replaceChildren(createNode("div", { className: "loading-shell" }, [
-        createNode("p", { text: "互動 Demo 載入失敗，請查看瀏覽器 Console 的錯誤訊息。" })
+        createNode("p", { text: "Reference Flow Comparison 載入失敗，請查看瀏覽器 Console 的錯誤訊息。" })
       ]));
     }
   }
