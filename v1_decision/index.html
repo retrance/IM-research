@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>IM V1 產品路線決策</title>
+    <title>IM V1 路線與必要模組推導</title>
     <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../assets/css/site.css?v=shared-ui-20260521">
     <link rel="stylesheet" href="../assets/css/components.css?v=shared-ui-20260521">
@@ -14,7 +14,7 @@
     <header class="topbar is-compact">
       <div class="topbar-inner">
         <div class="brand">
-          <strong>IM V1 產品路線決策</strong>
+          <strong>IM V1 路線與必要模組推導</strong>
         </div>
         <nav class="nav" aria-label="頁面切換" data-site-nav data-nav-root="../" data-active="v1-decision"></nav>
       </div>
@@ -179,6 +179,24 @@
           <p class="muted">流程比較用來決定 adopted / rejected pattern；Later 模組只保留 hook，不做完整 mock。</p>
         </div>
 
+        <div class="pattern-synthesis" aria-label="Pattern Synthesis">
+          <article class="pattern-synthesis-card core">
+            <span>V1 core modules</span>
+            <strong>messaging-identity, external-entry, channel-loop, community-governance, trust-risk</strong>
+            <p>證明主 IM route：identity + entry + channel + group/topic + safety。</p>
+          </article>
+          <article class="pattern-synthesis-card light">
+            <span>Lightweight V1 modules</span>
+            <strong>business-commerce, status-updates</strong>
+            <p>覆蓋優先角色需求，但不把 V1 變成 commerce、CRM 或 content feed。</p>
+          </article>
+          <article class="pattern-synthesis-card later">
+            <span>Later hooks</span>
+            <strong>AI support, CRM, Bot/API, mini-apps, full commerce</strong>
+            <p>保留擴展接點，不主導 V1 interaction mock。</p>
+          </article>
+        </div>
+
         <div class="route-reference-wrap">
           <table class="route-reference-table module-choice-table">
             <thead>
@@ -240,7 +258,7 @@
               </tr>
               <tr>
                 <th>business-commerce</th>
-                <td>商家 / 商業主是優先角色，但 V1 只需輕量商務表示。</td>
+                <td>商家 / 商業主是優先角色，但 V1 只需輕量商務表示。商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。</td>
                 <td>WhatsApp Business、LINE OA、WeChat OA / Mini Program、Shopify Inbox / Instagram</td>
                 <td>商業檔案、商業聊天標籤、商品卡物件，可分享進聊天 / 頻道。</td>
                 <td>完整 marketplace、payment、order / fulfillment system。</td>
@@ -347,7 +365,7 @@
             </a>
             <a class="cross-layer business" href="../interaction_playground/index.html?module=business-commerce">
               <span>Business Lightweight Layer</span>
-              <p>business profile、product card object、business chat label；不做完整商務系統。</p>
+              <p>商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。</p>
             </a>
             <div class="cross-layer status">
               <span>Status / Updates Surface</span>

@@ -531,7 +531,8 @@ th:first-child {
   font-size: 13px;
 }
 
-.playground-page .ip-field select {
+.playground-page .ip-field select,
+.playground-page .ip-static-field {
   min-height: 52px;
   border-color: rgba(8, 20, 38, 0.13);
   border-radius: 18px;

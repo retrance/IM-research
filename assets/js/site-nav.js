@@ -1,7 +1,7 @@
 (function () {
   const NAV_ITEMS = [
     { id: "app-structures", label: "首頁", href: "app_structures/index.html" },
-    { id: "v1-decision", label: "V1 決策", href: "v1_decision/index.html" },
+    { id: "v1-decision", label: "V1 推導", href: "v1_decision/index.html" },
     { id: "compare-features", label: "功能比較", href: "compare_features/index.html" },
     { id: "product-architecture", label: "產品架構", href: "product_architecture/index.html" },
     { id: "interaction-playground", label: "流程比較", href: "interaction_playground/index.html" },

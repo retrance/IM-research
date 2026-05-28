@@ -801,7 +801,7 @@ const DATA = {
             options: [
               {
                 name: "入群前審核",
-                description: "邀請連結可到期、限次、需要核准或在風險視窗暫停。",
+                description: "邀請連結可到期、限次、需要審核或在風險視窗暫停。",
                 tradeoff: "降低灌入風險，但會增加加入摩擦。",
                 evidence: `${SOURCES.safety}；${SOURCES.compare}`
               },
@@ -974,12 +974,12 @@ const DATA = {
     {
       id: "business-commerce",
       name: "business-commerce｜輕量商業檔案 / 商品卡",
-      summary: "商業功能在 V1 只做商業檔案、商業聊天標籤與商品卡物件；不做完整 marketplace、payment、order 或 fulfillment。",
+      summary: "商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。不做完整 marketplace、payment、order 或 fulfillment。",
       scenarios: [
         {
           id: "product-card-to-chat",
           name: "商品卡進聊天 / 頻道",
-          intent: "這條流程比較商家如何用輕量商業身份與商品卡承接外部流量，而不是把 IM 做成完整商城或客服工作台。",
+          intent: "這條流程比較商家如何用輕量商業身份與商品卡承接外部流量。商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。",
           openDecision: {
             question: "V1 商業模組應該做到哪裡就停？",
             options: [
@@ -1213,26 +1213,28 @@ function renderSelector(module, scenario, architecture) {
     }
   }, DATA.modules.map((item) => createNode("option", { value: item.id, text: item.name })));
 
-  const scenarioSelect = createNode("select", {
-    value: scenario.id,
-    onChange: (event) => {
-      const nextScenario = module.scenarios.find((item) => item.id === event.target.value) || module.scenarios[0];
-      setPlaygroundState({
-        scenarioId: nextScenario.id,
-        architectureId: nextScenario.architectures[0].id,
-        stepIndex: 0
-      });
-    }
-  }, module.scenarios.map((item) => createNode("option", { value: item.id, text: item.name })));
+  const scenarioField = module.scenarios.length === 1
+    ? createNode("div", { className: "ip-static-field", text: scenario.name })
+    : createNode("select", {
+      value: scenario.id,
+      onChange: (event) => {
+        const nextScenario = module.scenarios.find((item) => item.id === event.target.value) || module.scenarios[0];
+        setPlaygroundState({
+          scenarioId: nextScenario.id,
+          architectureId: nextScenario.architectures[0].id,
+          stepIndex: 0
+        });
+      }
+    }, module.scenarios.map((item) => createNode("option", { value: item.id, text: item.name })));
 
-  return createNode("section", { className: "ip-selector", ariaLabel: "流程選擇器" }, [
+  return createNode("section", { className: "ip-selector", ariaLabel: "參考流程選擇器" }, [
     createNode("div", { className: "ip-field" }, [
       createNode("label", { text: "模組" }),
       moduleSelect
     ]),
     createNode("div", { className: "ip-field" }, [
       createNode("label", { text: "使用者流程 / 場景" }),
-      scenarioSelect
+      scenarioField
     ]),
     createNode("div", { className: "ip-field" }, [
       createNode("label", { text: "架構 / App" }),
@@ -1440,21 +1442,21 @@ function typeLabel(type) {
 }
 
 function renderEvidence(scenario, architecture) {
-  return createNode("aside", { className: "ip-evidence", ariaLabel: "決策證據面板" }, [
+  return createNode("aside", { className: "ip-evidence", ariaLabel: "參考流程證據面板" }, [
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("流程判斷", architecture.name),
+      renderPanelTitle("Reference Flow", architecture.name),
       renderJudgeStrip(architecture)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("順不順，看這裡", "不重複步驟"),
+      renderPanelTitle("Flow Characteristics", "reference flow traits"),
       renderFlowVerdict(architecture)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("看完要判斷", scenario.openDecision.question),
+      renderPanelTitle("Adopted / Rejected Pattern", "參考產品 pattern 對照"),
       renderDecisionOptions(scenario)
     ]),
     createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("對 V1 的啟示", "只留取捨"),
+      renderPanelTitle("V1 Architecture Implication", "architecture implication"),
       renderTakeaways(architecture)
     ])
   ]);
