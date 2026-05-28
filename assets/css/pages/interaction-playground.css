@@ -1271,7 +1271,80 @@
   border-color: rgba(217, 119, 6, 0.18);
 }
 
+
+
+.ip-label-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ip-label-strip span {
+  display: grid;
+  gap: 3px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.58);
+  padding: 9px 10px;
+}
+
+.ip-label-strip small {
+  color: var(--ip-muted);
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.ip-label-strip b {
+  color: var(--ip-ink);
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.ip-source-note {
+  margin: 0 0 10px;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  border-radius: 12px;
+  background: rgba(37, 99, 235, 0.06);
+  color: #344054;
+  padding: 9px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ip-source-note a {
+  color: var(--ip-blue);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.ip-source-note a:hover {
+  text-decoration: underline;
+}
+
+.ip-ref-line {
+  margin: 6px 0 0;
+  color: #475467;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ip-ref-line span {
+  color: var(--ip-ink);
+  font-weight: 900;
+}
+
+.ip-ref-source {
+  display: block;
+  margin-top: 8px;
+  color: var(--ip-muted);
+  font-size: 10px;
+  font-weight: 800;
+}
+
 @media (max-width: 760px) {
+  .ip-label-strip,
   .ip-pill-list,
   .ip-scope-columns {
     grid-template-columns: 1fr;
