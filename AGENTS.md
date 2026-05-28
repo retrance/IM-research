@@ -71,6 +71,20 @@ Do not use fake metrics like retention score, growth score, learning curve score
 
 ---
 
+## V1 Module Prioritization Rule
+
+Before adding a module to V1, classify it against `docs/v1-module-prioritization.md`.
+
+Hard rules:
+
+- Priority role coverage starts from 普通用戶 and 商家 / 商業主.
+- Detailed reasoning and interaction playground mocks are only required for V1 necessary modules: `messaging-identity`, `external-entry`, `channel-loop`, `community-governance`, and `trust-risk`.
+- `business-commerce` is V1 necessary but lightweight: business profile, business chat label, product card object, and product card sharing into chat or channel. Do not expand it into marketplace, payment, order, or fulfillment.
+- `status-updates` is a V1 lightweight placeholder: simple update/status object with reply or return path into chat/inbox. Do not expand it into stories editor, social feed, or recommendation.
+- `support-crm`, `platform-ai-ops`, AI customer service, CRM, Bot/API, mini-apps, and full commerce are Later hooks, not V1 architecture proof.
+
+---
+
 ## Output Standard
 
 The site should not feel like a research archive.

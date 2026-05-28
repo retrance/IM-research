@@ -6,7 +6,7 @@
   Root redirect to the current V1 decision site.
 
 - `v1_decision/index.html`
-  Primary executive decision page for the V1 route recommendation, architecture defaults, scope cut, and build sequence.
+  Primary V1 decision page. It explains the fixed route, priority role needs, module necessity classification, selected reference patterns, final architecture map, and scope cut.
 
 - `compare_features/index.html`
   Feature comparison presentation. It contains the 27-app benchmark, interactive module comparison, product route references, and scenario coverage.
@@ -21,7 +21,28 @@
   Product direction, module architecture, interface sketches, and build order.
 
 - `interaction_playground/index.html`
-  Interactive playground for comparing interaction patterns across apps.
+  Reference flow comparison playground for V1 necessary modules. Detailed mocks should stay focused on `messaging-identity`, `external-entry`, `channel-loop`, `community-governance`, `trust-risk`, and lightweight `business-commerce`.
+
+## Decision Logic
+
+The fixed V1 route is:
+
+```text
+外部內容 / 邀請
+→ 公開頻道預覽
+→ 關注 / 加入
+→ 結構化討論
+→ 主題互動
+→ 收件箱 / 私聊留存
+```
+
+V1 architecture starts from the priority roles, then classifies mapped modules before expanding them. The core rule is: build only the modules needed to satisfy 普通用戶 and 商家 / 商業主 at the minimum viable architecture level.
+
+- V1 necessary: `messaging-identity`, `external-entry`, `channel-loop`, `community-governance`, `trust-risk`.
+- V1 lightweight: `business-commerce`, `status-updates`.
+- Later hooks: `support-crm`, `platform-ai-ops`, AI support, CRM, Bot/API, mini-apps, full commerce.
+
+See `docs/v1-module-prioritization.md` for the full classification and playground scope.
 
 ## Run Locally
 
@@ -49,6 +70,9 @@ There are currently no `npm` lint or build scripts.
 
 - `reports/`
   Supporting research archive.
+
+- `docs/v1-module-prioritization.md`
+  Handoff note for V1 module classification, architecture placement, and interaction playground scope.
 
 ## Asset Folder
 

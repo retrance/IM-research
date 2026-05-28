@@ -51,6 +51,12 @@
 .logic-notes article,
 .build-sequence article,
 .assumption-grid article,
+.role-card,
+.classification-card,
+.coverage-wrap,
+.cross-layer,
+.later-extension-area,
+.later-note-grid article,
 .scope-table-wrap {
   border: 1px solid rgba(255, 255, 255, 0.86);
   border-radius: 8px;
@@ -71,8 +77,8 @@
 }
 
 .hero-copy h1 {
-  max-width: 980px;
-  font-size: 4.8rem;
+  max-width: 1080px;
+  font-size: clamp(2.45rem, 4.35vw, 4rem);
 }
 
 .hero-copy .lead {
@@ -168,7 +174,7 @@
 }
 
 .decision-card h2 {
-  font-size: 2rem;
+  font-size: 1.72rem;
 }
 
 .default-list {
@@ -1032,6 +1038,295 @@
   margin-bottom: 0;
 }
 
+
+.principle-card {
+  align-content: end;
+}
+
+.principle-card p {
+  margin: 0;
+  color: #344054;
+  font-size: 14px;
+  font-weight: 680;
+}
+
+.principle-card p + p {
+  border-top: 1px solid rgba(16, 24, 40, 0.08);
+  padding-top: 12px;
+}
+
+.role-needs-grid,
+.classification-grid,
+.later-note-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.role-needs-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.classification-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.later-note-grid {
+  grid-template-columns: repeat(5, minmax(170px, 1fr));
+}
+
+.role-card,
+.classification-card,
+.later-note-grid article {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 22px;
+}
+
+.role-card h3,
+.classification-card h3 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.role-card p,
+.classification-card p,
+.later-note-grid p {
+  margin: 0;
+  font-size: 13px;
+}
+
+.evidence-pill,
+.classification-label,
+.status-chip,
+.later-note-grid span {
+  width: max-content;
+  max-width: 100%;
+  border: 1px solid color-mix(in srgb, var(--primary) 24%, #fff);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 10%, rgba(255, 255, 255, 0.82));
+  color: var(--primary-dark);
+  font-size: 11px;
+  font-weight: 840;
+  line-height: 1.1;
+  padding: 7px 9px;
+}
+
+.need-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.need-list li,
+.mini-definition,
+.classification-card li {
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 14px;
+  color: #344054;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 10px 28px rgba(15, 23, 42, 0.05);
+}
+
+.need-list li {
+  font-size: 12px;
+  font-weight: 780;
+  padding: 8px 10px;
+}
+
+.guardrail-note {
+  border-left: 3px solid var(--orange);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--orange) 10%, #fff);
+  padding: 10px 12px;
+}
+
+.classification-card ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.classification-card li {
+  font-size: 12px;
+  font-weight: 760;
+  padding: 9px 10px;
+}
+
+.classification-card.light {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(255, 255, 255, 0.48)),
+    linear-gradient(135deg, rgba(0, 199, 190, 0.08), rgba(10, 132, 255, 0.04));
+}
+
+.classification-card.later {
+  opacity: 0.78;
+}
+
+.mini-definition {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+}
+
+.mini-definition strong {
+  color: var(--primary-dark);
+  font-size: 13px;
+}
+
+.mini-definition span {
+  color: #475467;
+  font-size: 12px;
+}
+
+.coverage-wrap {
+  overflow-x: auto;
+  margin-top: 16px;
+  padding: 8px;
+}
+
+.coverage-table {
+  width: 100%;
+  min-width: 980px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.coverage-table th,
+.coverage-table td {
+  vertical-align: top;
+  border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+  color: #475467;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 14px;
+  text-align: left;
+}
+
+.coverage-table thead th {
+  color: var(--ink);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.coverage-table tbody th {
+  color: var(--primary-dark);
+  width: 220px;
+}
+
+.coverage-table tr:last-child th,
+.coverage-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.status-chip {
+  display: inline-flex;
+  white-space: nowrap;
+}
+
+.status-chip.lightweight {
+  border-color: color-mix(in srgb, var(--secondary) 28%, #fff);
+  background: color-mix(in srgb, var(--secondary) 11%, #fff);
+  color: #047a73;
+}
+
+.status-chip.later {
+  border-color: rgba(16, 24, 40, 0.12);
+  background: rgba(255, 255, 255, 0.66);
+  color: #667085;
+}
+
+.module-choice-table {
+  min-width: 1280px;
+}
+
+.module-choice-table a {
+  color: var(--primary-dark);
+  font-weight: 840;
+  text-decoration: none;
+}
+
+.placeholder-row {
+  opacity: 0.82;
+}
+
+.v1-architecture-system .flow-nodes,
+.v1-architecture-system .surface-lanes {
+  grid-template-columns: repeat(7, minmax(178px, 1fr));
+  min-width: 1320px;
+}
+
+.layer-supported {
+  box-shadow: var(--shadow-soft), inset 0 0 0 1px rgba(10, 132, 255, 0.08);
+}
+
+.cross-layer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(240px, 1fr));
+  gap: 12px;
+  min-width: 1100px;
+}
+
+.cross-layer {
+  display: grid;
+  gap: 8px;
+  color: inherit;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.cross-layer span,
+.later-extension-area span {
+  color: var(--primary-dark);
+  font-size: 12px;
+  font-weight: 860;
+}
+
+.cross-layer p,
+.later-extension-area p {
+  margin: 0;
+  color: #475467;
+  font-size: 12px;
+}
+
+.cross-layer.governance {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)),
+    linear-gradient(135deg, rgba(7, 17, 31, 0.88), rgba(0, 87, 216, 0.74), rgba(0, 199, 190, 0.70));
+}
+
+.cross-layer.governance span,
+.cross-layer.governance p {
+  color: #fff;
+}
+
+.cross-layer.business {
+  border-color: color-mix(in srgb, var(--secondary) 28%, #fff);
+}
+
+.cross-layer.status {
+  opacity: 0.88;
+}
+
+.later-extension-area {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 16px;
+  border-style: dashed;
+  opacity: 0.74;
+}
+
+.later-note-grid article {
+  min-height: 150px;
+}
+
 @media (max-width: 1180px) {
   .hero-copy h1 {
     font-size: 3.8rem;
@@ -1058,6 +1353,9 @@
   .hero-shell,
   .summary-grid,
   .reasoning-grid,
+  .role-needs-grid,
+  .classification-grid,
+  .later-note-grid,
   .logic-notes,
   .v1-decision-page .section-head,
   .module-map,
@@ -1092,7 +1390,10 @@
   }
 
   .flow-nodes,
-  .governance-row {
+  .governance-row,
+  .cross-layer-grid,
+  .v1-architecture-system .flow-nodes,
+  .v1-architecture-system .surface-lanes {
     min-width: 0;
     grid-template-columns: 1fr;
   }
@@ -1164,6 +1465,7 @@
   .module-side,
   .architecture-card,
   .route-reference-wrap,
+  .coverage-wrap,
   .architecture-flow-map,
   .arch-node,
   .governance-rail {
