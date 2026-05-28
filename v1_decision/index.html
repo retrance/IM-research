@@ -173,10 +173,10 @@
       <section id="reference-flow-choice">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Necessary Module → Reference Flow Choice</span>
-            <h2>只對必要模組做詳細競品流程比較</h2>
+            <span class="eyebrow">Necessary Module → V1 Scenario Rationale</span>
+            <h2>用 V1 情境 mock 承接競品證據</h2>
           </div>
-          <p class="muted">流程比較用來決定 adopted / rejected pattern；Later 模組只保留 hook，不做完整 mock。</p>
+          <p class="muted">競品比較保留在 compare_features；本區連到 V1 情境 mock，呈現 adopted / rejected pattern 與架構含義。</p>
         </div>
 
         <div class="pattern-synthesis" aria-label="Pattern Synthesis">
@@ -207,7 +207,7 @@
                 <th>採用 pattern</th>
                 <th>不採用 pattern</th>
                 <th>架構含義</th>
-                <th>流程比較</th>
+                <th>V1 情境</th>
               </tr>
             </thead>
             <tbody>
@@ -218,7 +218,7 @@
                 <td>統一聊天列表 + 清楚類型標籤 + 個人 / 商業身份邊界。</td>
                 <td>把商業流程寫死在個人聊天模型；或直接複製超級平台。</td>
                 <td>形成 Identity Layer 與 Inbox / Relationship Layer。</td>
-                <td><a href="../interaction_playground/index.html?module=messaging-identity">開啟</a></td>
+                <td><a href="../interaction_playground/index.html?module=messaging-identity&scenario=private-chat-entry">開啟</a></td>
               </tr>
               <tr>
                 <th>external-entry</th>
@@ -227,7 +227,7 @@
                 <td>入口模型記錄目標類型、來源、加入規則與風險狀態。</td>
                 <td>所有入口都直接丟進完整群聊。</td>
                 <td>形成 External Entry 與 Public Channel 的前段承接。</td>
-                <td><a href="../interaction_playground/index.html?module=external-entry">開啟</a></td>
+                <td><a href="../interaction_playground/index.html?module=external-entry&scenario=friend-invite">開啟</a></td>
               </tr>
               <tr>
                 <th>channel-loop</th>
@@ -236,7 +236,7 @@
                 <td>低噪音頻道 + 明確討論 CTA + 可分享公開內容。</td>
                 <td>純廣播無討論；或頻道內完整留言噪音流。</td>
                 <td>Public Channel 接 Community Group / Topic Layer。</td>
-                <td><a href="../interaction_playground/index.html?module=channel-loop">開啟</a></td>
+                <td><a href="../interaction_playground/index.html?module=channel-loop&scenario=public-channel-preview">開啟</a></td>
               </tr>
               <tr>
                 <th>community-governance</th>
@@ -245,7 +245,7 @@
                 <td>主題列表優先，群組首頁承接成員狀態與規則。</td>
                 <td>直接進單一大群訊息流；或 Discord-level server system。</td>
                 <td>形成 Community Group + Topic Layer。</td>
-                <td><a href="../interaction_playground/index.html?module=community-governance">開啟</a></td>
+                <td><a href="../interaction_playground/index.html?module=community-governance&scenario=direct-group-chat">開啟</a></td>
               </tr>
               <tr>
                 <th>trust-risk</th>
@@ -254,7 +254,7 @@
                 <td>admin、report、block、mute、remove member、basic moderation log。</td>
                 <td>Day one 無治理；或直接做企業級合規後台。</td>
                 <td>Governance Layer 橫跨公開、社群、收件箱。</td>
-                <td><a href="../interaction_playground/index.html?module=trust-risk">開啟</a></td>
+                <td><a href="../interaction_playground/index.html?module=trust-risk&scenario=user-block-report-mute">開啟</a></td>
               </tr>
               <tr>
                 <th>business-commerce</th>
@@ -263,7 +263,7 @@
                 <td>商業檔案、商業聊天標籤、商品卡物件，可分享進聊天 / 頻道。</td>
                 <td>完整 marketplace、payment、order / fulfillment system。</td>
                 <td>Business Lightweight Layer，不佔據 IM 主流程。</td>
-                <td><a href="../interaction_playground/index.html?module=business-commerce">開啟</a></td>
+                <td><a href="../interaction_playground/index.html?module=business-commerce&scenario=product-card-in-chat">開啟</a></td>
               </tr>
               <tr class="placeholder-row">
                 <th>status-updates</th>
@@ -272,7 +272,7 @@
                 <td>輕量 update/status object，可回覆或回到 inbox / chat。</td>
                 <td>完整 stories editor、社交 feed、推薦系統。</td>
                 <td>Status / Updates Surface，只作輕量入口。</td>
-                <td><span>輕量佔位</span></td>
+                <td><a href="../interaction_playground/index.html?module=status-updates&scenario=update-return-to-inbox">開啟</a></td>
               </tr>
             </tbody>
           </table>
@@ -297,7 +297,7 @@
           </div>
 
           <div class="flow-nodes">
-            <a class="arch-node" href="../interaction_playground/index.html?module=external-entry" aria-label="external-entry reference flow comparison">
+            <a class="arch-node" href="../interaction_playground/index.html?module=external-entry&scenario=friend-invite" aria-label="friend invite V1 scenario">
               <span class="node-kicker">external-entry</span>
               <h3>External Entry</h3>
               <p class="node-role">外部內容、邀請、QR、搜尋或投放先落到可判斷入口。</p>
@@ -305,7 +305,7 @@
               <span class="reference-tag">Refs: LINE / Telegram / WhatsApp / TikTok</span>
             </a>
 
-            <a class="arch-node" href="../interaction_playground/index.html?module=channel-loop" aria-label="channel-loop reference flow comparison">
+            <a class="arch-node" href="../interaction_playground/index.html?module=channel-loop&scenario=public-channel-preview" aria-label="public channel preview V1 scenario">
               <span class="node-kicker">channel-loop</span>
               <h3>Public Channel</h3>
               <p class="node-role">公開頻道承接內容信任，再把高意圖導向討論。</p>
@@ -313,15 +313,15 @@
               <span class="reference-tag">Refs: Telegram / WhatsApp / LINE OA</span>
             </a>
 
-            <div class="arch-node layer-supported">
+            <a class="arch-node layer-supported" href="../interaction_playground/index.html?module=channel-loop&scenario=follow-channel" aria-label="follow channel V1 scenario">
               <span class="node-kicker">messaging-identity</span>
               <h3>Join / Follow State</h3>
               <p class="node-role">把瀏覽轉成關係，同時標示個人 / 商業身份邊界。</p>
               <ul><li>follow channel</li><li>join community</li><li>identity boundary</li></ul>
               <span class="reference-tag">Refs: WhatsApp / LINE / Telegram</span>
-            </div>
+            </a>
 
-            <a class="arch-node" href="../interaction_playground/index.html?module=community-governance" aria-label="community-governance reference flow comparison">
+            <a class="arch-node" href="../interaction_playground/index.html?module=community-governance&scenario=public-group-join" aria-label="public group join V1 scenario">
               <span class="node-kicker">community-governance</span>
               <h3>Community Group</h3>
               <p class="node-role">群組首頁承接成員狀態、規則與主題入口。</p>
@@ -329,7 +329,7 @@
               <span class="reference-tag">Refs: Telegram / Discord / LINE OpenChat</span>
             </a>
 
-            <a class="arch-node" href="../interaction_playground/index.html?module=community-governance" aria-label="topic layer reference flow comparison">
+            <a class="arch-node" href="../interaction_playground/index.html?module=community-governance&scenario=topic-based-discussion" aria-label="topic-based discussion V1 scenario">
               <span class="node-kicker">community-governance</span>
               <h3>Topic Layer</h3>
               <p class="node-role">主題列表優先，讓大型討論可找、可管、可回訪。</p>
@@ -337,7 +337,7 @@
               <span class="reference-tag">Refs: Telegram Topics + Discord Forum</span>
             </a>
 
-            <a class="arch-node" href="../interaction_playground/index.html?module=messaging-identity" aria-label="messaging-identity reference flow comparison">
+            <a class="arch-node" href="../interaction_playground/index.html?module=messaging-identity&scenario=mixed-inbox-type-labels" aria-label="mixed inbox type labels V1 scenario">
               <span class="node-kicker">messaging-identity</span>
               <h3>Inbox / Relationship Layer</h3>
               <p class="node-role">統一收件箱保留私聊、群組、頻道與商業聊天標籤。</p>
@@ -345,32 +345,32 @@
               <span class="reference-tag">Refs: WhatsApp / LINE / Telegram / WeChat</span>
             </a>
 
-            <div class="arch-node return-node">
+            <a class="arch-node return-node" href="../interaction_playground/index.html?module=status-updates&scenario=update-return-to-inbox" aria-label="update return to inbox V1 scenario">
               <span class="node-kicker">return-loop</span>
               <h3>Return Loop</h3>
               <p class="node-role">通知與未讀回到正確頻道、主題、商品卡或私聊。</p>
               <ul><li>notification</li><li>unread</li><li>deep link back</li></ul>
               <span class="reference-tag">IM retention loop</span>
-            </div>
+            </a>
           </div>
 
           <div class="cross-layer-grid" aria-label="cross cutting V1 layers">
-            <a class="cross-layer identity" href="../interaction_playground/index.html?module=messaging-identity">
+            <a class="cross-layer identity" href="../interaction_playground/index.html?module=messaging-identity&scenario=private-chat-entry">
               <span>Identity Layer</span>
               <p>login、personal identity、business identity label、join/follow、inbox、safety。</p>
             </a>
-            <a class="cross-layer governance" href="../interaction_playground/index.html?module=trust-risk">
+            <a class="cross-layer governance" href="../interaction_playground/index.html?module=trust-risk&scenario=user-block-report-mute">
               <span>Governance Layer</span>
               <p>report、block、mute、admin、remove member、basic moderation log。</p>
             </a>
-            <a class="cross-layer business" href="../interaction_playground/index.html?module=business-commerce">
+            <a class="cross-layer business" href="../interaction_playground/index.html?module=business-commerce&scenario=product-card-in-chat">
               <span>Business Lightweight Layer</span>
               <p>商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。</p>
             </a>
-            <div class="cross-layer status">
+            <a class="cross-layer status" href="../interaction_playground/index.html?module=status-updates&scenario=update-return-to-inbox">
               <span>Status / Updates Surface</span>
               <p>lightweight update/status object，可回到 chat / inbox；不做 stories/feed。</p>
-            </div>
+            </a>
           </div>
 
           <div class="later-extension-area" aria-label="later extension area">

@@ -100,34 +100,6 @@
   line-height: 1.3;
 }
 
-.ip-architecture-tabs {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-}
-
-.ip-tab {
-  min-height: 42px;
-  border: 1px solid rgba(15, 23, 42, 0.12);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.56);
-  color: #475467;
-  padding: 9px 12px;
-  font-size: 13px;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease, color 160ms ease, border 160ms ease;
-}
-
-.ip-tab:hover,
-.ip-tab.active {
-  transform: translateY(-1px);
-  border-color: rgba(37, 99, 235, 0.32);
-  background: #fff;
-  color: var(--ip-blue);
-}
-
 .ip-main-grid {
   display: grid;
   grid-template-columns: minmax(340px, 0.95fr) minmax(420px, 1.05fr);
@@ -1182,5 +1154,126 @@
   .ip-phone {
     border-width: 8px;
     border-radius: 38px;
+  }
+}
+
+.ip-v1-flow-field {
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ip-v1-flow-field span {
+  color: var(--ip-ink);
+  font-size: 13px;
+}
+
+.ip-v1-flow-field strong {
+  border-radius: 999px;
+  background: rgba(8, 145, 178, 0.12);
+  color: var(--ip-cyan);
+  padding: 5px 8px;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.ip-reference-list,
+.ip-pill-list,
+.ip-scope-columns {
+  display: grid;
+  gap: 9px;
+}
+
+.ip-reference-item,
+.ip-scope-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.56);
+  padding: 11px 12px;
+}
+
+.ip-reference-item b,
+.ip-scope-card b {
+  display: block;
+  color: var(--ip-ink);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.ip-reference-item p {
+  margin: 5px 0 7px;
+  color: #475467;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.ip-reference-item a {
+  color: var(--ip-blue);
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.ip-reference-item a:hover {
+  text-decoration: underline;
+}
+
+.ip-pill-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ip-pill-list span {
+  display: flex;
+  align-items: center;
+  min-height: 34px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  color: #344054;
+  padding: 7px 10px;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.ip-pill-list.adopted span {
+  border-color: rgba(8, 145, 178, 0.18);
+  background: rgba(8, 145, 178, 0.08);
+}
+
+.ip-pill-list.rejected span {
+  border-color: rgba(217, 119, 6, 0.18);
+  background: rgba(217, 119, 6, 0.08);
+}
+
+.ip-pill-list.implication span {
+  border-color: rgba(37, 99, 235, 0.18);
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.ip-scope-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ip-scope-card ul {
+  display: grid;
+  gap: 5px;
+  margin: 8px 0 0;
+  padding-left: 16px;
+  color: #475467;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.ip-scope-card.v1 {
+  border-color: rgba(8, 145, 178, 0.18);
+}
+
+.ip-scope-card.later {
+  border-color: rgba(217, 119, 6, 0.18);
+}
+
+@media (max-width: 760px) {
+  .ip-pill-list,
+  .ip-scope-columns {
+    grid-template-columns: 1fr;
   }
 }

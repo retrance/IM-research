@@ -1,1087 +1,337 @@
 const SOURCES = {
-  report: "reports/report.html",
-  learn: "learn/IM竞品分析_分享版.html",
-  compare: "compare_features/index.html",
-  architecture: "product_architecture/index.html",
-  channelLoop: "reports/內容頻道閉環.md",
-  safety: "reports/平台安全治理.md",
-  telegramChannels: "Telegram 官方 Channels FAQ",
-  telegramTopics: "Telegram 官方 Topics in Groups",
-  whatsappChannels: "Meta / WhatsApp Channels 官方說明",
-  whatsappCommunities: "Meta / WhatsApp Communities 官方說明",
-  discordOnboarding: "Discord 官方 Community Onboarding FAQ",
-  discordForum: "Discord 官方 Forum Channels FAQ",
-  discordRules: "Discord 官方 Rules Screening FAQ",
-  lineRichMenu: "LINE Developers Rich Menu / Messaging API"
+  compare: source("compare_features/index.html", "../compare_features/index.html"),
+  prioritization: source("docs/v1-module-prioritization.md", "../docs/v1-module-prioritization.md"),
+  architecture: source("product_architecture/index.html", "../product_architecture/index.html"),
+  channelLoop: source("reports/內容頻道閉環.md", "../reports/內容頻道閉環.md"),
+  safety: source("reports/平台安全治理.md", "../reports/平台安全治理.md")
 };
 
 const DATA = {
   sources: [
-    ["調研報告", SOURCES.report],
-    ["學習材料", SOURCES.learn],
-    ["App 與擅長模組", SOURCES.compare],
+    ["競品依據庫", SOURCES.compare],
+    ["V1 模組優先級", SOURCES.prioritization],
     ["收斂產品架構", SOURCES.architecture]
   ],
   modules: [
-    {
-      id: "messaging-identity",
-      name: "messaging-identity｜通訊核心與身份",
-      summary: "比較 WhatsApp、LINE、Telegram、WeChat 的聊天列表與身份邊界，決定 V1 如何把私聊、群組、頻道與商業對話放在同一 IM 心智下。",
-      scenarios: [
-        {
-          id: "inbox-identity-boundary",
-          name: "統一收件箱與身份邊界",
-          intent: "這條流程比較普通用戶與商家 / 商業主進入聊天列表時，如何辨識私聊、群組、頻道、官方帳號或商業對話，避免把商業流程寫死在個人聊天模型裡。",
-          openDecision: {
-            question: "V1 的聊天底座應如何支撐普通用戶與商業身份？",
-            options: [
-              { name: "WhatsApp 型：低學習成本聊天列表", description: "私聊、群組與 business account 同在 Chats，但用清楚標籤區隔。", tradeoff: "最符合 IM 心智，但商業能力要保持輕量。", evidence: `${SOURCES.compare}：messaging-identity / WhatsApp` },
-              { name: "LINE 型：聊天 + 官方帳號服務入口", description: "官方帳號像聊天關係，但用 Rich Menu / Quick Reply 承接服務。", tradeoff: "商業分流清楚，但選單太重會壓低聊天效率。", evidence: `${SOURCES.compare}：messaging-identity / LINE` },
-              { name: "WeChat 型：超級平台身份密度", description: "聊天、服務號、小程序與支付都在同一帳號體系內。", tradeoff: "長期能力強，但 V1 不應複製完整超級平台。", evidence: `${SOURCES.compare}：messaging-identity / WeChat` }
-            ]
-          },
-          architectures: [
-            {
-              id: "whatsapp-inbox-identity",
-              name: "WhatsApp Chats + Business label",
-              tag: "低學習成本",
-              color: "green",
-              steps: [
-                step("wa-id-1", "Chats 列表", "使用者從一個 Chats 列表看到私聊、群組與商業對話，Business account 以標籤降低混淆。", "打開商業聊天", { header: "Chats", subheader: "個人、群組、商業對話共用入口", list: [row("Mina", "明天見。", "M"), row("Alpha Group", "Kai: 新主題已開", "G"), row("Fresh Market", "Business · 商品資訊", "B")], bottom: "打開商業聊天" }),
-                step("wa-id-2", "Business profile", "商家對話中可以查看商業檔案、營業時間、網站與商品目錄。", "查看商品", { header: "Fresh Market", subheader: "Business account", chips: ["Business", "Catalog", "Quick replies"], cards: [card("商業檔案", "地址、營業時間、網站與類別。", "Profile"), card("今日商品", "商品可被分享到聊天中。", "Catalog")], bottom: "查看商品" }),
-                step("wa-id-3", "商品卡進聊天", "商品不是 marketplace 頁，而是聊天中的結構化引用。", "重新播放", { header: "Fresh Market", subheader: "Business chat", messages: [msg("Fresh Market", "這是今天的組合。"), msg("商品卡", "藍莓禮盒 · $18 · 可詢問庫存")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "Chats list", firstCommitment: "打開對話", accountBeforePreview: "是，使用既有 WhatsApp 身份", joinBeforeReply: "否，1:1 可直接回覆", boundaryVisible: "中：Business 標籤可見", discussionStructure: "Chats → business chat → product card", fullStreamExposed: "否", moderation: "block / report / business quality controls" }),
-              tradeoffs: [trade("Advantage", "統一聊天列表降低學習成本，商業對話用標籤區隔。", `${SOURCES.compare}：messaging-identity / WhatsApp`, "適合 V1 的 stable chat identity。"), trade("Constraint", "商業流程不能污染個人聊天模型。", `${SOURCES.compare}：business-commerce / WhatsApp Business`, "商品卡應保持為聊天物件。")],
-              derived: derived("低", "低", "Chats → labeled chat → product card", "打開對話")
-            },
-            {
-              id: "line-oa-identity",
-              name: "LINE Chat + Official Account",
-              tag: "服務入口清楚",
-              color: "green",
-              steps: [
-                step("line-id-1", "好友 / 聊天列表", "官方帳號以聊天關係存在，但身份與普通好友不同。", "打開官方帳號", { header: "聊天", subheader: "好友、群組、官方帳號", list: [row("Aki", "收到。", "A"), row("投資討論群", "新公告", "G"), row("Coffee Club", "官方帳號 · 今日優惠", "OA")], bottom: "打開官方帳號" }),
-                step("line-id-2", "Rich Menu / Quick Reply", "官方帳號用常駐選單與快捷回覆承接服務，不把服務流程塞進聊天訊息流。", "選商品", { header: "Coffee Club", subheader: "官方帳號", menu: [tile("商品", "查看商品卡"), tile("客服", "詢問營業時間"), tile("會員", "開啟 LIFF")], bottom: "選商品" }),
-                step("line-id-3", "服務回到聊天", "選單可導入商品卡或 LIFF，結果仍能回到聊天。", "重新播放", { header: "Coffee Club", subheader: "Quick reply", cards: [card("拿鐵組合", "可分享到聊天或頻道。", "商品卡"), card("客服入口", "複雜問題未來可接 CRM。", "Hook")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "Chat list / official account", firstCommitment: "加入官方帳號", accountBeforePreview: "是，LINE identity", joinBeforeReply: "否", boundaryVisible: "高：官方帳號標示", discussionStructure: "Chat → OA menu → service/product", fullStreamExposed: "否", moderation: "block / unsubscribe / Messaging API rate limits" }),
-              tradeoffs: [trade("Advantage", "官方帳號和 Rich Menu 讓商業服務入口清楚。", `${SOURCES.compare}：messaging-identity / LINE`, "適合 business-facing route。"), trade("Risk", "入口太多會變雜亂選單。", `${SOURCES.compare}：LINE 風險`, "V1 只保留必要入口。")],
-              derived: derived("低", "中", "Chat list → OA → menu/service", "加入官方帳號")
-            },
-            {
-              id: "telegram-public-identity",
-              name: "Telegram unified chat list",
-              tag: "公開身份與入口",
-              color: "blue",
-              steps: [
-                step("tg-id-1", "聊天列表", "私聊、群組、頻道與 Bot 共存在同一列表，public username / t.me link 支撐外部入口。", "打開頻道", { header: "Telegram", subheader: "Chats", list: [row("Nora", "See you", "N"), row("Market Group", "Topics enabled", "G"), row("Market Channel", "2 new posts", "C")], bottom: "打開頻道" }),
-                step("tg-id-2", "公開頻道 / 群組身份", "頻道與群組有清楚名稱、連結與加入狀態；Bot / Mini Apps 是未來方向。", "查看連結", { header: "Market Channel", subheader: "public channel", chips: ["t.me link", "public username", "join state"], cards: [card("頻道身份", "公開名稱與連結可被外部分享。", "Public"), card("討論群", "留言依賴 linked discussion group。", "Discussion")], bottom: "查看連結" }),
-                step("tg-id-3", "身份邊界", "V1 借用公開入口與類型標籤，不直接開完整 Bot/API 生態。", "重新播放", { header: "Identity boundary", subheader: "V1 採用 / 延後", cards: [card("採用", "public link、type label、join/follow state。", "V1"), card("延後", "Bot API、Mini Apps、完整平台能力。", "Later")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "Chats + public links", firstCommitment: "join / follow", accountBeforePreview: "部分公開預覽", joinBeforeReply: "依目標類型", boundaryVisible: "高：人 / 群 / 頻道 / Bot", discussionStructure: "Chat list → public target → join/follow", fullStreamExposed: "中", moderation: "admin / report / block" }),
-              tradeoffs: [trade("Advantage", "人、群、頻道與 Bot 的目標類型清楚。", `${SOURCES.compare}：messaging-identity / Telegram`, "適合外部入口與 public channel。"), trade("Constraint", "Bot/API 不是 V1 architecture proof。", `${SOURCES.compare}：platform-ai-ops`, "只保留未來 hook。")],
-              derived: derived("中", "低", "Chats → public link → join/follow", "join/follow")
-            },
-            {
-              id: "our-identity-baseline",
-              name: "我們的 V1 identity baseline",
-              tag: "收斂方案",
-              color: "cyan",
-              steps: [
-                step("our-id-1", "統一收件箱", "V1 用一個 inbox 承接私聊、群組、頻道更新與商業對話，但每一類都要有標籤。", "打開商業對話", { header: "Inbox", subheader: "類型標籤優先", list: [row("Mina", "私人聊天", "1"), row("加密討論", "Group · 3 unread", "G"), row("Market Channel", "Channel update", "C"), row("Coffee Club", "Business · 商品卡", "B")], bottom: "打開商業對話" }),
-                step("our-id-2", "身份與商業標籤", "商業檔案與商品卡存在，但不把 inbox 改造成 CRM。", "查看商品卡", { header: "Coffee Club", subheader: "Business chat", chips: ["Business label", "Product card", "No CRM"], cards: [card("商業檔案", "名稱、類別、營業資訊。", "Profile"), card("商品卡", "可進聊天或頻道。", "Object")], bottom: "查看商品卡" }),
-                step("our-id-3", "安全與回訪", "block/report 與 unread/deep link 是身份底座的一部分。", "重新播放", { header: "Identity Layer", subheader: "V1 boundary", cards: [card("Safety", "block、report、mute。", "Trust"), card("Return", "未讀回到正確聊天 / 主題 / 頻道。", "Loop")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "Unified inbox", firstCommitment: "open chat / follow / join", accountBeforePreview: "依公開程度", joinBeforeReply: "討論需加入", boundaryVisible: "高：type labels", discussionStructure: "Inbox → chat/channel/group/business", fullStreamExposed: "否", moderation: "block / report / mute / admin hooks" }),
-              tradeoffs: [trade("Advantage", "同時滿足普通用戶穩定聊天與商家輕量身份。", `${SOURCES.compare}：roleScenarios`, "覆蓋普通用戶與商家 / 商業主。"), trade("Constraint", "CRM、AI agent、Bot/API 不進 V1 core。", `${SOURCES.compare}：support-crm / platform-ai-ops`, "只留 future hook。")],
-              derived: derived("低", "低", "Inbox → labeled relation → return loop", "open relation")
-            }
-          ]
-        }
-      ]
-    },
-        {
-      id: "external-entry",
-      name: "external-entry｜外部入口 / 邀請",
-      summary: "外部入口支撐普通用戶好友邀請與商家外部投放；入口必須標示目標類型、來源、加入規則與風險狀態。",
-      scenarios: [
-        {
-          id: "outside-intent-to-target",
-          name: "外部意圖 → 可判斷入口",
-          intent: "這條流程比較使用者從 QR、ID、invite link、click-to-chat 或內容 CTA 進入時，是否能先理解目標是人、群組、頻道、商業檔案或商品。",
-          openDecision: {
-            question: "V1 外部入口應該先落到哪種可判斷表面？",
-            options: [
-              { name: "Telegram 型：public username / invite link", description: "入口可指向人、群組、頻道或 Bot，目標類型清楚。", tradeoff: "公開導流強，但必須配反垃圾與加入審核。", evidence: `${SOURCES.compare}：external-entry / Telegram` },
-              { name: "LINE 型：QR / ID / 官方帳號", description: "QR、ID、官方帳號與 LIFF 入口分層，適合個人和商業入口並存。", tradeoff: "入口多，需要清楚分層。", evidence: `${SOURCES.compare}：external-entry / LINE` },
-              { name: "WhatsApp 型：invite / click-to-chat", description: "好友、群組、社群與商業聊天入口短。", tradeoff: "公開入口需要管理員審核與隱私提示。", evidence: `${SOURCES.compare}：external-entry / WhatsApp` },
-              { name: "TikTok / Instagram 型：content CTA", description: "內容或廣告產生興趣，再導向 profile、DM、product 或外部網站。", tradeoff: "來源與風險要被記錄，避免低品質流量。", evidence: `${SOURCES.compare}：external-entry / TikTok / Instagram` }
-            ]
-          },
-          architectures: [
-            {
-              id: "telegram-public-link",
-              name: "Telegram public link",
-              tag: "目標類型清楚",
-              color: "blue",
-              steps: [
-                step("tg-entry-1", "t.me 入口", "使用者從外部點 t.me/username 或 invite link，先看到目標名稱和類型。", "打開預覽", { header: "t.me/market", subheader: "Public link", chips: ["person / group / channel", "invite", "join request"], cards: [card("Market Channel", "公開頻道 · 12K subscribers", "Channel")], bottom: "打開預覽" }),
-                step("tg-entry-2", "預覽與加入", "公開頻道 / 群組可先看簡介與部分內容，再 join 或 follow。", "加入", { header: "Market Channel", subheader: "Public preview", cards: [card("頻道簡介", "每日市場摘要。", "Profile"), card("討論群", "加入後可進 Topics。", "CTA")], bottom: "加入" }),
-                step("tg-entry-3", "回到正確表面", "入口不是直接丟進噪音流，而是落到頻道、群組或主題。", "重新播放", { header: "Target surface", subheader: "Channel / Group / Topic", topics: [row("頻道", "先閱讀", "C"), row("討論群", "加入後互動", "G"), row("主題", "分題討論", "T")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "public username / invite link", firstCommitment: "join / follow", accountBeforePreview: "部分可預覽", joinBeforeReply: "是", boundaryVisible: "高", discussionStructure: "link → preview → join/follow → target surface", fullStreamExposed: "否", moderation: "invite revoke / join request / admin" }),
-              tradeoffs: [trade("Advantage", "目標類型與公開連結心智清楚。", `${SOURCES.compare}：external-entry / Telegram`, "適合 public channel 與 community group。"), trade("Risk", "公開入口會帶來 spam，需要 trust-risk 橫層。", `${SOURCES.compare}：trust-risk`, "入口不是孤立功能。")],
-              derived: derived("低", "低", "link → preview → join/follow", "join/follow")
-            },
-            {
-              id: "line-qr-official-entry",
-              name: "LINE QR / ID / Official Account",
-              tag: "入口分層",
-              color: "green",
-              steps: [
-                step("line-entry-1", "QR / ID 入口", "使用者透過 QR、LINE ID 或官方帳號加好友連結進入。", "查看目標", { header: "LINE QR", subheader: "目標類型：官方帳號", chips: ["QR", "ID", "OA link"], cards: [card("Coffee Club", "官方帳號 · 可加好友", "Official Account")], bottom: "查看目標" }),
-                step("line-entry-2", "加入官方帳號", "加入後進聊天，但服務入口由 Rich Menu / Quick Reply 承接。", "加入", { header: "Coffee Club", subheader: "加好友", cards: [card("商業檔案", "營業資訊、服務入口。", "Profile"), card("Rich Menu", "商品 / 客服 / 會員。", "Service")], bottom: "加入" }),
-                step("line-entry-3", "服務入口分流", "V1 借用分層入口，不直接做完整 CRM 或 mini-app marketplace。", "重新播放", { header: "Official chat", subheader: "V1 boundary", menu: [tile("商品卡", "進聊天"), tile("客服 hook", "Later"), tile("LIFF / mini-app", "Later")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "QR / ID / official account URL", firstCommitment: "add friend / follow OA", accountBeforePreview: "是", joinBeforeReply: "否", boundaryVisible: "高", discussionStructure: "QR → OA profile → chat/service", fullStreamExposed: "否", moderation: "block / unsubscribe / API rate limits" }),
-              tradeoffs: [trade("Advantage", "入口類型拆得清楚，適合區分個人邀請與商業入口。", `${SOURCES.compare}：external-entry / LINE`, "V1 應採用 target type。"), trade("Constraint", "入口太多時需要分層，不做完整 mini-app。", `${SOURCES.compare}：mini-apps / LINE`, "只保留 future hook。")],
-              derived: derived("低", "中", "QR / ID → target profile → chat", "add/follow")
-            },
-            {
-              id: "whatsapp-click-to-chat",
-              name: "WhatsApp invite / click-to-chat",
-              tag: "最短關係入口",
-              color: "green",
-              steps: [
-                step("wa-entry-1", "邀請 / click-to-chat", "使用者從群組 invite link、社群連結、Business QR 或 wa.me 進入。", "開啟", { header: "wa.me/freshmarket", subheader: "Click to chat", chips: ["invite link", "QR", "Business"], cards: [card("Fresh Market", "Business profile", "Chat target")], bottom: "開啟" }),
-                step("wa-entry-2", "目標預覽", "加入群組或開啟商業聊天前，需知道目標類型與隱私風險。", "進入聊天", { header: "Fresh Market", subheader: "Business chat", cards: [card("目標類型", "Business account，不是群組。", "Type"), card("商品詢問", "商品卡可進對話。", "Product")], bottom: "進入聊天" }),
-                step("wa-entry-3", "聊天承接", "入口直接承接聊天，但 V1 要保留來源與風險資料。", "重新播放", { header: "Business chat", subheader: "source tracked", messages: [msg("系統", "來源：Instagram 廣告 CTA"), msg("Fresh Market", "你想看哪個商品？")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "invite link / QR / click-to-chat", firstCommitment: "open chat / join group", accountBeforePreview: "是", joinBeforeReply: "依目標", boundaryVisible: "中", discussionStructure: "entry → preview → chat/group", fullStreamExposed: "中", moderation: "admin approval / block / report" }),
-              tradeoffs: [trade("Advantage", "關係邀請和商業聊天入口直接。", `${SOURCES.compare}：external-entry / WhatsApp`, "適合好友邀請和商業導流。"), trade("Risk", "群組公開入口需審核與隱私提示。", `${SOURCES.compare}：trust-risk / WhatsApp`, "不能直接暴露完整群聊。")],
-              derived: derived("中", "低", "link → chat/group preview → open", "open chat")
-            },
-            {
-              id: "social-content-cta-entry",
-              name: "TikTok / Instagram content CTA",
-              tag: "內容意圖導流",
-              color: "violet",
-              steps: [
-                step("social-entry-1", "內容 / 廣告 CTA", "使用者從短內容、profile、DM CTA、product tag 或 link 產生商業意圖。", "進入檔案", { header: "Creator profile", subheader: "Content CTA", chips: ["profile", "DM", "product tag"], cards: [card("新品影片", "點擊後可進 profile / DM / product。", "Content")], bottom: "進入檔案" }),
-                step("social-entry-2", "檔案 / 商品目標", "內容流量應落到商業檔案、商品卡、頻道或私訊，而不是泛推薦首頁。", "傳送訊息", { header: "Fresh Market", subheader: "Business profile", cards: [card("商品卡", "藍莓禮盒可進聊天。", "Product"), card("頻道", "追蹤取得更新。", "Channel")], bottom: "傳送訊息" }),
-                step("social-entry-3", "回到 IM 關係", "V1 採用來源追蹤與目標類型，不做完整內容推薦系統。", "重新播放", { header: "Inbox", subheader: "from content CTA", messages: [msg("系統", "來源：Instagram product CTA"), msg("Fresh Market", "這是商品卡，歡迎詢問。")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "content / ad CTA", firstCommitment: "profile / DM / product", accountBeforePreview: "否", joinBeforeReply: "否", boundaryVisible: "中", discussionStructure: "content → profile/product/DM → inbox", fullStreamExposed: "否", moderation: "source tracking / risk check" }),
-              tradeoffs: [trade("Advantage", "內容興趣可導向頻道、商業檔案、商品卡或私訊。", `${SOURCES.compare}：external-entry / TikTok / Instagram`, "支撐商家外部投放。"), trade("Constraint", "不做完整 feed/recommendation。", `${SOURCES.compare}：short-video-discovery`, "只是入口來源。")],
-              derived: derived("低", "低", "content CTA → target → inbox", "open profile/product/chat")
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      id: "channel-loop",
-      name: "channel-loop｜頻道 / 內容到討論閉環",
-      summary: "一對多內容承接外部流量，並決定使用者如何從閱讀進入討論。",
-      scenarios: [
-        {
-          id: "public-to-discussion",
-          name: "公開內容到討論閉環",
-          intent: "這條流程檢驗使用者是否能先低壓力預覽內容，再清楚知道何時從公開頻道進入多人討論，避免一進來就被大型群聊噪音淹沒。",
-          openDecision: {
-            question: "channel-loop｜頻道 / 內容到討論閉環應該用哪一種方式承接討論？",
-            options: [
-              {
-                name: "原生留言 / 綁定討論群",
-                description: "每則貼文保留留言入口，留言同步到綁定討論群中的對應討論串。",
-                tradeoff: "承接最順，但需要同時治理頻道、留言串與群組。",
-                evidence: `${SOURCES.learn}：tg_10 / tg_11；${SOURCES.telegramChannels}`
-              },
-              {
-                name: "低噪音廣播 + 另開群",
-                description: "頻道只負責更新，討論要跳到社群或群組。",
-                tradeoff: "閱讀面清楚，但跳轉成本更高。",
-                evidence: `${SOURCES.channelLoop}；${SOURCES.whatsappChannels}`
-              },
-              {
-                name: "我們的混合路徑",
-                description: "公開頻道可預覽，底部固定進入討論群，進群後先看 Topics。",
-                tradeoff: "能保留手機端單列導航，但實際轉化需要產品測試。",
-                evidence: `${SOURCES.architecture}；${SOURCES.learn}：核心用戶路徑`
-              }
-            ]
-          },
-          architectures: [
-            {
-              id: "telegram-channel",
-              name: "Telegram 頻道 + 討論群",
-              tag: "原生閉環",
-              color: "blue",
-              steps: [
-                step("tg-1", "公開頻道預覽", "使用者從 t.me 連結或搜尋進入頻道，先看到頻道歷史與最新貼文。", "查看貼文", {
-                  header: "加密市場觀察",
-                  subheader: "公開頻道 · 82,000 位訂閱者",
-                  chips: ["公開連結", "可搜尋", "歷史可見"],
-                  cards: [
-                    card("市場週報 · 第 12 期", "BTC 橫盤整理，下週關注關鍵支撐位。", "342 反應 · 89 則留言"),
-                    card("AMA 公告", "週五 20:00 開始，問題先集中在討論串。", "已置頂")
-                  ],
-                  bottom: "點擊貼文留言"
-                }),
-                step("tg-2", "貼文留言入口", "貼文下方保留留言按鈕，使用者不必先進入整個群組訊息流。", "打開留言串", {
-                  header: "市場週報 · 第 12 期",
-                  subheader: "頻道貼文",
-                  chips: ["留言按鈕", "反應", "觀看數"],
-                  cards: [
-                    card("留言預覽", "這則更新已連到討論群中的對應留言串。", "89 則留言"),
-                    card("貼文動作", "轉發、反應、投票與公開連結保留在頻道層。", "低噪音")
-                  ],
-                  bottom: "進入留言"
-                }),
-                step("tg-3", "綁定討論串", "留言以獨立 thread 呈現，同時回流到綁定討論群，管理員仍可集中治理。", "查看討論群", {
-                  header: "留言串",
-                  subheader: "來自加密市場觀察",
-                  messages: [
-                    msg("Mina", "這週支撐位怎麼看？"),
-                    msg("你", "先看 65k 是否守住，再看量能。", true),
-                    msg("Alex", "可以把鏈上數據補到下期週報。")
-                  ],
-                  bottom: "返回頻道"
-                })
-              ],
-              facts: facts({
-                entryType: "公開頻道連結 / Telegram 搜尋",
-                firstCommitment: "留言或加入討論群",
-                accountBeforePreview: "否，公開頻道可先預覽",
-                joinBeforeReply: "是，留言需進入 Telegram 身份與討論群脈絡",
-                boundaryVisible: "是，頻道與討論群是不同表面",
-                discussionStructure: "頻道貼文 → 留言串 → 綁定討論群",
-                fullStreamExposed: "否，先暴露貼文留言串",
-                moderation: "頻道管理員、討論群管理員、Bot",
-                notificationRisk: "中：頻道通知與群組留言需分開控制"
-              }),
-              tradeoffs: [
-                trade("Advantage", "頻道到留言 / 討論群是同一套產品原生路徑，使用者能理解自己是在閱讀還是在討論。", `${SOURCES.telegramChannels}；${SOURCES.channelLoop}`, "Telegram 官方 FAQ 說明頻道可加討論群，訂閱者會看到留言按鈕。"),
-                trade("Advantage", "貼文留言先落在對應討論串，而不是把使用者直接丟進完整群組訊息流。", `${SOURCES.telegramChannels}；${SOURCES.channelLoop}`, "這是 Telegram 頻道留言與綁定討論群的原生互動。"),
-                trade("Risk", "頻道、留言串與討論群同時開啟會增加管理面與通知面。", SOURCES.channelLoop, "需要先定義哪些貼文值得開討論。"),
-                trade("Constraint", "若沒有綁定討論群，頻道只能保留廣播與反應，無法形成多人討論閉環。", SOURCES.telegramChannels, "官方流程將留言建立在討論群之上。")
-              ],
-              derived: derived("低", "中", "公開 → 頻道 → 留言串 → 討論群", "原生留言")
-            },
-            {
-              id: "whatsapp-channel",
-              name: "WhatsApp Channels",
-              tag: "低噪音廣播",
-              color: "green",
-              steps: [
-                step("wa-1", "Updates 分區", "使用者在 Updates 分頁看到 Status 與已追蹤頻道，與 Chats 分離。", "打開頻道", {
-                  header: "Updates",
-                  subheader: "狀態與頻道",
-                  chips: ["與 Chats 分離", "已追蹤頻道", "低打擾"],
-                  list: [
-                    row("F1 官方頻道", "最新賽程更新", "F1"),
-                    row("WhatsApp", "新功能發布", "WA"),
-                    row("本地新聞", "今日焦點", "新")
-                  ],
-                  bottom: "查看頻道更新"
-                }),
-                step("wa-2", "單向channel-loop｜頻道 / 內容到討論閉環", "頻道管理員發布文字、照片、影片、貼圖或投票，追蹤者以反應與轉發回饋。", "做出反應", {
-                  header: "F1 官方頻道",
-                  subheader: "671 萬位追蹤者",
-                  chips: ["已追蹤", "靜音開關", "反應"],
-                  cards: [
-                    card("賽前更新", "練習賽時間與車隊資訊。", "2.5 萬反應 · 可轉發"),
-                    card("投票", "你看好哪支車隊？", "投票進行中")
-                  ],
-                  bottom: "轉發更新"
-                }),
-                step("wa-3", "轉發到聊天", "頻道更新可以轉發到聊天或群組；完整多人討論不發生在頻道本體。", "重新播放", {
-                  header: "轉發更新",
-                  subheader: "選擇聊天",
-                  list: [
-                    row("朋友聊天", "一對一討論", "聊"),
-                    row("賽事群組", "多人聊天", "群"),
-                    row("儲存訊息", "稍後再看", "存")
-                  ],
-                  bottom: "返回 Updates"
-                })
-              ],
-              facts: facts({
-                entryType: "Updates 分頁 / 頻道目錄 / 轉發連結",
-                firstCommitment: "追蹤頻道",
-                accountBeforePreview: "多數情境需要 WhatsApp App 內瀏覽",
-                joinBeforeReply: "頻道內不能完整回覆；只能反應、投票或轉發",
-                boundaryVisible: "是，Channels 與 Chats 分離",
-                discussionStructure: "頻道廣播 → 反應 / 投票 / 轉發",
-                fullStreamExposed: "否，頻道不是聊天流",
-                moderation: "頻道管理、目錄政策、轉發後由聊天或群組既有管理承接",
-                notificationRisk: "低：頻道與公告回覆設計偏低打擾"
-              }),
-              tradeoffs: [
-                trade("Advantage", "內容面與聊天面分離，能降低公開內容污染私聊收件箱的風險。", `${SOURCES.learn}：wa_04；${SOURCES.whatsappChannels}`, "Meta 說明 Channels 位於 Updates，與家人朋友和社群聊天分開。"),
-                trade("Risk", "頻道追蹤者主要只能反應、投票或轉發，頻道本身不形成完整多人討論。", `${SOURCES.learn}：wa_06；${SOURCES.whatsappChannels}`, "學習材料把這列為 WhatsApp 頻道天花板。"),
-                trade("Constraint", "若要社群討論，必須另接 Community / Group，跳轉需要明確 CTA。", `${SOURCES.channelLoop}；${SOURCES.whatsappCommunities}`, "Meta 社群公告回覆仍是社群內的另一層。"),
-                trade("Advantage", "追蹤頻道不會向管理員或其他追蹤者暴露電話號碼。", SOURCES.whatsappChannels, "隱私強，但也使頻道較不像公開社群身份。")
-              ],
-              derived: derived("低", "低", "Updates → 頻道 → 反應 / 轉發", "反應與轉發")
-            },
-            {
-              id: "discord-announcement",
-              name: "Discord 公告 + Forum",
-              tag: "結構化社群",
-              color: "violet",
-              steps: [
-                step("dc-1", "加入伺服器", "使用者從邀請連結進入 Discord 伺服器，先完成規則與導覽。", "選擇角色", {
-                  header: "加入 Monad 社群",
-                  subheader: "社群導覽",
-                  chips: ["規則", "角色", "預設頻道"],
-                  onboarding: [
-                    "你想參與什麼？",
-                    "行情討論",
-                    "技術支援",
-                    "活動通知"
-                  ],
-                  bottom: "完成導覽"
-                }),
-                step("dc-2", "公告頻道", "公告頻道承接高信號更新，使用者可以閱讀但不必承受一般聊天噪音。", "打開討論入口", {
-                  header: "announcements",
-                  subheader: "伺服器預設頻道",
-                  cards: [
-                    card("本週 AMA", "週三 18:00 語音頻道開始。", "已發布"),
-                    card("產品更新", "新功能測試名單開放。", "前往 Forum")
-                  ],
-                  bottom: "前往 Forum 討論"
-                }),
-                step("dc-3", "Forum / Thread", "Forum channel 將討論拆成獨立貼文，使用標籤、發文規範與搜尋降低噪音。", "加入帖子", {
-                  header: "forum · 討論區",
-                  subheader: "依標籤瀏覽",
-                  topics: [
-                    row("AMA 問題收集", "128 則回覆", "🎙"),
-                    row("新手支援", "已解決 34 題", "🧭"),
-                    row("產品建議", "需要版主回覆", "🧪")
-                  ],
-                  bottom: "回覆討論帖"
-                }),
-                step("dc-4", "Forum 內回覆", "使用者進入獨立 Forum post 後，在帖子內閱讀、回覆或追蹤該討論。", "重新播放", {
-                  header: "AMA 問題收集",
-                  subheader: "Forum post",
-                  messages: [
-                    msg("Mina", "這週 AMA 會回答路線圖嗎？"),
-                    msg("你", "我把問題補到這個帖子。", true),
-                    msg("Moderator", "請集中在此 post 下提問。")
-                  ],
-                  bottom: "返回 Forum"
-                })
-              ],
-              facts: facts({
-                entryType: "伺服器邀請 / Discover / 外部連結",
-                firstCommitment: "加入伺服器並完成導覽",
-                accountBeforePreview: "通常是，需要 Discord 身份與伺服器成員資格",
-                joinBeforeReply: "是",
-                boundaryVisible: "是，伺服器 → 頻道 → Forum / Thread 層級明顯",
-                discussionStructure: "公告 → Forum 貼文 / Thread → 活動或語音",
-                fullStreamExposed: "否，導覽決定預設頻道",
-                moderation: "角色、權限、規則篩選、AutoMod、Forum 標籤",
-                notificationRisk: "中低：可依頻道與 thread 追蹤，但設定複雜"
-              }),
-              tradeoffs: [
-                trade("Advantage", "導覽讓新成員先選角色與頻道，減少進入大型伺服器時的迷路感。", `${SOURCES.discordOnboarding}；${SOURCES.learn}：dc_02 / dc_12`, "Discord 官方說明新成員可回答問題取得個人化頻道列表。"),
-                trade("Advantage", "Forum 將討論收斂在帖子內，適合多主題長期討論。", SOURCES.discordForum, "Forum Channels 官方說明其用途是讓討論不互相覆蓋。"),
-                trade("Risk", "伺服器 / 分類 / 頻道 / Thread 的層級在手機端較重，新用戶學習成本高。", `${SOURCES.learn}：Discord 的設計不適合手機端優先`, "學習材料明確建議手機端不要照搬 Discord 三欄邏輯。"),
-                trade("Constraint", "Discord 的結構以伺服器成員資格為前提，不適合做極低摩擦公開預覽。", `${SOURCES.learn}；${SOURCES.discordOnboarding}`, "需要先加入或完成導覽才有完整體驗。")
-              ],
-              derived: derived("中", "高", "邀請 → 導覽 → 公告 → Forum", "Forum / Thread 討論")
-            },
-            {
-              id: "line-oa",
-              name: "LINE 官方帳號",
-              tag: "聊天路由器",
-              color: "green",
-              steps: [
-                step("line-1", "加入官方帳號", "使用者透過 QR、連結或搜尋加入官方帳號，互動發生在聊天介面。", "打開聊天", {
-                  header: "品牌官方帳號",
-                  subheader: "已加入好友",
-                  chips: ["QR", "官方帳號", "聊天入口"],
-                  cards: [
-                    card("歡迎訊息", "請選擇你想做的事。", "自動回覆"),
-                    card("最新更新", "本週社群內容已發布。", "可點擊")
-                  ],
-                  bottom: "查看 Rich Menu"
-                }),
-                step("line-2", "Rich Menu 常駐路由", "底部 Rich Menu 放最新更新、提問、加入聊天、活動等固定入口。", "點擊加入聊天", {
-                  header: "品牌官方帳號",
-                  subheader: "Rich Menu",
-                  menu: [
-                    tile("最新更新", "查看channel-loop｜頻道 / 內容到討論閉環"),
-                    tile("問我們", "進入 1:1 回覆"),
-                    tile("加入討論", "前往邀請群"),
-                    tile("活動", "LIFF / 網頁")
-                  ],
-                  bottom: "送出 postback"
-                }),
-                step("line-3", "Quick Reply 分流", "使用者點選後，官方帳號以 Quick Reply 或 Flex Message 把人導向 1:1、群組或 LIFF。", "重新播放", {
-                  header: "問我們",
-                  subheader: "自動分流",
-                  messages: [
-                    msg("官方帳號", "你想針對哪一則更新提問？"),
-                    msg("你", "市場週報", true),
-                    msg("官方帳號", "已幫你帶入今日更新，請輸入問題。")
-                  ],
-                  bottom: "輸入問題"
-                })
-              ],
-              facts: facts({
-                entryType: "QR / 官方帳號連結 / LINE 搜尋",
-                firstCommitment: "加入官方帳號好友",
-                accountBeforePreview: "通常是，需要 LINE 環境",
-                joinBeforeReply: "1:1 不需要入群；多人討論需要另入群或 OpenChat",
-                boundaryVisible: "中：聊天與服務入口共用同一畫面",
-                discussionStructure: "官方帳號聊天 → Rich Menu / Quick Reply → 1:1 / 群組 / LIFF",
-                fullStreamExposed: "否，先由選單或 Quick Reply 分流",
-                moderation: "官方帳號權限、Webhook、退訂 / 封鎖、群組管理",
-                notificationRisk: "低到中：路由清楚時低，廣播過多時升高"
-              }),
-              tradeoffs: [
-                trade("Advantage", "Rich Menu 是聊天底部的常駐導航，可把商業或社群動作放在使用者熟悉的位置。", `${SOURCES.report}：LINE 段落；${SOURCES.lineRichMenu}`, "LINE Developers 說明 Rich Menu 顯示在官方帳號聊天畫面。"),
-                trade("Advantage", "postback / message action 能把使用者點擊轉成 webhook 事件，適合做輕量分流。", SOURCES.lineRichMenu, "官方文件說明 rich menu action 會送到 Bot 伺服器。"),
-                trade("Risk", "官方帳號較像服務與 CRM 路由器，不是大型多人公開討論空間。", `${SOURCES.compare}：頻道 / 內容到討論閉環`, "需要另接群組或 OpenChat。"),
-                trade("Constraint", "Rich Menu 若承載太多服務會變成雜亂菜單，需依使用者狀態動態化。", `${SOURCES.report}：LINE 風險提醒`, "報告已標註 Rich Menu 容易雜亂。")
-              ],
-              derived: derived("低", "低", "官方帳號 → Rich Menu → Quick Reply / LIFF", "服務路由")
-            },
-            {
-              id: "our-hybrid-channel",
-              name: "我們的混合提案",
-              tag: "手機端單列",
-              color: "cyan",
-              steps: [
-                step("our-1", "公開頻道頁", "外部流量先落到公開頻道頁；訪客可先預覽內容，再決定關注或進入討論。", "關注頻道", {
-                  header: "加密市場頻道",
-                  subheader: "公開預覽 · 可分享 URL",
-                  chips: ["先預覽", "關注", "進入討論"],
-                  cards: [
-                    card("市場週報 · 第 12 期", "摘要、來源、外鏈卡片與討論入口。", "公開可見"),
-                    card("社群 AMA", "週五 20:00 開始。", "活動")
-                  ],
-                  bottom: "關注這個頻道"
-                }),
-                step("our-2", "固定討論 CTA", "頻道頁底部固定保留進入討論群，讓使用者清楚知道閱讀面和討論面不同。", "進入討論群", {
-                  header: "加密市場頻道",
-                  subheader: "已關注",
-                  cards: [
-                    card("市場週報 · 第 12 期", "你可以針對這則更新進入討論。", "89 討論"),
-                    card("提示", "討論群會先顯示主題分區。", "低噪音")
-                  ],
-                  bottom: "進入討論群"
-                }),
-                step("our-3", "群組 Topics 第一屏", "進入討論群後先看到主題分區，不直接暴露大群訊息流。", "打開新手問答", {
-                  header: "加密討論社群",
-                  subheader: "3,248 成員 · 142 在線",
-                  topics: [
-                    row("公告", "規則與活動", "📢"),
-                    row("新手問答", "從這裡開始提問", "💬"),
-                    row("行情討論", "高頻討論區", "📈"),
-                    row("工具與資源", "長期沉澱", "🔧")
-                  ],
-                  bottom: "進入 Topic"
-                }),
-                step("our-4", "Topic 訊息流", "標準 IM 輸入、回覆、反應保留在 Topic 內，後續可自然延伸到私聊。", "延伸私聊", {
-                  header: "新手問答",
-                  subheader: "加密討論社群",
-                  messages: [
-                    msg("Alex", "怎麼看今天的 BTC？"),
-                    msg("你", "短期震盪，先看支撐是否守住。", true),
-                    msg("Mina", "可以把這段整理成下一則頻道更新。")
-                  ],
-                  bottom: "私訊 Mina"
-                }),
-                step("our-5", "關係沉澱", "高意圖互動再進入私聊，完成公開內容 → 社群 → 關係沉澱。", "重新播放", {
-                  header: "Mina",
-                  subheader: "來自新手問答",
-                  messages: [
-                    msg("Mina", "剛才那段分析可以分享給我嗎？"),
-                    msg("你", "可以，我把鏈上工具一起發你。", true)
-                  ],
-                  bottom: "返回頻道"
-                })
-              ],
-              facts: facts({
-                entryType: "公開 URL / 搜尋 / QR / 外部內容連結",
-                firstCommitment: "關注頻道；發言前才進一步入群或私聊",
-                accountBeforePreview: "否，公開頻道先預覽",
-                joinBeforeReply: "是，Topic 發言前需要入群",
-                boundaryVisible: "是，頻道頁 CTA 明確標示進入討論",
-                discussionStructure: "公開頻道 → 討論群 → Topics → Topic 訊息流 → 私聊",
-                fullStreamExposed: "否，先顯示 Topics 列表",
-                moderation: "入群規則、Topic 權限、管理員、檢舉封鎖",
-                notificationRisk: "中：需分開控制頻道、群組與 Topic 通知"
-              }),
-              tradeoffs: [
-                trade("Advantage", "路徑與收斂架構一致：外部內容引流、頻道承接、討論群與主題分區互動、私聊沉澱關係。", SOURCES.architecture, "產品架構頁已明確定義這條北極星路徑。"),
-                trade("Advantage", "手機端採單列垂直導航，避免照搬 Discord 的多欄伺服器樹狀導航。", `${SOURCES.learn}：導航邏輯總結`, "學習材料建議主列表 → 頻道頁 → Topics → Topic 訊息流。"),
-                trade("Hypothesis", "加入前預覽可能降低加入壓力，但仍需要 MVP 轉化數據驗證。", "@pilot_preview_before_join", "目前是產品假設，不轉成主觀分數。"),
-                trade("Risk", "如果每個頻道都預設綁群，營運者會同時管理內容、群組與多個 Topic。", `${SOURCES.channelLoop}；@operator_pilot_needed`, "需要模板與預設通知策略。")
-              ],
-              derived: derived("中", "中", "公開 → 頻道 → 群組 → Topic → 私聊", "主題優先")
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "community-governance",
-      name: "community-governance｜群組 / 主題治理",
-      summary: "大社群入口不應等於一條大訊息流；主題、公告、角色與頻道瀏覽會改變噪音與治理。",
-      scenarios: [
-        {
-          id: "community-entry",
-          name: "大社群入場與主題選擇",
-          intent: "這條流程比較使用者加入大型社群後，是直接進入全量訊息流，還是先經過角色、公告或主題選擇，幫助判斷哪種入場方式更能控制噪音。",
-          openDecision: {
-            question: "使用者進入群組後第一屏應該看到什麼？",
-            options: [
-              {
-                name: "Topics 列表",
-                description: "先看公告、問答、行情、資源等主題分區。",
-                tradeoff: "降低噪音，但需要規劃主題分類架構。",
-                evidence: `${SOURCES.learn}：tg_10 / tg_11`
-              },
-              {
-                name: "伺服器導覽",
-                description: "先回答角色與頻道問題，再看到個人化頻道列表。",
-                tradeoff: "治理強，但手機端與新手負擔較高。",
-                evidence: SOURCES.discordOnboarding
-              },
-              {
-                name: "公告 + 子群組",
-                description: "公告面單向，成員討論放在子群組。",
-                tradeoff: "公告清楚，但討論群之間可能分散。",
-                evidence: `${SOURCES.learn}：wa_10；${SOURCES.whatsappCommunities}`
-              }
-            ]
-          },
-          architectures: [
-            {
-              id: "telegram-topics",
-              name: "Telegram Topics",
-              tag: "Topic 優先",
-              color: "blue",
-              steps: [
-                step("tgt-1", "群組入口", "使用者從頻道或邀請連結進入大型群組。", "查看 Topics", {
-                  header: "加密討論群",
-                  subheader: "大型群組",
-                  chips: ["公開群", "管理員", "Topics"],
-                  cards: [card("群組簡介", "本群用 Topics 分流公告、問答與行情討論。", "加入後可發言")],
-                  bottom: "查看 Topics"
-                }),
-                step("tgt-2", "Topics 列表", "第一屏顯示 Topics，而不是完整訊息流。", "打開行情討論", {
-                  header: "加密討論群",
-                  subheader: "Topics",
-                  topics: [
-                    row("General", "預設主題", "G"),
-                    row("公告", "管理員置頂", "📢"),
-                    row("行情討論", "高頻討論", "📈"),
-                    row("新手問答", "低門檻提問", "💬")
-                  ],
-                  bottom: "進入行情討論"
-                }),
-                step("tgt-3", "Topic 內訊息流", "每個 Topic 有自己的訊息流、媒體與通知設定。", "查看管理", {
-                  header: "行情討論",
-                  subheader: "Topic 訊息流",
-                  messages: [
-                    msg("Kai", "這裡只討論行情，不貼廣告。"),
-                    msg("你", "收到，先看支撐位。", true)
-                  ],
-                  bottom: "返回群組"
-                })
-              ],
-              facts: facts({
-                entryType: "群組邀請 / 頻道討論群",
-                firstCommitment: "加入群組後進入 Topic 發言",
-                accountBeforePreview: "公開群可能可先看部分內容；發言需要 Telegram 身份",
-                joinBeforeReply: "是",
-                boundaryVisible: "中：同一群內以 Topic 分區",
-                discussionStructure: "群組 → Topics 列表 → Topic 訊息流",
-                fullStreamExposed: "否，先看 Topics",
-                moderation: "Topic 管理、管理員權限、Bot、禁言",
-                notificationRisk: "中：每個 Topic 需獨立通知策略"
-              }),
-              tradeoffs: [
-                trade("Advantage", "Topics 第一屏能把大群拆成可選擇的討論面。", `${SOURCES.learn}：tg_10`, "學習材料將此列為我們社群閉環的核心元件。"),
-                trade("Advantage", "Topic 本身像獨立聊天，仍保留標準 IM 發言體驗。", `${SOURCES.learn}：tg_11；${SOURCES.telegramTopics}`, "官方文章說明 Topic 支援自己的媒體與通知設定。"),
-                trade("Constraint", "需要先設計 Topic 與權限資料模型，否則後續會重構。", `${SOURCES.learn}：tg_15`, "學習材料明確要求 M0 預留 Role × Permission。"),
-                trade("Risk", "主題太多會讓使用者需要再次分流與訂閱管理。", "@topic_taxonomy_pilot", "目前需透過 MVP 觀察。")
-              ],
-              derived: derived("中", "低", "群組 → Topics → Topic 訊息流", "主題列表")
-            },
-            {
-              id: "discord-server",
-              name: "Discord 伺服器",
-              tag: "角色與頻道",
-              color: "violet",
-              steps: [
-                step("dcs-1", "伺服器邀請", "使用者先加入一個 Discord 伺服器，而不是單一群聊。", "回答問題", {
-                  header: "加入 AnyDAO",
-                  subheader: "伺服器邀請",
-                  chips: ["伺服器", "規則", "角色"],
-                  onboarding: ["閱讀規則", "選擇語言", "選擇興趣"],
-                  bottom: "繼續"
-                }),
-                step("dcs-2", "個人化頻道列表", "導覽根據答案給角色並加入相關頻道。", "瀏覽頻道", {
-                  header: "頻道與角色",
-                  subheader: "個人化頻道",
-                  list: [
-                    row("announcements", "必看公告", "#"),
-                    row("community", "一般討論", "#"),
-                    row("support", "支援與票務", "🎟"),
-                    row("中文區", "語言分區", "中")
-                  ],
-                  bottom: "打開瀏覽頻道"
-                }),
-                step("dcs-3", "頻道瀏覽", "大型社群可讓使用者自行瀏覽並關注分類，避免預設全量訂閱。", "關注分類", {
-                  header: "瀏覽頻道",
-                  subheader: "按分類訂閱",
-                  topics: [
-                    row("語言分區", "7 個頻道", "🌐"),
-                    row("產品討論", "Forum", "🧪"),
-                    row("活動", "活動", "📅")
-                  ],
-                  bottom: "關注語言分區"
-                }),
-                step("dcs-4", "Forum / Thread", "討論再進一步被拆成 Forum 貼文或 thread。", "重新播放", {
-                  header: "產品討論",
-                  subheader: "Forum",
-                  cards: [
-                    card("功能建議：Topic 訂閱", "按標籤收斂討論。", "42 回覆"),
-                    card("支援：登入問題", "已標記已解決。", "7 回覆")
-                  ],
-                  bottom: "返回伺服器"
-                })
-              ],
-              facts: facts({
-                entryType: "伺服器邀請 / 探索",
-                firstCommitment: "加入伺服器並完成規則 / 導覽",
-                accountBeforePreview: "通常是",
-                joinBeforeReply: "是",
-                boundaryVisible: "是，伺服器 / 分類 / 頻道 / Thread 分層",
-                discussionStructure: "伺服器 → 分類 → 頻道 / Forum → Thread",
-                fullStreamExposed: "否，依角色與頻道設定可見",
-                moderation: "角色、權限、規則篩選、AutoMod、審核紀錄",
-                notificationRisk: "中：設定能力強但心智較重"
-              }),
-              tradeoffs: [
-                trade("Advantage", "導覽用問題指派角色與頻道，對大型社群入場很強。", SOURCES.discordOnboarding, "官方文件說明新成員可選角色與頻道。"),
-                trade("Advantage", "頻道瀏覽支援使用者自己選擇要關注的內容，不必全量訂閱。", `${SOURCES.learn}：dc_12`, "學習材料建議我們 M3 參照此設計。"),
-                trade("Risk", "Discord 三層結構在手機端導航複雜，不適合直接照搬。", `${SOURCES.learn}：Discord 的設計不適合手機端優先`, "需要壓縮成單列手機路徑。"),
-                trade("Constraint", "需要完整角色、權限、頻道與導覽設定，初始配置成本較高。", SOURCES.discordOnboarding, "官方設定包含預設頻道、問題與 Server Guide。")
-              ],
-              derived: derived("低到中", "高", "伺服器 → 導覽 → 頻道 → Forum", "角色門檻")
-            },
-            {
-              id: "line-facebook-gate",
-              name: "LINE OpenChat / Facebook Groups",
-              tag: "入群身份與審核",
-              color: "green",
-              steps: [
-                step("lf-gate-1", "主題社群入口", "LINE OpenChat 以主題聊天室與獨立暱稱降低陌生人加入壓力；Facebook Groups 用群組頁與規則建立脈絡。", "查看規則", {
-                  header: "Topic community",
-                  subheader: "OpenChat / Group",
-                  chips: ["topic", "profile boundary", "rules"],
-                  cards: [card("加密新手討論", "加入前先看主題、規則與成員狀態。", "社群入口")],
-                  bottom: "查看規則"
-                }),
-                step("lf-gate-2", "加入前設定 / 問題", "OpenChat 可設定聊天室內暱稱；Facebook Groups 可用 membership questions 與 approval 控制入口。", "送出", {
-                  header: "加入設定",
-                  subheader: "暱稱 / membership questions",
-                  onboarding: ["加入前確認", "使用社群暱稱", "同意群規", "回答入群問題"],
-                  bottom: "送出"
-                }),
-                step("lf-gate-3", "進入群組脈絡", "V1 借用身份邊界與入群規則，但不做完整社群 feed 或 Group Insights。", "開啟主題", {
-                  header: "社群首頁",
-                  subheader: "規則 + 主題入口",
-                  topics: [row("公告與規則", "先讀這裡", "R"), row("新手問答", "集中提問", "Q"), row("行情討論", "分題互動", "T")],
-                  bottom: "開啟主題"
-                })
-              ],
-              facts: facts({
-                entryType: "topic community / group page",
-                firstCommitment: "設定暱稱 / 送出問題 / 加入",
-                accountBeforePreview: "部分可預覽",
-                joinBeforeReply: "是",
-                boundaryVisible: "高：身份與群規先出現",
-                discussionStructure: "社群入口 → 加入設定 / 問題 → 群組 / 主題",
-                fullStreamExposed: "否",
-                moderation: "rules、membership questions、approval、admin controls"
-              }),
-              tradeoffs: [
-                trade("Advantage", "加入前身份邊界與規則能降低公開社群風險。", `${SOURCES.compare}：community-governance / LINE OpenChat / Facebook Groups`, "適合 V1 的 Join / Follow boundary。"),
-                trade("Constraint", "不做完整社群 feed、insights 或大型 Facebook Groups 經營系統。", "產品判斷", "只採用入群規則與主題入口。")
-              ],
-              derived: derived("低", "中", "入口 → 規則 / 暱稱 / 問題 → 主題", "加入社群")
-            },
-            {
-              id: "our-topics",
-              name: "我們的主題優先",
-              tag: "收斂方案",
-              color: "cyan",
-              steps: [
-                step("ot-1", "從頻道進群", "使用者已理解channel-loop｜頻道 / 內容到討論閉環，再點擊進入對應討論群。", "進入群組", {
-                  header: "加密市場頻道",
-                  subheader: "已關注",
-                  cards: [card("市場週報", "這則更新已有 89 則討論。", "進入討論")],
-                  bottom: "進入討論群"
-                }),
-                step("ot-2", "Topics 第一屏", "群組第一屏只顯示主題，避免一進來看到高密度訊息。", "選擇新手問答", {
-                  header: "加密討論社群",
-                  subheader: "主題分區",
-                  topics: [
-                    row("公告", "只看重要資訊", "📢"),
-                    row("新手問答", "低壓力提問", "💬"),
-                    row("行情討論", "高密度互動", "📈"),
-                    row("活動與合作", "週期性活動", "📅")
-                  ],
-                  bottom: "打開新手問答"
-                }),
-                step("ot-3", "Topic 內互動", "發言、回覆、反應與附件只在單一 Topic 內展開。", "查看通知設定", {
-                  header: "新手問答",
-                  subheader: "Topic 訊息流",
-                  messages: [
-                    msg("Alex", "新手應該先看哪個指標？"),
-                    msg("你", "先從成交量與支撐位開始。", true)
-                  ],
-                  bottom: "設定通知"
-                }),
-                step("ot-4", "通知與治理", "Topic 可獨立關注、靜音或檢舉，管理員從 Topic 層處理風險。", "重新播放", {
-                  header: "Topic 設定",
-                  subheader: "通知與治理",
-                  list: [
-                    row("只收提及", "降低噪音", "鈴"),
-                    row("檢舉 Topic", "保留上下文", "盾"),
-                    row("關注此 Topic", "後續提醒", "星")
-                  ],
-                  bottom: "返回 Topics"
-                })
-              ],
-              facts: facts({
-                entryType: "頻道 CTA / 群組 invite / 公開群頁",
-                firstCommitment: "選擇 Topic 發言",
-                accountBeforePreview: "公開頁先預覽；發言前需要登入",
-                joinBeforeReply: "是",
-                boundaryVisible: "是，頻道、群組、Topic 三層分明",
-                discussionStructure: "頻道 → 群組 → Topics → Topic 訊息流",
-                fullStreamExposed: "否",
-                moderation: "Topic 權限、檢舉、管理員、通知設定",
-                notificationRisk: "中：需要把 Topic 通知做成可理解設定"
-              }),
-              tradeoffs: [
-                trade("Advantage", "對齊產品架構頁的手機核心路徑，頻道頁、群組主題列表與 Topic 訊息流相互承接。", SOURCES.architecture, "產品架構頁已畫出四個核心手機屏。"),
-                trade("Advantage", "保留 Telegram Topics 的秩序，但以手機單列導航呈現。", `${SOURCES.learn}：導航邏輯總結`, "學習材料明確建議不採 Discord 側欄。"),
-                trade("Hypothesis", "Topic-first 可能降低新成員被訊息流嚇退的機率。", "@new_member_activation_test", "需要 A/B 測試或可用性測試。"),
-                trade("Risk", "若 Topic 命名不清楚，使用者仍會不知道去哪裡說話。", "@topic_information_architecture_review", "需要預設模板和 owner 設定引導。")
-              ],
-              derived: derived("中", "低到中", "頻道 → Topics → Topic 訊息流", "主題優先")
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "trust-risk",
-      name: "trust-risk｜信任 / 安全 / 風控",
-      summary: "公開入口、入群、非好友訊息、檢舉與管理員權限是同一條風險管線。",
-      scenarios: [
-        {
-          id: "join-risk",
-          name: "公開社群入場治理",
-          intent: "這條流程測試公開入口如何在不過度阻擋正常使用者的前提下，延遲高風險權限並保留可治理證據。",
-          openDecision: {
-            question: "公開社群應該在哪些節點加摩擦？",
-            options: [
-              {
-                name: "入群前審核",
-                description: "邀請連結可到期、限次、需要審核或在風險視窗暫停。",
-                tradeoff: "降低灌入風險，但會增加加入摩擦。",
-                evidence: `${SOURCES.safety}；${SOURCES.compare}`
-              },
-              {
-                name: "發言前權限梯度",
-                description: "新帳號先看，延後非好友私訊、外鏈、媒體與大量提及。",
-                tradeoff: "新手體驗稍慢，但可保護主收件箱與群組。",
-                evidence: SOURCES.safety
-              },
-              {
-                name: "Topic 層檢舉與管理",
-                description: "檢舉自動帶上下文、Topic、邀請來源與管理操作紀錄。",
-                tradeoff: "資料模型與隱私要求更高。",
-                evidence: `${SOURCES.safety}；@moderation_case_design`
-              }
-            ]
-          },
-          architectures: [
-            {
-              id: "discord-gate",
-              name: "Discord 導覽 / 角色",
-              tag: "明確門檻",
-              color: "violet",
-              steps: [
-                step("dg-1", "規則篩選", "使用者加入後先看到規則與入場要求。", "接受規則", {
-                  header: "社群規則",
-                  subheader: "加入前確認",
-                  onboarding: ["禁止垃圾訊息", "禁止詐騙外鏈", "尊重主題分區"],
-                  bottom: "接受並繼續"
-                }),
-                step("dg-2", "選角色與頻道", "回答問題後取得角色與預設頻道，不直接暴露所有頻道。", "完成選擇", {
-                  header: "導覽",
-                  subheader: "選擇你要看的內容",
-                  chips: ["角色", "頻道", "權限"],
-                  list: [
-                    row("新手", "可看新手區", "R"),
-                    row("交易討論", "可看行情區", "R"),
-                    row("支援", "可開票務", "R")
-                  ],
-                  bottom: "進入伺服器"
-                }),
-                step("dg-3", "有限可見", "新成員先看到預設頻道與 Server Guide，再逐步發現其他頻道。", "打開頻道", {
-                  header: "Server Guide",
-                  subheader: "新成員導覽",
-                  cards: [
-                    card("先讀這裡", "社群規則與常見問題。", "資源"),
-                    card("開始互動", "去 #general 或 Forum 提問。", "3 個待辦")
-                  ],
-                  bottom: "重新播放"
-                })
-              ],
-              facts: facts({
-                entryType: "伺服器邀請",
-                firstCommitment: "接受規則 / 選角色",
-                accountBeforePreview: "是",
-                joinBeforeReply: "是，規則前不可發言",
-                boundaryVisible: "是，導覽明確展示規則與角色",
-                discussionStructure: "規則 → 角色 → 預設頻道",
-                fullStreamExposed: "否",
-                moderation: "規則篩選、角色、AutoMod、審核紀錄",
-                notificationRisk: "中低：頻道可選，但設定量高"
-              }),
-              tradeoffs: [
-                trade("Advantage", "將發言與可見頻道放在導覽後，避免新成員直接進入混亂狀態。", SOURCES.discordOnboarding, "官方說明新成員會取得個人化頻道列表。"),
-                trade("Advantage", "Server Guide 可把規則、資源與新手待辦放在導覽面。", SOURCES.discordOnboarding, "官方說明 Server Guide 是導覽的一部分。"),
-                trade("Risk", "過多問題與角色設定會讓手機端新手覺得重。", `${SOURCES.learn}：Discord 的設計不適合手機端優先`, "適合高治理社群，不適合所有普通群。"),
-                trade("Constraint", "需要管理者理解角色、權限、預設頻道等概念。", SOURCES.discordOnboarding, "配置成本較高。")
-              ],
-              derived: derived("低", "高", "邀請 → 規則 → 角色 → 頻道", "角色門檻")
-            },
-            {
-              id: "whatsapp-line-risk-limits",
-              name: "WhatsApp Business / LINE limits",
-              tag: "商業訊息風控",
-              color: "green",
-              steps: [
-                step("wl-risk-1", "商業訊息入口", "商家訊息、模板或官方帳號推送需要品質與頻率邊界。", "檢查限制", {
-                  header: "Business messaging",
-                  subheader: "quality / rate limits",
-                  chips: ["template review", "quality", "unsubscribe"],
-                  cards: [card("商業訊息", "V1 只標示 business chat，不開完整推播平台。", "Boundary")],
-                  bottom: "檢查限制"
-                }),
-                step("wl-risk-2", "封鎖 / 退訂 / 限流", "LINE block / unsubscribe 與 WhatsApp Business quality limits 都提醒 V1 要有最小安全邊界。", "使用封鎖", {
-                  header: "Safety controls",
-                  subheader: "block / unsubscribe / rate limit",
-                  list: [row("Block", "停止商家私訊", "B"), row("Report", "檢舉濫發或詐騙", "R"), row("Rate limit", "限制低品質商業訊息", "L")],
-                  bottom: "使用封鎖"
-                }),
-                step("wl-risk-3", "風控狀態回到治理層", "V1 不做完整 AI 審核平台，但要讓 report/block/mute 回到 Governance Layer。", "重新播放", {
-                  header: "Governance Layer",
-                  subheader: "basic log",
-                  cards: [card("moderation log", "紀錄封鎖、檢舉、移除。", "V1"), card("AI review", "後續擴展，不進 V1 core。", "Later")],
-                  bottom: "重新播放"
-                })
-              ],
-              facts: facts({
-                entryType: "business messaging / official account",
-                firstCommitment: "receive / block / unsubscribe",
-                accountBeforePreview: "是",
-                joinBeforeReply: "否",
-                boundaryVisible: "高：business / OA labels",
-                discussionStructure: "business message → safety action → governance log",
-                fullStreamExposed: "否",
-                moderation: "block、report、unsubscribe、rate limits、quality controls"
-              }),
-              tradeoffs: [
-                trade("Advantage", "商業訊息必須有 block、unsubscribe、rate limit 等基本保護。", `${SOURCES.compare}：trust-risk / WhatsApp Business / LINE`, "支撐普通用戶安全封鎖與商業訊息。"),
-                trade("Constraint", "完整 AI 風控與客服平台後置。", `${SOURCES.compare}：platform-ai-ops / support-crm`, "只留 hook。")
-              ],
-              derived: derived("低", "低", "business message → block/report → governance log", "安全動作")
-            },
-            {
-              id: "our-trust-gate",
-              name: "我們的信任閘門",
-              tag: "收斂方案",
-              color: "cyan",
-              steps: [
-                step("og-1", "公開預覽但限制高風險動作", "訪客可看公開頻道與公開 Topic 摘要，但不能直接大量發言或私訊。", "登入加入", {
-                  header: "公開預覽",
-                  subheader: "尚未加入",
-                  chips: ["可看", "不可發言", "不可私訊"],
-                  cards: [card("市場週報", "可預覽內容與討論摘要。", "公開")],
-                  bottom: "登入並加入"
-                }),
-                step("og-2", "權限梯度", "新成員先能閱讀與回覆低風險 Topic，高風險動作延後開放。", "完成新手狀態", {
-                  header: "新手權限",
-                  subheader: "權限梯度",
-                  list: [
-                    row("閱讀公開 Topic", "立即開放", "看"),
-                    row("發言", "完成規則後開放", "說"),
-                    row("外鏈 / 大量邀請", "延後開放", "鎖")
-                  ],
-                  bottom: "接受規則"
-                }),
-                step("og-3", "檢舉即證據", "檢舉自動帶上訊息、前後上下文、Topic、邀請來源與近期操作。", "重新播放", {
-                  header: "檢舉訊息",
-                  subheader: "最小必要證據",
-                  cards: [
-                    card("被檢舉訊息", "可疑外鏈與重複貼文。", "自動附上下文"),
-                    card("來源", "invite=週報 CTA", "可追蹤")
-                  ],
-                  bottom: "返回預覽"
-                })
-              ],
-              facts: facts({
-                entryType: "公開頁 / 邀請 / QR",
-                firstCommitment: "登入並加入；發言前接受規則",
-                accountBeforePreview: "否",
-                joinBeforeReply: "是",
-                boundaryVisible: "是，公開預覽與成員權限分開",
-                discussionStructure: "預覽 → 信任狀態 → Topic 回覆 / 檢舉",
-                fullStreamExposed: "否，只顯示公開摘要與可見 Topic",
-                moderation: "權限梯度、檢舉證據鏈、邀請來源、申訴",
-                notificationRisk: "中：需同步教育新手權限與通知"
-              }),
-              tradeoffs: [
-                trade("Advantage", "把摩擦放在高風險動作，而不是完全阻擋內容預覽。", SOURCES.safety, "安全治理報告建議延後非好友 DM、外鏈、媒體與大量提及。"),
-                trade("Advantage", "檢舉流程直接收集證據，避免只做表單。", SOURCES.safety, "報告明確提出檢舉流程必須是證據流。"),
-                trade("Hypothesis", "公開預覽 + 發言前權限梯度能兼顧轉化與風控。", "@trust_gate_mvp_test", "需要實驗驗證轉化損失與濫用下降。"),
-                trade("Constraint", "需要資料保留、隱私最小化與管理員操作日誌的基礎建設。", `${SOURCES.safety}；@privacy_review`, "不能只做前端提示。")
-              ],
-              derived: derived("中", "中", "預覽 → 加入 → 權限 / 證據", "風險門檻")
-            }
-          ]
-        }
-      ]
-    },
-
-    {
-      id: "business-commerce",
-      name: "business-commerce｜輕量商業檔案 / 商品卡",
-      summary: "商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。不做完整 marketplace、payment、order 或 fulfillment。",
-      scenarios: [
-        {
-          id: "product-card-to-chat",
-          name: "商品卡進聊天 / 頻道",
-          intent: "這條流程比較商家如何用輕量商業身份與商品卡承接外部流量。商務層支撐商家角色，但不主導 V1 主流程；V1 只保留商業身份、商品卡與商業聊天標籤。",
-          openDecision: {
-            question: "V1 商業模組應該做到哪裡就停？",
-            options: [
-              { name: "WhatsApp Business 型：商業檔案 + Catalog", description: "商家有 profile、catalog、quick replies，商品可進聊天。", tradeoff: "適合小商家，但不要把完整訂單系統放進 IM。", evidence: `${SOURCES.compare}：business-commerce / WhatsApp Business` },
-              { name: "LINE OA 型：Rich Menu + Flex / Quick Reply", description: "商業服務入口在官方帳號聊天中分流。", tradeoff: "容易理解，但選單過重會變雜亂。", evidence: `${SOURCES.compare}：business-commerce / LINE OA` },
-              { name: "Shopify Inbox / Instagram 型：product card to chat", description: "商品卡或商品連結進入對話，購買履約留在外部系統。", tradeoff: "最適合 V1 輕量商務。", evidence: `${SOURCES.compare}：business-commerce / Shopify Inbox / Instagram` }
-            ]
-          },
-          architectures: [
-            {
-              id: "whatsapp-business-catalog",
-              name: "WhatsApp Business profile + catalog",
-              tag: "小商家信任",
-              color: "green",
-              steps: [
-                step("wab-1", "Business profile", "商家先用商業檔案建立信任：地址、營業時間、網站、類別。", "看目錄", { header: "Fresh Market", subheader: "Business account", chips: ["Profile", "Hours", "Catalog"], cards: [card("商業檔案", "地址、營業時間、網站。", "Profile")], bottom: "看目錄" }),
-                step("wab-2", "Catalog / product sharing", "商品可以從 catalog 被分享進聊天，成為結構化物件。", "分享商品", { header: "Catalog", subheader: "Fresh Market", cards: [card("藍莓禮盒", "$18 · 可詢問庫存", "Product"), card("咖啡豆", "$12 · 今日可寄送", "Product")], bottom: "分享商品" }),
-                step("wab-3", "Quick replies", "常見問題用 quick replies 回覆；完整 CRM 和 AI agent 後置。", "重新播放", { header: "Business chat", subheader: "Product card", messages: [msg("Fresh Market", "這是藍莓禮盒。"), msg("商品卡", "藍莓禮盒 · $18")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "business profile / catalog", firstCommitment: "open business chat", accountBeforePreview: "是", joinBeforeReply: "否", boundaryVisible: "高：Business label", discussionStructure: "profile → product card → chat", fullStreamExposed: "否", moderation: "business quality / block / report" }),
-              tradeoffs: [trade("Advantage", "商業身份先建立信任，商品卡可進聊天。", `${SOURCES.compare}：business-commerce / WhatsApp Business`, "直接支撐商家 / 商業主。"), trade("Constraint", "不做完整 marketplace 或 order fulfillment。", `${SOURCES.compare}：business-commerce`, "V1 只做 lightweight representation。")],
-              derived: derived("低", "低", "profile → catalog → product card chat", "open chat")
-            },
-            {
-              id: "line-oa-commerce",
-              name: "LINE OA rich menu + quick reply",
-              tag: "服務入口",
-              color: "green",
-              steps: [
-                step("line-biz-1", "官方帳號聊天室", "使用者加官方帳號後，在聊天中看到商業身份與常駐服務入口。", "打開選單", { header: "Coffee Club", subheader: "Official Account", chips: ["OA", "Rich Menu", "Quick Reply"], cards: [card("會員 / 商品 / 客服", "入口被放在選單，不塞滿訊息流。", "Rich Menu")], bottom: "打開選單" }),
-                step("line-biz-2", "Flex / 商品卡", "商品或服務可用 Flex Message / Quick Reply 進入聊天。", "送出商品卡", { header: "商品", subheader: "Flex message", cards: [card("拿鐵組合", "可回覆、收藏或分享。", "Product card")], bottom: "送出商品卡" }),
-                step("line-biz-3", "LIFF / CRM hook 後置", "複雜表單、CRM 或 mini-app 只是未來 hook，不是 V1 core。", "重新播放", { header: "Service hook", subheader: "Later", cards: [card("V1", "商品卡 + business label。", "Now"), card("Later", "LIFF / CRM / AI 客服。", "Hook")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "official account / rich menu", firstCommitment: "add OA", accountBeforePreview: "是", joinBeforeReply: "否", boundaryVisible: "高", discussionStructure: "OA chat → menu → product card", fullStreamExposed: "否", moderation: "block / unsubscribe / rate limits" }),
-              tradeoffs: [trade("Advantage", "商業動作放進聊天底部入口容易理解。", `${SOURCES.compare}：business-commerce / LINE OA`, "適合輕量商務。"), trade("Risk", "Rich Menu 太多會變雜亂。", `${SOURCES.compare}：LINE 風險`, "V1 只留商品卡與核心入口。")],
-              derived: derived("低", "中", "OA chat → rich menu → product card", "select action")
-            },
-            {
-              id: "shopify-instagram-product-chat",
-              name: "Shopify Inbox / Instagram product card",
-              tag: "商品進對話",
-              color: "violet",
-              steps: [
-                step("shop-biz-1", "商品或內容觸發問題", "客戶從商店商品頁、Instagram product tag 或 DM 產生問題。", "詢問商品", { header: "Product CTA", subheader: "Instagram / Shopify", chips: ["Product tag", "DM", "Inbox"], cards: [card("藍莓禮盒", "使用者想問庫存與配送。", "Product")], bottom: "詢問商品" }),
-                step("shop-biz-2", "商品卡進聊天", "商品卡帶入對話，讓商家回覆時有上下文。", "快速回覆", { header: "Shopify Inbox", subheader: "Product context", messages: [msg("客戶", "這個今天能寄嗎？", true), msg("商品卡", "藍莓禮盒 · product link"), msg("商家", "今天 17:00 前可以出貨。")], bottom: "快速回覆" }),
-                step("shop-biz-3", "購買 / 履約留在外部", "V1 不接管 checkout、order 或 fulfillment，只保留商品物件與外部連結。", "重新播放", { header: "V1 boundary", subheader: "No full commerce", cards: [card("IM 內", "商品卡、聊天、標籤。", "V1"), card("外部系統", "checkout、訂單、履約。", "Later / External")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "product tag / store chat", firstCommitment: "ask about product", accountBeforePreview: "否", joinBeforeReply: "否", boundaryVisible: "高：product context", discussionStructure: "product → chat → external checkout", fullStreamExposed: "否", moderation: "business label / report" }),
-              tradeoffs: [trade("Advantage", "商品卡應是聊天中的結構化物件。", `${SOURCES.compare}：business-commerce / Shopify Inbox / Instagram`, "最符合 V1 lightweight commerce。"), trade("Constraint", "訂單與履約先作為外部接入能力。", `${SOURCES.compare}：business-commerce`, "不建完整商務系統。")],
-              derived: derived("低", "低", "product CTA → chat card → external checkout", "ask product")
-            },
-            {
-              id: "our-lightweight-commerce",
-              name: "我們的輕量商務 V1",
-              tag: "收斂方案",
-              color: "cyan",
-              steps: [
-                step("our-biz-1", "Business profile", "商家有基本檔案與 business chat label。", "建立商品卡", { header: "Business Profile", subheader: "V1 lightweight", chips: ["Business label", "Profile", "No marketplace"], cards: [card("Coffee Club", "類別、營業時間、網站。", "Profile")], bottom: "建立商品卡" }),
-                step("our-biz-2", "Product card object", "商品卡是可分享物件，可進頻道或聊天。", "分享到頻道", { header: "Product Card", subheader: "object", cards: [card("拿鐵組合", "圖片、名稱、簡短描述、外部連結。", "Card")], bottom: "分享到頻道" }),
-                step("our-biz-3", "Chat / Channel 承接", "商品卡帶入聊天或頻道，但 payment/order/fulfillment 全部後置。", "重新播放", { header: "Channel + Chat", subheader: "business route", cards: [card("頻道", "商品卡作為內容 CTA。", "Channel"), card("私聊", "詢問商品，留在 inbox。", "Chat")], bottom: "重新播放" })
-              ],
-              facts: facts({ entryType: "business profile / product card", firstCommitment: "follow / ask", accountBeforePreview: "否", joinBeforeReply: "否", boundaryVisible: "高", discussionStructure: "business profile → product card → channel/chat", fullStreamExposed: "否", moderation: "business label / report / block" }),
-              tradeoffs: [trade("Advantage", "支撐商家 / 商業主，但不把 IM 做成商城。", `${SOURCES.compare}：roleScenarios / business-commerce`, "V1 必要但輕量。"), trade("Constraint", "AI 客服與 CRM 只留 hook。", `${SOURCES.compare}：support-crm / platform-ai-ops`, "後續擴展。")],
-              derived: derived("低", "低", "profile → product card → chat/channel", "ask/follow")
-            }
-          ]
-        }
-      ]
-    },
+    mod("messaging-identity", "messaging-identity｜通訊核心與身份", "V1 用同一個 inbox 承接私聊、群組、頻道更新與商業聊天，但每種關係都要有清楚身份與類型標籤。", [
+      sc("private-chat-entry", "Private chat entry｜進入 1:1 私聊", "普通用戶", "普通用戶從好友邀請或 inbox 進入 1:1 私聊，關係沉澱在同一個聊天底座。", "V1 先完成穩定私聊、回訪和安全動作，不把商業或平台能力混進私人對話。", [
+        ref("WhatsApp", "Chats list 以私聊和群組作為主要心智，支撐低學習成本回訪。"),
+        ref("LINE", "好友與聊天列表建立熟人關係，官方帳號另以身份標籤區隔。"),
+        ref("Telegram", "同一聊天列表可承接人、群、頻道，但目標類型需要清楚。")
+      ], ["unified inbox", "1:1 chat object", "read / unread state", "block / report / mute"], ["把私聊改成 CRM 對話", "Bot/API 作為私聊入口前提", "一開始就要求多 persona"], ["1:1 chat", "friend identity", "message state", "basic safety actions"], ["multi persona", "enterprise identity mapping", "advanced encryption modes"], ["Identity Layer", "Inbox / Relationship Layer", "Governance Layer"], [
+        st("好友邀請進入", "使用者先看到真人身份與安全提示。", "開始聊天", p("Mina", "好友邀請 · 私人聊天", ["好友", "1:1", "可封鎖"], [c("Mina 想和你聊天", "接受後會出現在 Inbox。", "Friend invite")], null, null, "接受並開始聊天")),
+        st("私聊訊息流", "標準 IM 訊息流先成立，安全入口留在同一表面。", "回到 Inbox", p("Mina", "私人聊天", null, null, null, [m("Mina", "明天資料我整理好了。"), m("你", "收到，我晚點看。", true)], "回到 Inbox")),
+        st("Inbox 留存", "私聊回到統一 inbox，不需要新增獨立入口。", "重新播放", p("Inbox", "Relationship Layer", null, null, [r("Mina", "收到，我晚點看。", "1"), r("加密討論群", "3 則未讀", "G"), r("Coffee Club", "Business · 商品卡", "B")], null, "重新播放"))
+      ]),
+      sc("group-chat-in-inbox", "Group chat in inbox｜從 inbox 回到群聊", "普通用戶", "使用者加入或回訪小型群組，群聊和私聊放在同一 inbox，但用 Group 類型標籤避免混淆。", "小群不需要 topic-first；V1 讓小群直接進聊天，只有大型或高噪音社群才需要主題分流。", [
+        ref("WhatsApp", "群組和私聊同在 Chats list，入口直接、學習成本低。"),
+        ref("LINE", "群組聊天沿用熟悉聊天心智，適合熟人或小型協作。"),
+        ref("Telegram", "群組可和私聊同列，大型群再用 Topics 擴展。")
+      ], ["group type label", "inbox unread state", "direct group chat for small groups", "mute / leave / report"], ["所有群都強制 topic-first", "小群也套大型社群 onboarding", "群聊入口藏在頻道內"], ["group relation", "direct group message flow", "member state", "mute / leave"], ["role automation", "complex server tree", "advanced topic governance for every group"], ["Inbox / Relationship Layer", "Community Group", "Governance Layer"], [
+        st("Inbox 類型標籤", "群組在 inbox 中清楚標示 Group。", "打開群組", p("Inbox", "All relationships", null, null, [r("Mina", "Private · 明天見", "1"), r("週末球局", "Group · Kai: 場地已訂", "G"), r("Market Channel", "Channel update", "C")], null, "打開週末球局")),
+        st("小群直接聊天", "早期或小型群組直接進訊息流。", "查看群資訊", p("週末球局", "Group · 8 members", null, null, null, [m("Kai", "週六 15:00 可以嗎？"), m("你", "可以，我帶球。", true), m("Nora", "我晚 10 分鐘到。")], "查看群資訊")),
+        st("群組邊界", "群資訊提供成員、靜音、離開與檢舉。", "重新播放", p("Group info", "週末球局", null, null, [r("成員", "8 members", "M"), r("靜音", "降低通知", "N"), r("離開 / 檢舉", "安全動作", "S")], null, "重新播放"))
+      ]),
+      sc("mixed-inbox-type-labels", "Mixed inbox type labels｜混合 inbox 類型標籤", "普通用戶 + 商家 / 商業主", "使用者在一個 inbox 看見私聊、群聊、頻道更新和商業聊天，靠類型標籤判斷下一步。", "V1 不開多個主入口；一個 inbox 保留 IM 心智，類型標籤負責降低混淆。", [
+        ref("WhatsApp", "Chats list 承接私聊、群組和 business account label。"),
+        ref("Telegram", "聊天列表可容納私聊、群組、頻道與 Bot 等目標類型。"),
+        ref("LINE", "官方帳號像聊天關係，但身份標示和服務入口要清楚。"),
+        ref("WeChat", "高密度服務平台證明身份統一有價值，但 V1 不複製完整超級平台。")
+      ], ["unified inbox", "type labels", "relationship state", "business chat label"], ["Updates / Channels 完全切成獨立產品", "直接做超級平台入口", "商業流程隱藏成普通好友"], ["private chat", "group chat", "channel update", "business chat label"], ["full service account platform", "mini-app center", "enterprise CRM inbox"], ["Identity Layer", "Inbox / Relationship Layer", "Business Lightweight Layer"], [
+        st("同一 inbox", "四種關係出現在同一列表。", "打開商業聊天", p("Inbox", "Type labels first", null, null, [r("Mina", "Private · 明天見", "1"), r("加密討論", "Group · 3 unread", "G"), r("Market Channel", "Channel · 新週報", "C"), r("Coffee Club", "Business · 商品卡", "B")], null, "打開 Coffee Club")),
+        st("商業標籤可見", "商業聊天有 label、檔案和商品卡，但仍是 IM 對話。", "回到 inbox", p("Coffee Club", "Business chat", ["Business", "Profile", "Product card"], [c("商業檔案", "類別、營業時間、網站。", "Profile"), c("拿鐵組合", "商品卡可回覆或轉發。", "Product")], null, null, "回到 Inbox")),
+        st("回訪不迷路", "使用者透過類型標籤回到正確表面。", "重新播放", p("Inbox", "Return path", ["Private", "Group", "Channel", "Business"], null, [r("Market Channel", "Channel · 1 new update", "C"), r("Coffee Club", "Business · 有新回覆", "B")], null, "重新播放"))
+      ]),
+      sc("business-chat-identity", "Business chat identity｜商業聊天身份", "商家 / 商業主 + 普通用戶", "使用者打開商業聊天時，能看見 business label、商業檔案和商品卡上下文。", "V1 讓商業身份進聊天，但只做輕量商業層；不把 inbox 變成 CRM workspace。", [
+        ref("WhatsApp Business", "Business profile、catalog、product sharing 和 business account label 是輕量商業身份參考。"),
+        ref("LINE OA", "官方帳號用聊天關係承接品牌互動，服務入口可在聊天內分流。"),
+        ref("Shopify Inbox / Instagram", "商品上下文進入聊天，購買和履約多由外部系統承接。")
+      ], ["business chat label", "business profile", "product card object", "block / report business"], ["full CRM", "payment / order / fulfillment", "business process hidden inside personal chat"], ["business profile", "business chat label", "product card in chat"], ["CRM ticketing", "AI support", "payment", "order", "fulfillment"], ["Business Lightweight Layer", "Inbox / Relationship Layer", "Governance Layer"], [
+        st("Business label", "使用者從 inbox 看到商業身份。", "打開聊天", p("Inbox", "Business relation", null, null, [r("Coffee Club", "Business · 商品卡", "B"), r("Mina", "Private", "1")], null, "打開商業聊天")),
+        st("商業檔案", "聊天頂部可進商業檔案。", "查看商品", p("Coffee Club", "Business chat", ["Business", "Profile", "Safe messaging"], [c("Coffee Club", "咖啡與輕食 · 08:00-19:00 · coff.ee", "Business profile")], null, null, "查看商品卡")),
+        st("商品卡上下文", "商品卡作為聊天物件出現，使用者可以直接詢問。", "重新播放", p("Coffee Club", "Product context", null, null, null, [m("商品卡", "拿鐵組合 · 外部連結"), m("你", "今天可以自取嗎？", true), m("Coffee Club", "可以，17:00 前都能取。")], "重新播放"))
+      ])
+    ]),
+    mod("external-entry", "external-entry｜外部入口 / 邀請", "外部入口必須先說清楚目標類型、來源、加入規則和風險狀態，避免把所有流量直接丟進聊天流。", [
+      sc("friend-invite", "Friend invite｜好友邀請 / QR / contact add", "普通用戶", "普通用戶透過好友邀請、QR 或聯絡人加入，進入可辨識的 1:1 私聊關係。", "V1 把好友邀請視為 relationship entry，不和群組、頻道、商業 CTA 混成同一入口。", [
+        ref("LINE", "QR、ID、通訊錄和好友加入是清楚的個人入口。"),
+        ref("WhatsApp", "電話聯絡人、QR 和 invite 建立低摩擦聊天關係。"),
+        ref("Telegram", "username / link 可指向個人，但公開入口需要安全邊界。")
+      ], ["friend QR", "contact add", "target type label", "source tracking"], ["好友邀請直接帶入群聊", "不標示目標類型", "公開 username 無風險邊界"], ["friend invite", "QR / contact add", "private chat preview", "block/report before accepting"], ["social graph recommendation", "advanced address book growth", "OAuth identity ecosystem"], ["External Entry", "Identity Layer", "Inbox / Relationship Layer"], [
+        st("掃描 QR", "入口先顯示目標是個人。", "查看身份", p("Add friend", "QR invite", ["Person", "Private chat", "Source: QR"], [c("Mina", "共同群組：週末球局。", "Friend target")], null, null, "查看身份")),
+        st("接受前安全動作", "接受前可以封鎖或檢舉。", "接受邀請", p("Mina", "Friend preview", null, null, [r("開始私聊", "接受後進 Inbox", "1"), r("封鎖", "不建立關係", "B"), r("檢舉", "可疑邀請", "R")], null, "接受好友邀請")),
+        st("進入私聊", "成功後建立 1:1 對話，來源保留為風控資料。", "重新播放", p("Mina", "Private chat · from QR", null, null, null, [m("系統", "你們現在可以互相傳訊息。"), m("你", "嗨，我是剛剛掃 QR 加的。", true)], "重新播放"))
+      ]),
+      sc("group-invite", "Group invite｜群組邀請預覽 / 加入狀態", "普通用戶", "使用者點群組 invite link，先看群組預覽、規則、成員狀態與加入條件，再決定加入。", "V1 不把 invite link 直接丟進完整訊息流；先用 group preview 建立目標理解和風險邊界。", [
+        ref("WhatsApp", "group / community invite link 是低摩擦入口，但需要管理員與隱私提示。"),
+        ref("Telegram", "invite link、join request 和公開群預覽支撐不同加入門檻。"),
+        ref("LINE OpenChat / Facebook Groups", "加入前暱稱、規則和問題能建立社群邊界。")
+      ], ["group preview", "rules before join", "member state", "join request when needed"], ["一點連結就暴露完整群流", "所有群組都要求重型 onboarding", "邀請連結無撤銷 / 限制"], ["invite link", "group preview", "rules", "join / request state"], ["advanced role onboarding", "server guide", "growth attribution suite"], ["External Entry", "Community Group", "Governance Layer"], [
+        st("打開 invite link", "入口標示目標是群組，並顯示來源。", "查看預覽", p("Group invite", "Source: channel post", ["Group", "Invite link", "Risk checked"], [c("加密討論社群", "3,248 成員 · 加入後可發言。", "Group preview")], null, null, "查看群組預覽")),
+        st("規則與成員狀態", "加入前先看規則、成員數和審核狀態。", "送出加入", p("加密討論社群", "Rules before join", null, null, [r("規則", "禁止詐騙外鏈與洗版", "R"), r("成員", "3,248 members", "M"), r("加入方式", "新成員先低風險權限", "J")], null, "加入群組")),
+        st("加入後路徑", "小群進聊天；大型社群可先進 group home 或 topic list。", "重新播放", p("加密討論社群", "Joined", null, null, [r("公告", "先看規則", "A"), r("新手問答", "低壓力提問", "Q"), r("行情討論", "高頻互動", "T")], null, "重新播放", true))
+      ]),
+      sc("channel-share-link", "Channel share link｜公開頻道連結預覽 / follow", "普通用戶 + 商家 / 商業主", "外部使用者從分享連結進入公開頻道，先看 profile 和 selected posts，再決定 follow。", "V1 讓公開頻道成為可預覽入口，降低加入壓力，同時把討論和私聊留到後續承諾點。", [
+        ref("Telegram", "public channel link 和可預覽內容支撐頻道外部導流。"),
+        ref("WhatsApp Channels", "頻道可被分享，追蹤是低噪音承諾點。"),
+        ref("Instagram Broadcast Channels", "創作者內容可以導流到一對多更新關係。")
+      ], ["public channel link", "channel profile", "selected posts preview", "follow state"], ["先要求下載 / 登入才看到目標", "頻道預覽直接變成推薦 feed", "follow 後立刻進大群"], ["share link", "public preview", "follow", "discussion CTA"], ["full content discovery", "paid channel", "creator analytics"], ["External Entry", "Public Channel", "Channel Loop"], [
+        st("外部分享連結", "使用者從內容、QR 或朋友分享打開頻道連結。", "打開預覽", p("Channel link", "Public preview", ["Channel", "Share link", "No join yet"], [c("Market Channel", "每日市場摘要與討論入口。", "Public channel")], null, null, "打開頻道預覽")),
+        st("頻道預覽", "profile、簡介和選定貼文先出現。", "Follow", p("Market Channel", "Public preview · 12K followers", null, [c("市場週報", "本週重點與外鏈卡片。", "Pinned"), c("AMA 公告", "週五 20:00 開始。", "Post")], null, null, "Follow channel")),
+        st("回到 inbox", "follow 後頻道更新可回到 inbox，但仍保留 Channel 類型標籤。", "重新播放", p("Inbox", "Followed channel", null, null, [r("Market Channel", "Channel · 新週報", "C"), r("加密討論社群", "Group · 3 unread", "G")], null, "重新播放"))
+      ]),
+      sc("business-cta-entry", "Business CTA entry｜廣告 / 商品 / 創作者 CTA", "商家 / 商業主 + 普通用戶", "使用者從廣告、商品連結、創作者內容或商業檔案 CTA 進入 business chat 或 channel。", "V1 保留來源與商品上下文，把外部商業意圖落到 business chat 或 channel，不做完整廣告和商務平台。", [
+        ref("TikTok / Instagram", "內容、profile、DM CTA 和 product tag 能把興趣導向商業互動。"),
+        ref("WhatsApp Business", "click-to-chat 和 Business QR 讓外部意圖直接進聊天。"),
+        ref("Shopify Inbox / Instagram", "商品上下文進入對話，購買履約可留在外部。")
+      ], ["source tracking", "target type label", "business profile CTA", "product card context"], ["完整廣告平台", "完整 marketplace", "低品質 CTA 無風控", "商品點擊後只進泛首頁"], ["ad/content/product CTA", "business chat", "channel follow", "product card context"], ["ad optimization", "CRM routing", "payment", "order", "fulfillment"], ["External Entry", "Business Lightweight Layer", "Inbox / Relationship Layer"], [
+        st("外部 CTA", "來源和目標類型先被記錄。", "查看目標", p("Product CTA", "Source: creator post", ["Business", "Product", "Source tracked"], [c("拿鐵組合", "來自 Coffee Club 內容 CTA。", "Product card")], null, null, "查看商家")),
+        st("商業檔案承接", "商家 profile 建立信任，可選擇聊天或 follow channel。", "詢問商品", p("Coffee Club", "Business profile", null, [c("商業檔案", "咖啡與輕食 · 外部連結。", "Profile"), c("更新頻道", "追蹤新品與活動。", "Channel")], null, null, "帶商品進聊天")),
+        st("Business chat", "商品卡進聊天，保留來源和上下文。", "重新播放", p("Coffee Club", "Business chat · from content CTA", null, null, null, [m("商品卡", "拿鐵組合 · 外部連結"), m("你", "今天有現貨嗎？", true)], "重新播放"))
+      ])
+    ]),
+    mod("channel-loop", "channel-loop｜頻道 / 內容到討論閉環", "公開頻道負責低噪音內容承接，討論入口負責把高意圖使用者帶到可治理的群組、thread 或 topic。", [
+      sc("public-channel-preview", "Public channel preview｜公開頻道預覽", "普通用戶 + 商家 / 商業主", "外部使用者先預覽頻道 profile 與 selected posts，再決定 follow 或進入討論。", "V1 用頻道預覽降低加入壓力；公開可看，互動才需要更高承諾。", [
+        ref("Telegram", "公開頻道和 public links 提供內容預覽與外部分享能力。"),
+        ref("WhatsApp Channels", "低噪音頻道適合一對多更新，但討論能力有限。"),
+        ref("LINE OA", "官方帳號可作為品牌更新與服務路由，但大型討論要外接群組。")
+      ], ["channel profile", "selected posts preview", "follow CTA", "discussion CTA"], ["純廣播無回路", "頻道內直接塞完整群聊", "短影音推薦 feed 作為 V1 入口"], ["public channel", "profile", "selected posts", "follow", "discussion CTA"], ["paid channel", "creator analytics", "recommendation feed", "live streaming"], ["Public Channel", "External Entry", "Channel Loop"], [
+        st("公開頻道頁", "訪客可先看頻道身份、簡介與內容樣本。", "查看貼文", p("Market Channel", "Public preview · 12K followers", ["Public URL", "Selected posts", "Follow"], [c("頻道簡介", "每日市場摘要與討論入口。", "Profile"), c("市場週報", "摘要、外鏈、討論 CTA。", "Pinned")], null, null, "查看貼文")),
+        st("低噪音閱讀", "頻道只承接高信號內容。", "Follow", p("市場週報", "Channel post", null, [c("本週重點", "三個重點、來源連結、討論入口。", "Post"), c("討論", "89 則討論 · 加入後可回覆。", "CTA")], null, null, "Follow channel")),
+        st("Follow 後回訪", "follow 後更新可在 inbox 出現，仍標示為 Channel。", "重新播放", p("Inbox", "Channel update", null, null, [r("Market Channel", "Channel · 1 new post", "C"), r("Mina", "Private", "1")], null, "重新播放"))
+      ]),
+      sc("follow-channel", "Follow channel｜關注後接收更新", "普通用戶 + 商家 / 商業主", "使用者 follow 頻道後，在 inbox 或 update surface 接收更新，並能回到正確貼文。", "V1 把 follow 視為低承諾關係；讀更新不等於加入社群，討論另用 CTA 承接。", [
+        ref("WhatsApp Channels", "follow channel 是低噪音訂閱關係，頻道和聊天有清楚邊界。"),
+        ref("Telegram", "訂閱頻道後更新進入聊天列表，頻道仍和討論群分開。"),
+        ref("Instagram Broadcast Channels", "一對多更新關係可維持創作者或品牌觸達。")
+      ], ["follow state", "channel update in inbox", "mute / notification setting", "post deep link"], ["follow 後自動加群", "所有頻道更新都高打擾通知", "follow 等於私聊授權"], ["follow", "channel unread", "mute", "deep link back to post"], ["advanced subscription segmentation", "paid broadcast", "campaign automation"], ["Public Channel", "Inbox / Relationship Layer", "Notification / Return Loop"], [
+        st("按下 Follow", "使用者在頻道頁建立低承諾關係。", "接收更新", p("Market Channel", "Public channel", ["Follow", "Mute available", "No group join"], [c("市場週報", "Follow 後會收到低噪音更新。", "Post")], null, null, "Follow")),
+        st("更新進 Inbox", "頻道更新出現在 inbox，但類型標籤清楚。", "打開更新", p("Inbox", "Channel updates", null, null, [r("Market Channel", "Channel · 新週報", "C"), r("加密討論社群", "Group · 3 unread", "G")], null, "打開更新")),
+        st("回到貼文", "點擊未讀直接回到貼文。", "重新播放", p("市場週報", "Deep link from Inbox", null, [c("本週重點", "直接回到未讀貼文。", "Unread"), c("進入討論", "加入社群後可回覆。", "CTA")], null, null, "重新播放"))
+      ]),
+      sc("post-to-discussion", "Post to discussion｜貼文進討論", "普通用戶 + 商家 / 商業主", "頻道貼文提供 comments、thread、linked group 或 discussion CTA，讓高意圖讀者進入可治理討論。", "V1 採用明確討論 CTA，不把每則貼文直接變成大群噪音；討論模式依社群規模選擇。", [
+        ref("Telegram", "頻道可連到 linked discussion group，貼文留言形成內容到討論的閉環。"),
+        ref("Discord Forum / Threads", "討論可拆成獨立帖子或 thread，適合多主題長期沉澱。"),
+        ref("WhatsApp Channels", "頻道本體偏低噪音，若要討論需另接群組或 chat CTA。")
+      ], ["post discussion CTA", "linked group/thread", "discussion count", "return to post"], ["純廣播沒有討論路徑", "每則貼文直接暴露完整群流", "所有頻道都強制 topic hierarchy"], ["post CTA", "linked discussion", "thread / group entry", "moderation context"], ["full forum product", "multi-server structure", "advanced content ranking"], ["Channel Loop", "Community Group", "Topic / Thread Layer"], [
+        st("貼文下方 CTA", "頻道貼文清楚顯示可進討論。", "進入討論", p("市場週報", "Channel post", null, [c("市場週報 · 第 12 期", "摘要、來源、外鏈。", "Post"), c("討論", "89 則討論 · 加入後可回覆。", "CTA")], null, null, "進入討論")),
+        st("選擇討論面", "小型社群可進 group chat；大型社群可進 thread 或 topic。", "打開 thread", p("Discussion", "Linked from post", null, null, [r("貼文討論串", "針對本週報", "T"), r("行情討論", "高頻討論區", "G"), r("新手問答", "低壓力提問", "Q")], null, "打開貼文討論串", true)),
+        st("保留貼文上下文", "討論串顯示來源貼文，管理員也能用同一上下文治理。", "重新播放", p("貼文討論串", "Linked to Market Channel", null, null, null, [m("Mina", "這週支撐位怎麼看？"), m("你", "我會先看成交量和支撐。", true), m("系統", "來源：市場週報 · 第 12 期")], "重新播放"))
+      ]),
+      sc("business-channel-product-cta", "Business channel product CTA｜商業頻道商品 CTA", "商家 / 商業主 + 普通用戶", "商家在頻道貼文中放商品卡或 CTA，使用者可進 business chat 詢問。", "V1 讓商品卡服務頻道和聊天的轉換，不在頻道內做完整商城交易。", [
+        ref("WhatsApp Business", "catalog / product sharing 支撐商品以輕量物件進入對話。"),
+        ref("Instagram", "product tag 和商業 profile CTA 能把內容興趣導向商品或 DM。"),
+        ref("Shopify Inbox", "商品連結和上下文進入聊天，購買履約仍由商店系統處理。")
+      ], ["product card in post", "CTA to business chat", "business label", "external product link"], ["頻道內 full marketplace", "payment / order / fulfillment", "AI sales agent as V1 requirement"], ["product card", "business channel post", "CTA to chat", "external link"], ["payment", "order", "fulfillment", "catalog sync", "AI support"], ["Public Channel", "Business Lightweight Layer", "Inbox / Relationship Layer"], [
+        st("商業頻道貼文", "頻道貼文可以附商品卡。", "查看商品", p("Coffee Club Channel", "Business channel", ["Channel", "Product card", "Chat CTA"], [c("新品拿鐵組合", "本週限定，點擊可詢問。", "Product CTA")], null, null, "查看商品卡")),
+        st("商品卡詳情", "商品卡提供名稱、摘要和外部連結。", "詢問商家", p("拿鐵組合", "Product card", null, [c("拿鐵組合", "圖片、短描述、外部商品連結。", "Card"), c("詢問商家", "帶商品上下文進 business chat。", "CTA")], null, null, "詢問商家")),
+        st("帶入 business chat", "商品上下文進聊天，使用者可問庫存、時間或外部購買連結。", "重新播放", p("Coffee Club", "Business chat", null, null, null, [m("商品卡", "新品拿鐵組合 · 外部連結"), m("你", "今天可以自取嗎？", true)], "重新播放"))
+      ])
+    ]),
+    mod("community-governance", "community-governance｜群組 / 主題治理", "群組不是永遠等於 topic-first。V1 同時支撐小群直接聊天、大型社群預覽加入、貼文討論串、主題模式與基本管理員動作。", [
+      sc("direct-group-chat", "Direct group chat｜小群直接聊天", "普通用戶", "小型或早期群組加入後直接進 group chat，不強制經過 topic list。", "V1 預設小群走直接聊天，避免把簡單群組做成過重社群系統。", [
+        ref("WhatsApp", "小型群組直接聊天是低學習成本群組心智。"),
+        ref("LINE", "熟人群組沿用聊天介面，適合日常協作。"),
+        ref("Telegram", "一般群組可直接聊天，Topics 是大型群擴展能力。")
+      ], ["direct group chat", "member list", "mute / leave", "basic admin"], ["所有群強制 topics", "加入小群也要角色導覽", "伺服器級頻道樹"], ["direct group chat", "member state", "mute / leave", "admin remove"], ["topic templates for every group", "role onboarding", "AutoMod"], ["Community Group", "Inbox / Relationship Layer", "Governance Layer"], [
+        st("加入小群", "小型群組先顯示群名、成員和規則摘要。", "進入聊天", p("週末球局", "Group · 8 members", ["Small group", "Direct chat", "Mute"], [c("群組簡介", "約球、場地與時間討論。", "Group")], null, null, "進入聊天")),
+        st("直接聊天", "使用者直接看到訊息流，不需要先選 topic。", "查看群資訊", p("週末球局", "Direct group chat", null, null, null, [m("Kai", "週六 15:00 場地 OK。"), m("你", "收到，我帶球。", true), m("Nora", "我會晚一點到。")], "查看群資訊")),
+        st("基本治理", "小群只需要靜音、成員、退出和基本檢舉。", "重新播放", p("Group info", "Basic controls", null, null, [r("靜音", "降低通知", "N"), r("成員", "8 members", "M"), r("離開 / 檢舉", "安全動作", "S")], null, "重新播放"))
+      ]),
+      sc("public-group-join", "Public group join｜公開群組加入", "普通用戶", "使用者看到公開群組 profile、規則、成員狀態和加入條件，再加入。", "公開群要先建立規則與成員狀態，不把陌生人直接丟進完整訊息流。", [
+        ref("Telegram", "公開群和 invite link 支撐預覽與加入狀態。"),
+        ref("LINE OpenChat", "主題聊天室可用獨立暱稱與加入前設定建立邊界。"),
+        ref("Facebook Groups", "群組頁、規則與 membership questions 是加入前治理參考。")
+      ], ["group profile", "rules", "member state", "join / request state"], ["公開入口直接進全量聊天", "加入前完全沒有規則", "大型社群用純熟人群心智"], ["public group profile", "rules", "join state", "member preview"], ["full community feed", "group insights", "advanced onboarding questions"], ["Community Group", "External Entry", "Governance Layer"], [
+        st("公開群組 Profile", "群組入口先展示主題、規則和成員狀態。", "查看規則", p("加密討論社群", "Public group · 3,248 members", ["Public", "Rules", "Join"], [c("群組主題", "市場討論、新手問答、工具資源。", "Profile")], null, null, "查看規則")),
+        st("加入前確認", "加入前看到規則和新成員權限。", "加入", p("Join group", "Rules and member state", null, null, [r("規則", "禁止詐騙外鏈", "R"), r("新成員", "先低風險權限", "N"), r("成員", "142 online", "M")], null, "加入群組")),
+        st("加入後首屏", "根據群組規模進入直接聊天或 topic list。", "重新播放", p("加密討論社群", "Joined · Topic mode", null, null, [r("公告", "規則與活動", "A"), r("新手問答", "低壓力提問", "Q"), r("行情討論", "高頻討論", "T")], null, "重新播放", true))
+      ]),
+      sc("post-linked-thread", "Post-linked thread｜從頻道貼文進討論串", "普通用戶 + 商家 / 商業主", "使用者從頻道貼文進入 linked thread，保留貼文上下文和治理上下文。", "V1 用貼文連動討論串承接高意圖互動，避免把所有閱讀者直接帶進大群。", [
+        ref("Telegram", "頻道留言可連到綁定討論群的對應討論。"),
+        ref("Discord Threads / Forum", "獨立討論串能降低多主題混雜。"),
+        ref("Reddit / Facebook Groups", "帖子型討論有來源上下文和管理動作。")
+      ], ["linked thread", "post context", "thread moderation", "return to post"], ["所有討論只進單一大群", "頻道沒有回覆路徑", "討論脫離原始貼文"], ["post-linked thread", "context card", "reply", "report with source"], ["full forum taxonomy", "ranked comment system", "advanced moderation queue"], ["Channel Loop", "Topic / Thread Layer", "Governance Layer"], [
+        st("貼文討論入口", "頻道貼文提供進入討論串的 CTA。", "進入討論串", p("市場週報", "Channel post", null, [c("市場週報 · 第 12 期", "摘要與資料來源。", "Post"), c("討論串", "89 則討論 · 保留貼文上下文。", "Thread")], null, null, "進入討論串")),
+        st("討論串內互動", "討論串頂部保留來源貼文。", "檢舉訊息", p("第 12 期討論串", "Linked from Market Channel", null, null, null, [m("Mina", "這段資料來源是哪裡？"), m("你", "在原貼文第二個外鏈。", true), m("系統", "來源：市場週報 · 第 12 期")], "檢舉訊息")),
+        st("治理帶上下文", "檢舉或管理動作自動帶上貼文、討論串和訊息位置。", "重新播放", p("Report", "Thread context included", null, [c("被檢舉訊息", "可疑外鏈。", "Message"), c("來源上下文", "Market Channel · 第 12 期。", "Context")], null, null, "重新播放"))
+      ]),
+      sc("topic-based-discussion", "Topic-based discussion｜大型社群主題模式", "普通用戶 + 社群管理者", "大型或高流量社群使用 topic list first，讓使用者選擇主題後再進訊息流。", "Topic 是大型社群模式，不是每個群組的預設路徑；只有高噪音或多主題社群需要。", [
+        ref("Telegram Topics", "大型群可用 Topics 將討論拆成可選擇的主題訊息流。"),
+        ref("Discord Forum", "Forum posts 和 tags 適合多主題社群沉澱。"),
+        ref("WhatsApp Communities", "公告和子群組分軌顯示大型社群需要分流。")
+      ], ["topic list first for large groups", "topic message flow", "topic mute/follow", "admin controls by topic"], ["小群也強制 topic", "Discord server tree 直接照搬手機端", "主題太多無模板"], ["topic list", "topic message flow", "topic notification", "basic topic admin"], ["server categories", "advanced role routing", "forum ranking", "AutoMod"], ["Community Group", "Topic Layer", "Governance Layer"], [
+        st("大型群首屏", "只有大型或高流量社群才先顯示 topic list。", "選擇主題", p("加密討論社群", "Topic mode · 3,248 members", ["Large group", "Topic list", "Not default for small groups"], null, [r("公告", "只看重要資訊", "A"), r("新手問答", "低壓力提問", "Q"), r("行情討論", "高頻互動", "T"), r("工具資源", "長期沉澱", "R")], null, "打開新手問答", true)),
+        st("Topic 訊息流", "使用者進入單一主題後才看到訊息流。", "設定通知", p("新手問答", "Topic message flow", null, null, null, [m("Alex", "新手先看哪個指標？"), m("你", "先看成交量和支撐。", true), m("Mina", "我整理一份資源。")], "設定通知")),
+        st("Topic 通知與治理", "Topic 可獨立靜音、關注、檢舉或由管理員處理。", "重新播放", p("Topic settings", "新手問答", null, null, [r("關注此 Topic", "只收相關提醒", "F"), r("靜音", "降低噪音", "M"), r("檢舉 / 管理", "帶上 Topic 上下文", "S")], null, "重新播放"))
+      ]),
+      sc("admin-moderation", "Admin moderation｜管理員移除 / 禁言 / 置頂 / 處理檢舉", "社群管理者 + 普通用戶", "管理員處理群組或 topic 內的檢舉、移除、禁言和置頂，留下基本操作紀錄。", "V1 做基本可治理動作和最小 moderation log，不做企業級合規後台。", [
+        ref("Discord", "roles、permissions、timeout、AutoMod 和 report 是大型社群治理參考。"),
+        ref("Telegram", "管理員權限、刪除、封禁和 topic 管理支撐社群治理。"),
+        ref("LINE OpenChat / Facebook Groups", "規則、管理員動作和 membership controls 是公開社群基本能力。")
+      ], ["remove message", "mute member", "pin post", "handle report", "basic moderation log"], ["Day one 無治理", "完整企業合規後台", "AI moderation as V1 core"], ["remove", "mute", "pin", "report handling", "basic log"], ["AutoMod", "risk scoring", "audit dashboard", "appeals workflow"], ["Governance Layer", "Community Group", "Topic Layer"], [
+        st("檢舉進管理入口", "檢舉帶上訊息、群組、topic 和來源。", "處理檢舉", p("Moderation", "1 report pending", null, [c("被檢舉訊息", "可疑外鏈 · 來自行情討論。", "Report"), c("上下文", "invite=週報 CTA · 新成員。", "Context")], null, null, "處理檢舉")),
+        st("基本管理動作", "管理員可移除、禁言、置頂或保留觀察。", "禁言成員", p("Admin action", "Basic controls", null, null, [r("移除訊息", "保留紀錄", "D"), r("禁言 24h", "限制高風險發言", "M"), r("置頂規則", "提醒社群邊界", "P")], null, "禁言 24h")),
+        st("最小操作紀錄", "V1 只留基本 log，後續再擴展審計與 AI 風控。", "重新播放", p("Moderation log", "Basic V1 record", null, null, [r("Kai muted 24h", "by Admin · 行情討論", "L"), r("Message removed", "Report retained", "R")], null, "重新播放"))
+      ])
+    ]),
+    mod("trust-risk", "trust-risk｜信任 / 安全 / 風控", "信任層橫跨私聊、群組、頻道、外部入口和商業聊天。V1 要做基本 block/report/mute、加入風控、管理員 log 和商業訊息邊界。", [
+      sc("user-block-report-mute", "User block / report / mute｜封鎖 / 檢舉 / 靜音", "普通用戶", "普通用戶可對人、群、頻道或商業聊天做 block、report 或 mute，保護主 inbox。", "V1 把 safety action 放在每種關係旁邊，不要求使用者去找後台設定。", [
+        ref("WhatsApp / LINE", "block、report、unsubscribe 是普通用戶安全底線。"),
+        ref("Discord", "report 和 moderation action 需要保留上下文。"),
+        ref("Telegram", "公開群和頻道需要 report、block 和 admin 接點。")
+      ], ["block", "report", "mute", "context-aware safety action"], ["只在設定頁提供安全動作", "report 不帶上下文", "商業訊息不能退訂或封鎖"], ["block", "report", "mute", "relationship safety controls"], ["AI review", "appeals center", "enterprise compliance workflow"], ["Governance Layer", "Inbox / Relationship Layer", "Trust Risk"], [
+        st("從關係打開安全動作", "安全入口在每種關係旁邊。", "打開安全動作", p("Coffee Club", "Business chat", ["Business", "Mute", "Block", "Report"], null, null, [m("Coffee Club", "本週優惠更新。"), m("你", "我想先靜音。", true)], "打開安全動作")),
+        st("選擇動作", "block、report、mute 有不同效果。", "檢舉訊息", p("Safety controls", "Choose action", null, null, [r("靜音", "停止通知，不切斷關係", "M"), r("封鎖", "停止對方訊息", "B"), r("檢舉", "送出內容與上下文", "R")], null, "檢舉")),
+        st("檢舉帶上下文", "檢舉自動帶來源、關係類型和訊息上下文。", "重新播放", p("Report sent", "Context included", null, [c("訊息上下文", "最近 5 則訊息與來源。", "Evidence"), c("關係類型", "Business chat · from product CTA。", "Context")], null, null, "重新播放"))
+      ]),
+      sc("join-risk-control", "Join risk control｜邀請 / 加入風控", "普通用戶 + 社群管理者", "邀請連結、加入申請、新成員限制和高風險動作延遲，降低公開入口濫用。", "V1 把摩擦放在高風險動作，不完全阻擋內容預覽。", [
+        ref("Telegram", "invite link、join request 和管理員權限支撐公開入口治理。"),
+        ref("Discord", "rules screening、roles 和 onboarding 是高治理社群參考。"),
+        ref("Facebook Groups", "membership questions 和 approval 能控制公開社群入口。")
+      ], ["invite expiry / revoke", "join request", "new member limits", "high-risk action delay"], ["公開連結永久有效且無限制", "新成員立即大量私訊 / 外鏈", "所有入口都重型審核"], ["invite controls", "join request", "new member limits", "high-risk action delay"], ["risk scoring", "device fingerprinting", "advanced fraud platform"], ["External Entry", "Governance Layer", "Community Group"], [
+        st("公開 invite", "邀請連結有來源、有效期和目標類型。", "送出加入", p("Group invite", "Risk checked entry", ["Invite", "Expires", "Join request"], [c("加密討論社群", "來源：市場週報 CTA。", "Public group")], null, null, "送出加入")),
+        st("新成員限制", "新成員先能閱讀和低風險回覆。", "接受規則", p("New member state", "Limited until trusted", null, null, [r("閱讀", "立即開放", "R"), r("發言", "接受規則後開放", "S"), r("外鏈 / 大量邀請", "延後開放", "L")], null, "接受規則")),
+        st("管理員可撤銷入口", "高風險來源可被暫停、撤銷或改成審核加入。", "重新播放", p("Invite controls", "Admin", null, null, [r("暫停 invite", "來源異常", "P"), r("改成審核加入", "降低灌入", "J"), r("查看來源", "post CTA / QR", "S")], null, "重新播放"))
+      ]),
+      sc("admin-action-log", "Admin action log｜管理員移除 / 禁言 / 基本紀錄", "社群管理者", "管理員完成 remove、mute 或 basic moderation 後，系統留下最小操作紀錄。", "V1 做能追溯的基本 log，不先做完整 audit console。", [
+        ref("Discord", "moderation logs、roles 和 timeout 是大型社群治理參考。"),
+        ref("Telegram", "管理員操作和權限需要可追溯。"),
+        ref("LINE OpenChat / Facebook Groups", "公開社群管理需要基本成員和內容處理能力。")
+      ], ["remove message", "mute member", "admin action log", "source context"], ["沒有紀錄的管理動作", "完整企業審計平台", "AI 自動裁決作為 V1"], ["remove", "mute", "basic admin log", "report context"], ["audit dashboard", "appeals", "AutoMod", "policy engine"], ["Governance Layer", "Trust Risk", "Community Group"], [
+        st("管理員處理", "管理員從 report 或訊息選單執行操作。", "移除訊息", p("Admin tools", "Reported message", null, [c("可疑外鏈", "行情討論 · 新成員。", "Report")], null, null, "移除訊息")),
+        st("選擇處理方式", "V1 提供移除、禁言和備註。", "確認", p("Action", "Basic moderation", null, null, [r("移除訊息", "保留 evidence", "D"), r("禁言 24h", "限制發言", "M"), r("管理備註", "給其他 admin 看", "N")], null, "確認處理")),
+        st("寫入 log", "操作紀錄保留時間、管理員、對象和上下文。", "重新播放", p("Action log", "V1 basic record", null, null, [r("Message removed", "Admin · 行情討論", "L"), r("Member muted", "24h · source retained", "M")], null, "重新播放"))
+      ]),
+      sc("business-message-safety", "Business message safety｜商業訊息安全邊界", "普通用戶 + 商家 / 商業主", "商業聊天支援 block、unsubscribe、rate limit 或品質邊界，避免商業訊息污染 inbox。", "V1 做商業訊息最小安全邊界，不開完整商業推播和客服平台。", [
+        ref("WhatsApp Business", "business quality、templates、messaging limits 和 block/report 是商業訊息參考。"),
+        ref("LINE OA", "block / unsubscribe、Messaging API rate limits 和官方帳號身份標籤提供邊界。"),
+        ref("Intercom / Zendesk", "客服和 CRM 能力重要，但屬於 Later。")
+      ], ["business label", "unsubscribe / block", "rate limit", "quality boundary"], ["無限制商業推播", "CRM ticketing", "AI customer service as V1 core"], ["business label", "block / unsubscribe", "rate limit boundary", "report"], ["CRM", "AI support", "ticket assignment", "template platform"], ["Business Lightweight Layer", "Governance Layer", "Inbox / Relationship Layer"], [
+        st("商業訊息標示", "使用者能看出這是 business chat。", "打開安全設定", p("Coffee Club", "Business chat", ["Business", "Block", "Unsubscribe"], null, null, [m("Coffee Club", "本週新品通知。"), m("你", "我想少收一點。", true)], "打開安全設定")),
+        st("退訂 / 封鎖 / 限流", "使用者可退訂通知或封鎖商家。", "退訂通知", p("Business safety", "Message boundary", null, null, [r("退訂更新", "保留聊天，不收推播", "U"), r("封鎖商家", "停止訊息", "B"), r("檢舉濫發", "送出上下文", "R")], null, "退訂更新")),
+        st("商家側邊界", "商家看到品質限制，但 CRM、AI 客服和模板平台後置。", "重新播放", p("Business boundary", "V1 only", null, [c("V1", "business label、product card、block/unsubscribe。", "Now"), c("Later", "CRM、AI support、template ops。", "Later")], null, null, "重新播放"))
+      ])
+    ]),
+    mod("business-commerce", "business-commerce｜輕量商業檔案 / 商品卡", "V1 商務只做 business profile、business chat label、product card，以及商品卡進聊天 / 頻道。不做 marketplace、payment、order 或 fulfillment。", [
+      sc("business-profile", "Business profile｜商業檔案", "商家 / 商業主 + 普通用戶", "商家有 profile、category、description 和 external link，使用者能判斷是否開始聊天或 follow channel。", "V1 商業檔案只負責身份與信任，不展開成完整商店。", [
+        ref("WhatsApp Business", "Business profile 提供地址、營業時間、網站和類別。"),
+        ref("LINE OA", "官方帳號 profile 和聊天入口建立品牌身份。"),
+        ref("Instagram Business Profile", "商業 profile 可接 CTA、DM 和外部連結。")
+      ], ["business profile", "category", "description", "external link", "chat / channel CTA"], ["full store management", "seller backend", "payment / order / fulfillment"], ["profile", "category", "description", "external link", "business label"], ["catalog sync", "seller tools", "payment", "order", "fulfillment"], ["Business Lightweight Layer", "External Entry", "Inbox / Relationship Layer"], [
+        st("商業檔案", "商家 profile 建立身份與信任。", "開始聊天", p("Coffee Club", "Business profile", ["Cafe", "Open now", "External link"], [c("Coffee Club", "咖啡與輕食 · 08:00-19:00 · coff.ee", "Profile")], null, null, "開始聊天")),
+        st("選擇關係", "使用者可以開 business chat 或 follow 商業頻道。", "打開聊天", p("Coffee Club", "Actions", null, null, [r("Business chat", "詢問商品或服務", "B"), r("Channel", "追蹤新品和活動", "C"), r("External link", "前往商家網站", "L")], null, "打開 Business chat")),
+        st("進入 business chat", "聊天中保留 business label，但不進 CRM workspace。", "重新播放", p("Coffee Club", "Business chat", null, null, null, [m("Coffee Club", "歡迎詢問商品或自取時間。"), m("你", "今天有什麼推薦？", true)], "重新播放"))
+      ]),
+      sc("product-card-in-chat", "Product card in chat｜商品卡進聊天", "商家 / 商業主 + 普通用戶", "用戶從商品或商家檔案進入 business chat，商品卡保留上下文。", "V1 把商品卡作為 structured chat object，購買、訂單和履約留給外部或 Later。", [
+        ref("WhatsApp Business", "business profile、catalog 和 product sharing 支撐商品進聊天。"),
+        ref("Shopify Inbox / Instagram", "product context 進入對話，商家基於商品回覆。"),
+        ref("LINE OA", "Flex Message / Quick Reply 可承接商品資訊，但不應變成重選單。")
+      ], ["business profile", "business chat label", "product card as structured object", "external product link"], ["full marketplace", "payment", "order / fulfillment", "full CRM"], ["business profile", "product card", "business chat label", "external link"], ["CRM", "AI support", "payment", "order", "fulfillment"], ["Business Lightweight Layer", "Inbox / Relationship Layer", "Governance Layer"], [
+        st("商品進聊天", "商品卡可從 profile、外部 CTA 或商家回覆帶入聊天。", "詢問商品", p("拿鐵組合", "Product card", ["Product", "Business", "External link"], [c("拿鐵組合", "圖片、名稱、簡短描述、外部連結。", "Product")], null, null, "詢問商品")),
+        st("聊天保留上下文", "使用者詢問時不必重新描述商品。", "商家回覆", p("Coffee Club", "Business chat", null, null, null, [m("商品卡", "拿鐵組合 · 外部連結"), m("你", "今天可以自取嗎？", true), m("Coffee Club", "可以，17:00 前都能取。")], "查看邊界")),
+        st("範圍邊界", "V1 不在 IM 內完成付款、訂單或履約。", "重新播放", p("V1 scope", "Lightweight commerce", null, [c("V1", "商品卡、business chat label、外部連結。", "Now"), c("Later", "CRM、AI support、payment、order、fulfillment。", "Later")], null, null, "重新播放"))
+      ]),
+      sc("product-card-in-channel", "Product card in channel｜商品卡進頻道貼文", "商家 / 商業主 + 普通用戶", "商品卡出現在商業頻道貼文或 channel CTA，讀者可追蹤頻道或進 business chat。", "V1 讓商品卡支撐內容到商業聊天的轉換，不在頻道內建完整購物流。", [
+        ref("Instagram", "商業內容和 product tags 能把內容興趣導向商品或 DM。"),
+        ref("WhatsApp Business", "product sharing 可作為聊天物件。"),
+        ref("Shopify Inbox", "商品連結和客戶上下文進入對話，交易仍在商店系統。")
+      ], ["product card in post", "CTA to chat", "business channel", "external link"], ["channel marketplace", "checkout inside channel", "order management"], ["product card in channel", "CTA to business chat", "external link"], ["catalog management", "payment", "order", "fulfillment", "campaign CRM"], ["Business Lightweight Layer", "Public Channel", "Channel Loop"], [
+        st("頻道貼文商品卡", "商業頻道貼文可附商品卡。", "查看商品", p("Coffee Club Channel", "Business update", null, [c("週末新品", "拿鐵組合 · 可詢問自取。", "Product card")], null, null, "查看商品")),
+        st("商品 CTA", "商品卡可導向 business chat 或外部商品頁。", "進聊天", p("拿鐵組合", "Product card", null, null, [r("詢問商家", "帶商品上下文進聊天", "B"), r("外部連結", "前往商家網站", "L"), r("追蹤頻道", "接收新品更新", "C")], null, "詢問商家")),
+        st("聊天承接", "商品上下文進聊天；頻道不變成完整購物車。", "重新播放", p("Coffee Club", "Business chat", null, null, null, [m("商品卡", "拿鐵組合 · 來自頻道貼文"), m("你", "這個有冰的嗎？", true)], "重新播放"))
+      ]),
+      sc("external-cta-to-business-chat", "External CTA to business chat｜外部 CTA 進商業聊天", "商家 / 商業主 + 普通用戶", "廣告、商品連結或內容 CTA 直接打開 business chat，並帶入商品或來源上下文。", "V1 接住商業意圖和來源，不做完整廣告投放、CRM routing 或交易系統。", [
+        ref("WhatsApp Business", "click-to-chat 和 Business QR 讓外部入口進聊天。"),
+        ref("Instagram", "click-to-message ads、product tags 和 profile CTA 導向 DM 或商品。"),
+        ref("Meta Business Suite / Shopify Inbox", "商家後續可能需要集中收件箱，但 V1 不展開成 CRM。")
+      ], ["CTA source tracking", "business chat target", "product context", "business label"], ["ad optimization platform", "full CRM assignment", "payment / order / fulfillment"], ["external CTA", "business chat", "source tracking", "product card"], ["ad manager", "CRM", "AI support", "payment", "order"], ["External Entry", "Business Lightweight Layer", "Inbox / Relationship Layer"], [
+        st("點擊外部 CTA", "外部來源和商品上下文被帶入。", "開啟聊天", p("External CTA", "Ad / content / product link", ["Source tracked", "Business", "Product"], [c("拿鐵組合", "來源：Instagram 內容 CTA。", "Product context")], null, null, "開啟商業聊天")),
+        st("Business chat 開場", "聊天自帶來源提示，商家和使用者都知道脈絡。", "回覆", p("Coffee Club", "Business chat · from external CTA", null, null, null, [m("系統", "來源：Instagram content CTA"), m("商品卡", "拿鐵組合 · 外部連結"), m("你", "請問今天可自取嗎？", true)], "回覆")),
+        st("留在 inbox", "商業對話回到 inbox，保留 business label 和安全動作。", "重新播放", p("Inbox", "Business relation", null, null, [r("Coffee Club", "Business · 來自外部 CTA", "B"), r("Market Channel", "Channel update", "C")], null, "重新播放"))
+      ])
+    ]),
+    mod("status-updates", "status-updates｜輕量狀態 / 更新", "status-updates 是輕量佔位：可發布 update/status object，互動回到私聊、business chat、channel 或 inbox。不做完整 stories editor、social feed 或 recommendation。", [
+      sc("personal-status-reply", "Personal status reply｜個人狀態回覆進私聊", "普通用戶", "使用者發布輕量 status，朋友回覆後回到 1:1 私聊。", "V1 只保留低壓力近況與回覆路徑，不做完整 stories editor。", [
+        ref("WhatsApp Status", "Status 回覆沉澱到私聊，和主聊天列表保持關係。"),
+        ref("Instagram Stories", "Stories reply 會進 DM，但 V1 不採完整創作工具。"),
+        ref("Snapchat Stories", "短生命週期降低發布壓力，但攝影心智不是 V1 主入口。")
+      ], ["lightweight status object", "reply to private chat", "visibility control", "expiry"], ["full stories editor", "social feed", "recommendation", "creator analytics"], ["simple status", "reply path", "visibility", "return to chat"], ["stickers editor", "story highlights", "feed ranking", "recommendation"], ["Status / Updates Surface", "Inbox / Relationship Layer", "Identity Layer"], [
+        st("發布狀態", "使用者發布短文字或輕量更新，設定可見範圍。", "發布", p("Status", "Personal update", ["24h", "Friends", "Reply to chat"], [c("今天晚點回訊息", "簡短狀態，不進內容 feed。", "Status")], null, null, "發布狀態")),
+        st("朋友回覆", "朋友從 status 回覆，直接進 1:1 私聊。", "打開回覆", p("Status reply", "from Mina", null, null, null, [m("Mina", "你今天很忙嗎？"), m("你", "對，晚點回。", true)], "打開私聊")),
+        st("回到私聊", "狀態互動回到既有關係。", "重新播放", p("Mina", "Private chat", null, null, null, [m("Mina", "好，那你忙完再說。"), m("你", "謝謝。", true)], "重新播放"))
+      ]),
+      sc("business-or-channel-update", "Business or channel update｜商業 / 頻道輕量更新", "商家 / 商業主 + 普通用戶", "商家或頻道發布輕量更新，使用者可回到 channel、business chat 或 product card。", "V1 讓 update 成為輕觸達表面，不把它做成品牌 campaign 系統。", [
+        ref("WhatsApp Updates / Channels", "Status 和 Channels 同在 Updates，但頻道仍是低噪音更新。"),
+        ref("Instagram Stories", "品牌可用 Stories 做輕量互動，但完整工具過重。"),
+        ref("LINE OA", "官方帳號可推送更新並導回聊天或服務入口。")
+      ], ["lightweight business update", "return to channel", "CTA to business chat", "product card link"], ["full campaign manager", "recommendation feed", "visual stories suite"], ["simple update", "business/channel sender", "CTA", "return path"], ["campaign automation", "rich story editor", "ads delivery", "recommendation"], ["Status / Updates Surface", "Public Channel", "Business Lightweight Layer"], [
+        st("商業輕量更新", "商家或頻道發布短更新。", "查看 CTA", p("Updates", "Business / Channel", null, [c("Coffee Club 今日供應", "拿鐵組合 17:00 前可自取。", "Business update")], null, null, "查看 CTA")),
+        st("CTA 分流", "更新可導向 business chat、商品卡或頻道貼文。", "進入聊天", p("Coffee Club update", "Lightweight CTA", null, null, [r("詢問商品", "進 business chat", "B"), r("查看商品卡", "帶上下文", "P"), r("追蹤頻道", "接收更新", "C")], null, "詢問商品")),
+        st("Business chat 承接", "互動回到聊天或頻道，不建立獨立 feed。", "重新播放", p("Coffee Club", "Business chat", null, null, null, [m("系統", "來源：今日供應 update"), m("你", "拿鐵組合還有嗎？", true)], "重新播放"))
+      ]),
+      sc("update-return-to-inbox", "Update return to inbox｜更新互動回到 inbox / chat", "普通用戶 + 商家 / 商業主", "使用者從 update 互動後，回到 inbox、chat、channel 或 product card 的正確位置。", "V1 的 update 只做回訪路徑，不做獨立內容宇宙。", [
+        ref("WhatsApp Status", "status reply 回到 chat，channel update 可轉發或回訪。"),
+        ref("Instagram Stories", "reply 進 DM，CTA 可進 profile 或商品。"),
+        ref("LINE OA", "更新可用 quick reply / rich menu 帶回聊天與服務入口。")
+      ], ["update deep link", "reply path", "return to inbox", "type label"], ["更新互動停留在獨立 feed", "把 status 做成主產品入口", "推薦系統先行"], ["update object", "reply / CTA", "deep link to chat/inbox", "type label"], ["feed ranking", "creator tools", "story archive", "recommendation"], ["Status / Updates Surface", "Inbox / Relationship Layer", "Return Loop"], [
+        st("從 update 互動", "使用者點擊 update 的回覆或 CTA。", "回覆", p("Update", "Return path", null, [c("Market Channel 更新", "點擊可回到頻道貼文或討論。", "Channel update"), c("Mina 狀態", "回覆會進私聊。", "Personal status")], null, null, "回覆 Mina")),
+        st("進入正確關係", "不同 update 類型回到不同表面。", "回到 inbox", p("Mina", "Private chat · from status", null, null, null, [m("系統", "來源：Mina 的狀態"), m("你", "晚點聊。", true)], "回到 Inbox")),
+        st("Inbox 類型清楚", "回訪位置仍由 inbox type label 管理。", "重新播放", p("Inbox", "Return loop", null, null, [r("Mina", "Private · from status reply", "1"), r("Market Channel", "Channel · update", "C"), r("Coffee Club", "Business · from update", "B")], null, "重新播放"))
+      ])
+    ])
   ]
 };
 
-function step(id, title, description, action, phone) {
-  return { id, title, description, action, phone };
+function source(label, href) {
+  return { label, href };
 }
 
-function card(title, body, meta) {
+function mod(id, name, summary, scenarios) {
+  return { id, name, summary, scenarios };
+}
+
+function sc(id, name, role, journey, choice, references, adopted, rejected, v1, later, implication, steps) {
+  return {
+    id,
+    name,
+    role,
+    journey,
+    choice,
+    references,
+    adopted,
+    rejected,
+    scope: { v1, later },
+    implication,
+    steps,
+    color: "cyan",
+    tag: "Our V1 Flow",
+    evidenceLevel: "Evidence-backed"
+  };
+}
+
+function ref(app, basis, sourceRef = SOURCES.compare) {
+  return { app, basis, source: sourceRef };
+}
+
+function st(title, description, action, phone) {
+  return { id: title, title, description, action, phone };
+}
+
+function p(header, subheader, chips, cards, list, messages, bottom, topics = false) {
+  return { header, subheader, chips, cards, list: topics ? null : list, topics: topics ? list : null, messages, bottom };
+}
+
+function c(title, body, meta) {
   return { title, body, meta };
 }
 
-function row(title, body, icon) {
+function r(title, body, icon) {
   return { title, body, icon };
 }
 
-function msg(author, body, me = false) {
+function m(author, body, me = false) {
   return { author, body, me };
-}
-
-function tile(title, body) {
-  return { title, body };
-}
-
-function facts(extra) {
-  return extra;
-}
-
-function trade(type, claim, evidence, notes) {
-  return { type, claim, evidence, notes };
-}
-
-function derived(messageDensity, onboardingDepth, path, conversion) {
-  return { messageDensity, onboardingDepth, path, conversion };
 }
 
 const MODULE_ALIASES = {
@@ -1096,18 +346,12 @@ function createInitialPlaygroundState() {
   const requestedModuleId = MODULE_ALIASES[params.get("module")] || params.get("module");
   const module = DATA.modules.find((item) => item.id === requestedModuleId) || DATA.modules[0];
   const scenario = module.scenarios.find((item) => item.id === params.get("scenario")) || module.scenarios[0];
-  const architecture = scenario.architectures.find((item) => item.id === params.get("architecture")) || scenario.architectures[0];
   const requestedStep = Number.parseInt(params.get("step"), 10);
   const stepIndex = Number.isInteger(requestedStep)
-    ? Math.min(Math.max(requestedStep, 0), architecture.steps.length - 1)
+    ? Math.min(Math.max(requestedStep, 0), scenario.steps.length - 1)
     : 0;
 
-  return {
-    moduleId: module.id,
-    scenarioId: scenario.id,
-    architectureId: architecture.id,
-    stepIndex
-  };
+  return { moduleId: module.id, scenarioId: scenario.id, stepIndex };
 }
 
 const playgroundState = createInitialPlaygroundState();
@@ -1115,16 +359,14 @@ const playgroundState = createInitialPlaygroundState();
 function activeContext() {
   const module = DATA.modules.find((item) => item.id === playgroundState.moduleId) || DATA.modules[0];
   const scenario = module.scenarios.find((item) => item.id === playgroundState.scenarioId) || module.scenarios[0];
-  const architecture = scenario.architectures.find((item) => item.id === playgroundState.architectureId) || scenario.architectures[0];
-  const stepIndex = Math.min(playgroundState.stepIndex, architecture.steps.length - 1);
-  return { module, scenario, architecture, stepIndex, step: architecture.steps[stepIndex] };
+  const stepIndex = Math.min(playgroundState.stepIndex, scenario.steps.length - 1);
+  return { module, scenario, stepIndex, step: scenario.steps[stepIndex] };
 }
 
 function createNode(tag, options = {}, children = []) {
   const node = document.createElement(tag);
   if (options.className) node.className = options.className;
   if (options.text != null) node.textContent = options.text;
-  if (options.htmlFor) node.htmlFor = options.htmlFor;
   if (options.type) node.type = options.type;
   if (options.ariaLabel) node.setAttribute("aria-label", options.ariaLabel);
   if (options.href) node.href = options.href;
@@ -1142,12 +384,12 @@ function appendChildren(parent, children) {
 }
 
 function updatePlaygroundUrl() {
-  const { module, scenario, architecture, stepIndex } = activeContext();
+  const { module, scenario, stepIndex } = activeContext();
   const params = new URLSearchParams(window.location.search);
   params.set("module", module.id);
   params.set("scenario", scenario.id);
-  params.set("architecture", architecture.id);
   params.set("step", String(stepIndex));
+  params.delete("architecture");
   window.history.replaceState(null, "", `${window.location.pathname}?${params.toString()}${window.location.hash}`);
 }
 
@@ -1157,144 +399,75 @@ function setPlaygroundState(next) {
   renderPlayground();
 }
 
-function observableFactsFor(architecture) {
-  return [
-    ["步驟數", `${architecture.steps.length}`],
-    ["入口類型", architecture.facts.entryType],
-    ["第一個承諾點", architecture.facts.firstCommitment],
-    ["預覽前是否需要帳號", architecture.facts.accountBeforePreview],
-    ["回覆前是否需要加入", architecture.facts.joinBeforeReply],
-    ["加入前是否看得見公私邊界", architecture.facts.boundaryVisible],
-    ["討論結構", architecture.facts.discussionStructure],
-    ["是否立即暴露完整訊息流", architecture.facts.fullStreamExposed],
-    ["治理接觸點", architecture.facts.moderation]
-  ];
-}
-
-function comparisonFactsFor(architecture) {
-  return [
-    ["步驟", `${architecture.steps.length}`],
-    ["第一承諾", architecture.facts.firstCommitment],
-    ["直接進訊息流", architecture.facts.fullStreamExposed],
-    ["討論結構", architecture.facts.discussionStructure]
-  ];
-}
-
 function renderPlayground() {
   const root = document.getElementById("interaction-root");
-  const { module, scenario, architecture, stepIndex, step } = activeContext();
+  const { module, scenario, stepIndex, step } = activeContext();
   root.replaceChildren(
     createNode("div", { className: "ip-shell" }, [
-      renderSelector(module, scenario, architecture),
+      renderSelector(module, scenario),
       createNode("section", { className: "ip-main-grid" }, [
         createNode("div", { className: "ip-phone-wrap" }, [
           createNode("div", { className: "ip-phone-stage" }, [
-            renderPhone(step, architecture),
-            renderStepNavigator(architecture, stepIndex)
+            renderPhone(step, scenario),
+            renderStepNavigator(scenario, stepIndex)
           ])
         ]),
-        renderEvidence(scenario, architecture)
+        renderEvidence(scenario)
       ])
     ])
   );
 }
 
-function renderSelector(module, scenario, architecture) {
+function renderSelector(module, scenario) {
   const moduleSelect = createNode("select", {
     value: module.id,
     onChange: (event) => {
       const nextModule = DATA.modules.find((item) => item.id === event.target.value) || DATA.modules[0];
-      setPlaygroundState({
-        moduleId: nextModule.id,
-        scenarioId: nextModule.scenarios[0].id,
-        architectureId: nextModule.scenarios[0].architectures[0].id,
-        stepIndex: 0
-      });
+      setPlaygroundState({ moduleId: nextModule.id, scenarioId: nextModule.scenarios[0].id, stepIndex: 0 });
     }
   }, DATA.modules.map((item) => createNode("option", { value: item.id, text: item.name })));
 
-  const scenarioField = module.scenarios.length === 1
-    ? createNode("div", { className: "ip-static-field", text: scenario.name })
-    : createNode("select", {
-      value: scenario.id,
-      onChange: (event) => {
-        const nextScenario = module.scenarios.find((item) => item.id === event.target.value) || module.scenarios[0];
-        setPlaygroundState({
-          scenarioId: nextScenario.id,
-          architectureId: nextScenario.architectures[0].id,
-          stepIndex: 0
-        });
-      }
-    }, module.scenarios.map((item) => createNode("option", { value: item.id, text: item.name })));
+  const scenarioSelect = createNode("select", {
+    value: scenario.id,
+    onChange: (event) => {
+      const nextScenario = module.scenarios.find((item) => item.id === event.target.value) || module.scenarios[0];
+      setPlaygroundState({ scenarioId: nextScenario.id, stepIndex: 0 });
+    }
+  }, module.scenarios.map((item) => createNode("option", { value: item.id, text: item.name })));
 
-  return createNode("section", { className: "ip-selector", ariaLabel: "參考流程選擇器" }, [
+  return createNode("section", { className: "ip-selector", ariaLabel: "V1 情境選擇器" }, [
+    createNode("div", { className: "ip-field" }, [createNode("label", { text: "Module" }), moduleSelect]),
+    createNode("div", { className: "ip-field" }, [createNode("label", { text: "Scenario / Journey" }), scenarioSelect]),
     createNode("div", { className: "ip-field" }, [
-      createNode("label", { text: "模組" }),
-      moduleSelect
-    ]),
-    createNode("div", { className: "ip-field" }, [
-      createNode("label", { text: "使用者流程 / 場景" }),
-      scenarioField
-    ]),
-    createNode("div", { className: "ip-field" }, [
-      createNode("label", { text: "架構 / App" }),
-      createNode("div", { className: "ip-architecture-tabs" },
-        scenario.architectures.map((item) => createNode("button", {
-          type: "button",
-          className: `ip-tab ${item.id === architecture.id ? "active" : ""}`,
-          text: item.name,
-          onClick: () => setPlaygroundState({ architectureId: item.id, stepIndex: 0 })
-        }))
-      )
-    ])
-  ]);
-}
-
-function renderPhone(step, architecture) {
-  const phone = step.phone || {};
-  const platform = platformKey(architecture);
-  return createNode("div", { className: `ip-phone ip-platform-${platform}`, ariaLabel: "互動手機 mockup" }, [
-    createNode("div", { className: "ip-phone-screen" }, [
-      createNode("div", { className: "ip-status" }, [
-        createNode("span", { text: "9:41" }),
-        createNode("span", { text: "● ▲" })
-      ]),
-      createNode("div", { className: "ip-mobile-header" }, [
-        createNode("b", { text: phone.header || step.title }),
-        createNode("span", { text: phone.subheader || step.description })
-      ]),
-      createNode("div", { className: "ip-mobile-body" }, [
-        createNode("div", { className: `ip-mobile-scroll ip-accent-${architecture.color}` }, [
-          phone.chips ? createNode("div", { className: "ip-chip-row" }, phone.chips.map((chip) => createNode("span", { className: "ip-chip", text: chip }))) : null,
-          phone.cards ? phone.cards.map((item) => renderFeedCard(item)) : null,
-          phone.list ? phone.list.map((item) => renderListRow(item)) : null,
-          phone.topics ? phone.topics.map((item) => renderListRow(item, true)) : null,
-          phone.messages ? createNode("div", { className: "ip-messages" }, phone.messages.map((item) => renderMessage(item))) : null,
-          phone.menu ? createNode("div", { className: "ip-menu-grid" }, phone.menu.map((item) => renderMenuTile(item))) : null,
-          phone.onboarding ? createNode("div", { className: "ip-onboarding-card" }, [
-            createNode("b", { text: phone.onboarding[0] }),
-            createNode("div", { className: "ip-chip-row" }, phone.onboarding.slice(1).map((item) => createNode("span", { className: "ip-chip", text: item })))
-          ]) : null
-        ])
-      ]),
-      createNode("div", { className: "ip-bottom-action" }, [
-        createNode("button", {
-          type: "button",
-          className: "ip-primary",
-          text: phone.bottom || step.action,
-          onClick: goNextStep
-        })
+      createNode("label", { text: "Our V1 Flow" }),
+      createNode("div", { className: "ip-static-field ip-v1-flow-field" }, [
+        createNode("span", { text: "單一提案流程" }),
+        createNode("strong", { text: "Evidence-backed" })
       ])
     ])
   ]);
 }
 
-function platformKey(architecture) {
-  if (architecture.id.startsWith("telegram")) return "telegram";
-  if (architecture.id.startsWith("whatsapp")) return "whatsapp";
-  if (architecture.id.startsWith("discord")) return "discord";
-  if (architecture.id.startsWith("line")) return "line";
-  return "ours";
+function renderPhone(step, scenario) {
+  const phone = step.phone || {};
+  return createNode("div", { className: "ip-phone ip-platform-ours", ariaLabel: "V1 情境手機 mockup" }, [
+    createNode("div", { className: "ip-phone-screen" }, [
+      createNode("div", { className: "ip-status" }, [createNode("span", { text: "9:41" }), createNode("span", { text: "● ▲" })]),
+      createNode("div", { className: "ip-mobile-header" }, [createNode("b", { text: phone.header || step.title }), createNode("span", { text: phone.subheader || scenario.name })]),
+      createNode("div", { className: "ip-mobile-body" }, [
+        createNode("div", { className: `ip-mobile-scroll ip-accent-${scenario.color}` }, [
+          phone.chips ? createNode("div", { className: "ip-chip-row" }, phone.chips.map((chip) => createNode("span", { className: "ip-chip", text: chip }))) : null,
+          phone.cards ? phone.cards.map((item) => renderFeedCard(item)) : null,
+          phone.list ? phone.list.map((item) => renderListRow(item)) : null,
+          phone.topics ? phone.topics.map((item) => renderListRow(item, true)) : null,
+          phone.messages ? createNode("div", { className: "ip-messages" }, phone.messages.map((item) => renderMessage(item))) : null
+        ])
+      ]),
+      createNode("div", { className: "ip-bottom-action" }, [
+        createNode("button", { type: "button", className: "ip-primary", text: phone.bottom || step.action, onClick: goNextStep })
+      ])
+    ])
+  ]);
 }
 
 function renderFeedCard(item) {
@@ -1308,11 +481,8 @@ function renderFeedCard(item) {
 function renderListRow(item, topic = false) {
   return createNode("button", { type: "button", className: topic ? "ip-topic-row" : "ip-list-row", onClick: goNextStep }, [
     createNode("span", { className: "ip-avatar", text: item.icon || item.title.slice(0, 1) }),
-    createNode("span", { className: "ip-row-text" }, [
-      createNode("b", { text: item.title }),
-      createNode("span", { text: item.body })
-    ]),
-    createNode("span", { className: "ip-row-arrow", text: topic ? "›" : "" })
+    createNode("span", { className: "ip-row-text" }, [createNode("b", { text: item.title }), createNode("span", { text: item.body })]),
+    createNode("span", { className: "ip-row-arrow", text: topic ? ">" : "" })
   ]);
 }
 
@@ -1323,155 +493,77 @@ function renderMessage(item) {
   ]);
 }
 
-function renderMenuTile(item) {
-  return createNode("button", { type: "button", className: "ip-menu-tile", onClick: goNextStep }, [
-    createNode("b", { text: item.title }),
-    createNode("span", { text: item.body })
-  ]);
-}
-
 function goNextStep() {
-  const { architecture } = activeContext();
-  setPlaygroundState({ stepIndex: (playgroundState.stepIndex + 1) % architecture.steps.length });
+  const { scenario } = activeContext();
+  setPlaygroundState({ stepIndex: (playgroundState.stepIndex + 1) % scenario.steps.length });
 }
 
-function renderStepNavigator(architecture, activeIndex) {
+function renderStepNavigator(scenario, activeIndex) {
   return createNode("aside", { className: "ip-step-panel" }, [
     createNode("div", { className: "ip-step-card" }, [
-      createNode("span", { className: "eyebrow", text: architecture.tag }),
-      createNode("h3", { text: architecture.steps[activeIndex].title }),
-      createNode("p", { text: architecture.steps[activeIndex].description })
+      createNode("span", { className: "eyebrow", text: scenario.tag }),
+      createNode("h3", { text: scenario.steps[activeIndex].title }),
+      createNode("p", { text: scenario.steps[activeIndex].description })
     ]),
     createNode("div", { className: "ip-progress", ariaLabel: "流程步驟" },
-      architecture.steps.map((item, index) => createNode("button", {
+      scenario.steps.map((item, index) => createNode("button", {
         type: "button",
         className: index === activeIndex ? "active" : "",
         onClick: () => setPlaygroundState({ stepIndex: index })
-      }, [
-        createNode("span", { className: "ip-dot", text: `${index + 1}` }),
-        createNode("span", { text: item.title })
-      ]))
+      }, [createNode("span", { className: "ip-dot", text: `${index + 1}` }), createNode("span", { text: item.title })]))
     )
   ]);
 }
 
 function renderPanelTitle(title, meta) {
-  return createNode("div", { className: "ip-panel-title" }, [
-    createNode("h2", { text: title }),
-    createNode("span", { text: meta })
+  return createNode("div", { className: "ip-panel-title" }, [createNode("h2", { text: title }), meta ? createNode("span", { text: meta }) : null]);
+}
+
+function renderEvidence(scenario) {
+  return createNode("aside", { className: "ip-evidence", ariaLabel: "V1 情境證據與推導" }, [
+    createNode("section", { className: "ip-panel-section" }, [
+      renderPanelTitle("Journey Covered", scenario.role),
+      createNode("p", { className: "ip-panel-copy", text: scenario.journey }),
+      createNode("p", { className: "ip-method-note", text: scenario.choice })
+    ]),
+    createNode("section", { className: "ip-panel-section" }, [renderPanelTitle("Reference Basis", "source: compare_features"), renderReferenceBasis(scenario.references)]),
+    createNode("section", { className: "ip-panel-section" }, [renderPanelTitle("Adopted Pattern", scenario.evidenceLevel), renderPillList(scenario.adopted, "adopted")]),
+    createNode("section", { className: "ip-panel-section" }, [renderPanelTitle("Rejected Pattern", "V1 boundary"), renderPillList(scenario.rejected, "rejected")]),
+    createNode("section", { className: "ip-panel-section" }, [renderPanelTitle("V1 Scope Boundary", "Now / Later"), renderScopeBoundary(scenario.scope)]),
+    createNode("section", { className: "ip-panel-section" }, [renderPanelTitle("Architecture Implication", "final map"), renderPillList(scenario.implication, "implication")])
   ]);
 }
 
-function renderArchitectureComparison(scenario, activeArchitecture) {
-  return createNode("div", { className: "ip-compare-grid" },
-    scenario.architectures.map((item) => createNode("button", {
-      type: "button",
-      className: `ip-compare-card ${item.id === activeArchitecture.id ? "active" : ""}`,
-      onClick: () => setPlaygroundState({ architectureId: item.id, stepIndex: 0 })
-    }, [
-      createNode("span", { className: `ip-compare-tag ip-accent-${item.color}`, text: item.tag }),
-      createNode("b", { text: item.name }),
-      createNode("span", { className: "ip-flow-line", text: item.facts.discussionStructure }),
-      createNode("div", { className: "ip-mini-facts" },
-        comparisonFactsFor(item).map(([label, value]) => createNode("span", { className: "ip-mini-fact" }, [
-          createNode("small", { text: label }),
-          createNode("strong", { text: value })
-        ]))
-      )
+function renderReferenceBasis(references) {
+  return createNode("div", { className: "ip-reference-list" },
+    references.map((item) => createNode("article", { className: "ip-reference-item" }, [
+      createNode("b", { text: item.app }),
+      createNode("p", { text: item.basis }),
+      createNode("a", { href: item.source.href, text: item.source.label })
     ]))
   );
 }
 
-function renderJudgeStrip(architecture) {
-  const items = [
-    ["步驟", `${architecture.steps.length}`],
-    ["第一承諾", architecture.facts.firstCommitment],
-    ["加入後", architecture.facts.fullStreamExposed],
-    ["分流深度", architecture.derived.onboardingDepth]
-  ];
-  return createNode("div", { className: "ip-judge-strip" },
-    items.map(([label, value]) => createNode("div", { className: "ip-judge-item" }, [
-      createNode("small", { text: label }),
-      createNode("strong", { text: value })
-    ]))
-  );
+function renderPillList(items, tone) {
+  return createNode("div", { className: `ip-pill-list ${tone}` }, items.map((item) => createNode("span", { text: item })));
 }
 
-function renderFlowVerdict(architecture) {
-  const items = [
-    ["入口摩擦", architecture.derived.onboardingDepth],
-    ["訊息噪音", architecture.derived.messageDensity],
-    ["承諾點", architecture.derived.conversion],
-    ["路徑", architecture.derived.path]
-  ];
-  return createNode("div", { className: "ip-verdict-grid" },
-    items.map(([label, value]) => createNode("article", { className: "ip-verdict" }, [
-      createNode("span", { text: label }),
-      createNode("strong", { text: value })
-    ]))
-  );
-}
-
-function renderTakeaways(architecture) {
-  return createNode("div", { className: "ip-takeaway-list" },
-    architecture.tradeoffs.slice(0, 3).map((item) => createNode("article", { className: `ip-takeaway ${item.type}` }, [
-      createNode("span", { text: typeLabel(item.type) }),
-      createNode("p", { text: item.claim })
-    ]))
-  );
-}
-
-function renderDecisionOptions(scenario) {
-  return createNode("div", { className: "ip-option-list" },
-    scenario.openDecision.options.map((item) => createNode("article", { className: "ip-option" }, [
-      createNode("b", { text: item.name }),
-      createNode("p", { text: item.tradeoff })
-    ]))
-  );
-}
-
-function typeLabel(type) {
-  const labels = {
-    Advantage: "優勢",
-    Risk: "風險",
-    Constraint: "限制",
-    Unknown: "未知",
-    Hypothesis: "假設"
-  };
-  return labels[type] || type;
-}
-
-function renderEvidence(scenario, architecture) {
-  return createNode("aside", { className: "ip-evidence", ariaLabel: "參考流程證據面板" }, [
-    createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("Reference Flow", architecture.name),
-      renderJudgeStrip(architecture)
-    ]),
-    createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("Flow Characteristics", "reference flow traits"),
-      renderFlowVerdict(architecture)
-    ]),
-    createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("Adopted / Rejected Pattern", "參考產品 pattern 對照"),
-      renderDecisionOptions(scenario)
-    ]),
-    createNode("section", { className: "ip-panel-section" }, [
-      renderPanelTitle("V1 Architecture Implication", "architecture implication"),
-      renderTakeaways(architecture)
-    ])
+function renderScopeBoundary(boundary) {
+  return createNode("div", { className: "ip-scope-columns" }, [
+    createNode("article", { className: "ip-scope-card v1" }, [createNode("b", { text: "V1" }), createNode("ul", {}, boundary.v1.map((item) => createNode("li", { text: item })))]),
+    createNode("article", { className: "ip-scope-card later" }, [createNode("b", { text: "Later" }), createNode("ul", {}, boundary.later.map((item) => createNode("li", { text: item })))])
   ]);
 }
 
 function bootPlayground() {
   try {
     renderPlayground();
+    updatePlaygroundUrl();
   } catch (error) {
-    console.error("Reference Flow Comparison failed to render.", error);
+    console.error("V1 Scenario Playground failed to render.", error);
     const root = document.getElementById("interaction-root");
     if (root) {
-      root.replaceChildren(createNode("div", { className: "loading-shell" }, [
-        createNode("p", { text: "Reference Flow Comparison 載入失敗，請查看瀏覽器 Console 的錯誤訊息。" })
-      ]));
+      root.replaceChildren(createNode("div", { className: "loading-shell" }, [createNode("p", { text: "V1 Scenario Playground 載入失敗，請查看瀏覽器 Console 的錯誤訊息。" })]));
     }
   }
 }
