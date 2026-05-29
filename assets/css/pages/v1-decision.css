@@ -1611,7 +1611,7 @@
 }
 
 .scenario-coverage-table {
-  min-width: 860px;
+  min-width: 1040px;
 }
 
 .scenario-link-list,
@@ -1761,16 +1761,22 @@
 
 .network-governance {
   display: grid;
-  gap: 8px;
-  border-color: rgba(15, 23, 42, 0.20);
+  gap: 12px;
+  border-color: rgba(15, 23, 42, 0.28);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08)),
-    linear-gradient(135deg, rgba(7, 17, 31, 0.88), rgba(0, 87, 216, 0.72), rgba(0, 199, 190, 0.66));
+    linear-gradient(180deg, rgba(15, 23, 42, 0.88), rgba(30, 64, 115, 0.90)),
+    linear-gradient(135deg, rgba(7, 17, 31, 0.94), rgba(0, 87, 216, 0.62));
 }
 
-.network-governance span,
+.network-governance span {
+  background: rgba(241, 248, 255, 0.94);
+  color: #123a63;
+}
+
 .network-governance p {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 14px;
+  font-weight: 780;
 }
 
 .network-later-hooks {

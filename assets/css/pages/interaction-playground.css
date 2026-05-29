@@ -62,9 +62,10 @@
   border-radius: 18px;
 }
 
+
 .ip-selector {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.15fr;
+  grid-template-columns: 1fr 1fr;
   gap: 14px;
   padding: 14px;
 }
@@ -81,8 +82,7 @@
   font-weight: 800;
 }
 
-.ip-field select,
-.ip-static-field {
+.ip-field select {
   width: 100%;
   min-height: 42px;
   border: 1px solid rgba(15, 23, 42, 0.12);
@@ -93,12 +93,6 @@
   font: inherit;
 }
 
-.ip-static-field {
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  line-height: 1.3;
-}
 
 .ip-main-grid {
   display: grid;
@@ -521,10 +515,12 @@
   background: rgba(241, 245, 249, 0.95);
 }
 
-.ip-message.me {
+.playground-page .ip-message.me {
   justify-self: end;
   color: #fff;
-  background: linear-gradient(135deg, var(--ip-blue), #38bdf8);
+  font-weight: 720;
+  background: linear-gradient(135deg, #0f5fc7, #0877b9);
+  box-shadow: 0 10px 24px rgba(8, 92, 171, 0.20);
 }
 
 .ip-message small {
@@ -534,8 +530,9 @@
   font-size: 10px;
 }
 
-.ip-message.me small {
-  color: rgba(255, 255, 255, 0.75);
+.playground-page .ip-message.me small {
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 680;
 }
 
 .ip-platform-whatsapp .ip-message {
@@ -1138,6 +1135,7 @@
     padding-top: 16px;
   }
 
+
   .ip-phone-wrap,
   .ip-evidence {
     padding: 16px;
@@ -1157,24 +1155,6 @@
   }
 }
 
-.ip-v1-flow-field {
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.ip-v1-flow-field span {
-  color: var(--ip-ink);
-  font-size: 13px;
-}
-
-.ip-v1-flow-field strong {
-  border-radius: 999px;
-  background: rgba(8, 145, 178, 0.12);
-  color: var(--ip-cyan);
-  padding: 5px 8px;
-  font-size: 11px;
-  white-space: nowrap;
-}
 
 .ip-reference-list,
 .ip-pill-list,
@@ -1273,34 +1253,6 @@
 
 
 
-.ip-label-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.ip-label-strip span {
-  display: grid;
-  gap: 3px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.58);
-  padding: 9px 10px;
-}
-
-.ip-label-strip small {
-  color: var(--ip-muted);
-  font-size: 10px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.ip-label-strip b {
-  color: var(--ip-ink);
-  font-size: 12px;
-  line-height: 1.25;
-}
 
 .ip-source-note {
   margin: 0 0 10px;
@@ -1344,7 +1296,6 @@
 }
 
 @media (max-width: 760px) {
-  .ip-label-strip,
   .ip-pill-list,
   .ip-scope-columns {
     grid-template-columns: 1fr;

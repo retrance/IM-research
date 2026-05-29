@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Creator-led / Community-led IM 首頁原型</title>
+    <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css?v=shared-ui-20260521">
+    <link rel="stylesheet" href="../assets/css/components.css?v=shared-ui-20260521">
+    <link rel="stylesheet" href="../assets/css/pages/creator-community.css?v=creator-community-20260529">
+    <link rel="stylesheet" href="../assets/css/liquid-glass.css?v=ios26-20260526">
+  </head>
+  <body class="creator-community-page">
+    <header class="topbar is-compact">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>Community-led IM</strong>
+        </div>
+        <nav class="nav" aria-label="頁面切換" data-site-nav data-nav-root="../" data-active="creator-community"></nav>
+      </div>
+    </header>
+    <script src="../assets/js/site-nav.js?v=site-nav-20260529-creator-community"></script>
+
+    <main>
+      <section class="cc-hero" id="top">
+        <div class="cc-hero-intro">
+          <h1>由頻道主驅動的社群、內容、訂閱與即時互動平台</h1>
+          <p class="lead">使用者從公開內容進入頻道，透過課程、社群討論、活動和私聊建立信任；頻道主透過會員、訂閱和進階服務獲得長期收入。</p>
+          <div class="cc-hero-actions" aria-label="頁內章節">
+            <a href="#positioning">定位收斂</a>
+            <a href="#scenarios">需求場景</a>
+            <a href="#mechanisms">核心機制</a>
+            <a href="#architecture">產品架構</a>
+            <a href="#modules">模組細節</a>
+          </div>
+        </div>
+
+        <div class="cc-hero-flow" aria-label="Creator-led Community IM 核心流程">
+          <div class="cc-flow-node cc-flow-wide">
+            <span>Discovery / Public Landing</span>
+            <strong>公開內容、廣告、搜尋、QR、邀請連結</strong>
+          </div>
+          <div class="cc-flow-arrow" aria-hidden="true">↓</div>
+          <div class="cc-flow-triad">
+            <div class="cc-flow-node">
+              <span>Creator Space</span>
+              <strong>內容、社群、課程、私聊的主空間</strong>
+            </div>
+            <b aria-hidden="true">←→</b>
+            <div class="cc-flow-node">
+              <span>Creator Console</span>
+              <strong>成員、內容、活動、收入管理</strong>
+            </div>
+            <b aria-hidden="true">←→</b>
+            <div class="cc-flow-node">
+              <span>Analytics</span>
+              <strong>來源、活躍、轉化、留存</strong>
+            </div>
+          </div>
+          <div class="cc-flow-arrow" aria-hidden="true">↓</div>
+          <div class="cc-flow-node cc-flow-wide">
+            <span>Membership / Access Control</span>
+            <strong>免費、邀請制、付費、VIP、班級、角色權限</strong>
+          </div>
+          <div class="cc-flow-arrow" aria-hidden="true">↓</div>
+          <div class="cc-flow-modules" aria-label="會員活動模組">
+            <article>
+              <span>Classroom</span>
+              <strong>課程交付</strong>
+            </article>
+            <article>
+              <span>Community</span>
+              <strong>討論沉澱</strong>
+            </article>
+            <article>
+              <span>IM / Chat</span>
+              <strong>即時互動</strong>
+            </article>
+            <article>
+              <span>Events</span>
+              <strong>週期參與</strong>
+            </article>
+          </div>
+          <div class="cc-flow-arrow" aria-hidden="true">↓</div>
+          <div class="cc-flow-node cc-flow-wide">
+            <span>Gamification / Progress</span>
+            <strong>積分、等級、徽章、邀請、紅包式活動、學習進度</strong>
+          </div>
+          <div class="cc-flow-arrow" aria-hidden="true">↓</div>
+          <div class="cc-flow-node cc-flow-wide">
+            <span>Payments / Subscription</span>
+            <strong>會員、訂閱、課程、訓練營、進階服務</strong>
+          </div>
+          <div class="cc-flow-arrow" aria-hidden="true">↓</div>
+          <div class="cc-flow-node cc-flow-wide cc-flow-trust">
+            <span>Trust / Moderation / Compliance</span>
+            <strong>身份、權限、檢舉、封鎖、管理紀錄、支付爭議紀錄</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="positioning">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">定位收斂</span>
+            <h2>不是放棄 IM，是先找到更窄的進場理由</h2>
+          </div>
+          <p class="muted">原方向仍成立，但首頁需要先回答「使用者為什麼今天要進來」。</p>
+        </div>
+
+        <div class="cc-decision-grid">
+          <article class="cc-decision-card">
+            <span>Product judgment</span>
+            <h3>通用 IM 定位太寬</h3>
+            <p>V1 不應同時對標 WhatsApp、Telegram、Discord、淘寶、Amazon、小紅書和 TikTok。那會讓首頁像功能清單，而不是一個清楚的進場場景。</p>
+          </article>
+          <article class="cc-decision-card cc-decision-card-strong">
+            <span>Recommended pattern</span>
+            <h3>先從有組織者的空間開始</h3>
+            <p>創作者、商家、教育者、專案團隊和私密組織本來就有聚集人群的理由；IM 變成承接內容、討論、服務和長期關係的空間。</p>
+          </article>
+          <article class="cc-decision-card">
+            <span>V1 architecture implication</span>
+            <h3>仍保留原 IM 底座</h3>
+            <p>私聊、群聊、好友、搜尋、通知、成員身份、權限、檢舉、封鎖、文件、公告和群管理都繼續成立，只是首個 landing 場景更具體。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="scenarios">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">需求場景</span>
+            <h2>第一批操作者本來就有聚集人群的理由</h2>
+          </div>
+          <p class="muted">使用者不是為了下載另一個 IM 而來，而是為了跟隨、學習、提問、參與活動或獲得持續服務。</p>
+        </div>
+
+        <div class="cc-scenario-grid">
+          <article class="cc-scenario-card">
+            <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
+            <span>01</span>
+            <h3>Creator / 頻道主社群</h3>
+            <p>高信任興趣消費，例如茶、酒、收藏、戶外裝備、攝影器材。</p>
+            <p>需要內容種草、專家解釋、社群討論和商品轉化。</p>
+            <strong>用途：付費社群、課程、會員討論、直播活動、私聊、訂閱、長期關係管理。</strong>
+          </article>
+
+          <article class="cc-scenario-card">
+            <img src="../app_structures/assets/icons/ui/graduation-cap.svg" alt="">
+            <span>02</span>
+            <h3>教育 / 課程 / 訓練營</h3>
+            <p>金融、投資教育社群、高客單價知識產品、課程或訓練營。</p>
+            <p>使用者購買前需要信任、問答、社群氛圍和老師人設。</p>
+            <strong>用途：課程交付、課後討論、作業、Q&amp;A、班級群、office hour、進度追蹤。</strong>
+          </article>
+
+          <article class="cc-scenario-card">
+            <img src="../app_structures/assets/icons/ui/briefcase.svg" alt="">
+            <span>03</span>
+            <h3>商業 / 專業服務社群</h3>
+            <p>顧問、品牌、門店、專業服務、小型商家與高信任銷售。</p>
+            <p>關鍵不是一次成交，而是持續教育、回覆問題和關係轉化。</p>
+            <strong>用途：內容教育、客戶提問、諮詢、活動公告、會員服務、關係轉化。</strong>
+          </article>
+
+          <article class="cc-scenario-card">
+            <img src="../app_structures/assets/icons/ui/users.svg" alt="">
+            <span>04</span>
+            <h3>私密組織 / 專案團隊</h3>
+            <p>公司、專案、協會、俱樂部、投資圈、校友會或私域組織。</p>
+            <p>需要公告、文件、成員權限、討論分流和一對一溝通。</p>
+            <strong>用途：成員管理、資源庫、活動節奏、角色權限、專案討論、私密頻道。</strong>
+          </article>
+        </div>
+      </section>
+
+      <section id="competitors">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">競品缺口</span>
+            <h2>現有工具各有強項，但不等於這個 landing 場景</h2>
+          </div>
+          <p class="muted">新方向不是複製某一個競品，而是把頻道、社群、私聊、會員和治理放進同一個 IM 容器。</p>
+        </div>
+
+        <div class="cc-competitor-grid">
+          <article class="cc-competitor-card">
+            <img src="../app_structures/assets/icons/whatsapp.svg" alt="">
+            <h3>WhatsApp</h3>
+            <p>熟人溝通強，商業社群與內容承接弱。</p>
+          </article>
+          <article class="cc-competitor-card">
+            <img src="../app_structures/assets/icons/telegram.svg" alt="">
+            <h3>Telegram</h3>
+            <p>公開頻道強，但私聊、群、頻道容易混在一起，商業關係難管理。</p>
+          </article>
+          <article class="cc-competitor-card">
+            <img src="../app_structures/assets/icons/discord.svg" alt="">
+            <h3>Discord</h3>
+            <p>社群治理強，但結構較重，大眾用戶學習成本高。</p>
+          </article>
+          <article class="cc-competitor-card">
+            <img src="../app_structures/assets/icons/intercom.svg" alt="">
+            <h3>傳統客服系統</h3>
+            <p>工單與服務管理強，但缺少社群、內容與自然關係沉澱。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="mechanisms">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">核心機制</span>
+            <h2>把公開內容、社群討論與私聊轉化接成同一條路</h2>
+          </div>
+          <p class="muted">核心不是「多一個社群頁」，而是讓每次互動都帶著上下文回到 IM 關係。</p>
+        </div>
+
+        <div class="cc-mechanism-layout">
+          <article class="cc-flow-card">
+            <div class="cc-card-head">
+              <span>場景 A</span>
+              <h3>使用者發現一個商家</h3>
+            </div>
+            <div class="cc-step-flow">
+              <span>外部內容 / 廣告 / QR</span>
+              <span>公開頻道頁：先看內容，建立信任</span>
+              <span>討論群 / Topic：按問題、活動、服務、資源分流</span>
+              <span>私聊 / 商業對話：帶著上下文進入一對一溝通</span>
+              <span>服務記錄 / 標籤 / 復購觸達：關係持續沉澱</span>
+            </div>
+          </article>
+
+          <article class="cc-flow-card">
+            <div class="cc-card-head">
+              <span>場景 B</span>
+              <h3>商家經營一個使用者池</h3>
+            </div>
+            <div class="cc-loop-flow">
+              <span>發布內容</span>
+              <span>外部連結導流</span>
+              <span>頻道承接</span>
+              <span>群組分流討論</span>
+              <span>私聊轉化</span>
+              <span>標籤化營運</span>
+              <span>後續觸達</span>
+            </div>
+          </article>
+        </div>
+
+        <div class="cc-mechanism-grid" aria-label="四個關鍵機制">
+          <article>
+            <span>01</span>
+            <h3>頻道負責低噪音內容承接</h3>
+            <p>公告、內容、活動、商品資訊不被聊天淹沒。</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>把大群拆成可理解的問題空間</h3>
+            <p>問答、活動、資源、討論分開，降低新成員進入成本。</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>商業對話帶著上下文進入私聊</h3>
+            <p>使用者從哪個內容、群組和問題進來，商家可以看見。</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>信任與權限貫穿全流程</h3>
+            <p>公開入口、群組、商家身份、客服、AI、API 都要被治理。</p>
+          </article>
+        </div>
+
+        <div class="cc-capability-band">
+          <div>
+            <span class="eyebrow">會員在同一個空間內可以做什麼</span>
+            <h3>內容、關係與長期互動不要分散在多個產品</h3>
+          </div>
+          <ul class="cc-capability-list">
+            <li>閱讀官方公告</li>
+            <li>加入主題討論</li>
+            <li>取得課程或資源</li>
+            <li>與管理員、創作者、導師或成員聊天</li>
+            <li>加入群組或私密頻道</li>
+            <li>搜尋成員並加為聯絡人</li>
+            <li>獲得積分、等級、獎勵或紅包式激勵</li>
+            <li>在同一產品內建立長期關係</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="architecture">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">產品架構</span>
+            <h2>Community Space 是容器，IM 是底層關係系統</h2>
+          </div>
+          <p class="muted">架構保留原 IM 視野，但第一層體驗以創作者、社群與商業主導空間呈現。</p>
+        </div>
+
+        <div class="cc-architecture-map" aria-label="Community Space 模組架構圖">
+          <article class="cc-arch-node cc-area-entry">
+            <span>01</span>
+            <strong>外部入口</strong>
+            <p>公開頁、QR、邀請、投放、來源追蹤。</p>
+          </article>
+          <article class="cc-arch-node cc-area-identity">
+            <span>02</span>
+            <strong>身份與成員系統</strong>
+            <p>個人身份、空間身份、好友、成員角色。</p>
+          </article>
+          <article class="cc-arch-node cc-area-access">
+            <span>03</span>
+            <strong>會員與權限</strong>
+            <p>免費、私密、付費、VIP、班級、角色可見性。</p>
+          </article>
+          <article class="cc-arch-node cc-area-search">
+            <span>11</span>
+            <strong>搜尋與發現</strong>
+            <p>人、內容、群組、課程、活動、空間。</p>
+          </article>
+
+          <article class="cc-arch-node cc-area-feed">
+            <span>04</span>
+            <strong>社區討論</strong>
+            <p>貼文、問題、公告、資源、分類、最佳答案。</p>
+          </article>
+          <article class="cc-arch-center">
+            <span>Center</span>
+            <h3>Community Space</h3>
+            <p>創作者、商家、團隊、公司、課程、專案或私密社群的頂層容器。</p>
+          </article>
+          <article class="cc-arch-node cc-area-chat">
+            <span>06</span>
+            <strong>私聊與群聊</strong>
+            <p>1:1、群聊、班級、VIP、活動與課程討論。</p>
+          </article>
+
+          <article class="cc-arch-node cc-area-classroom">
+            <span>05</span>
+            <strong>課程與資料</strong>
+            <p>課程、模組、課時、文件、作業、進度。</p>
+          </article>
+          <article class="cc-arch-node cc-area-events">
+            <span>07</span>
+            <strong>活動與日曆</strong>
+            <p>直播課、AMA、office hour、提醒、回放。</p>
+          </article>
+
+          <article class="cc-arch-node cc-area-incentive">
+            <span>08</span>
+            <strong>激勵</strong>
+            <p>積分、紅包、等級、裂變、參與獎勵。</p>
+          </article>
+          <article class="cc-arch-node cc-area-console">
+            <span>09</span>
+            <strong>頻道經營後台</strong>
+            <p>成員、內容、課程、活動、收入和來源管理。</p>
+          </article>
+          <article class="cc-arch-node cc-area-trust">
+            <span>10</span>
+            <strong>信任與治理</strong>
+            <p>檢舉、封鎖、審核、管理紀錄、支付爭議。</p>
+          </article>
+          <article class="cc-arch-node cc-area-payment">
+            <span>12</span>
+            <strong>付費與訂閱</strong>
+            <p>會員、課程、訓練營、優惠、訂閱狀態。</p>
+          </article>
+        </div>
+
+        <div class="cc-relation-grid">
+          <article><strong>容器</strong><span>Community Space 統一內容、討論、課程、聊天、活動與會員關係。</span></article>
+          <article><strong>入口與權限</strong><span>Identity 和 Access 決定誰能進入、看到什麼、解鎖什麼。</span></article>
+          <article><strong>活動層</strong><span>Feed、Classroom、Chat、Events 是會員日常互動模組。</span></article>
+          <article><strong>留存與成長</strong><span>Incentives 推動參與、留存、邀請和紅包式傳播。</span></article>
+          <article><strong>經營層</strong><span>Creator Console 管理成員、內容、收入、活動和來源。</span></article>
+          <article><strong>安全層</strong><span>Trust &amp; Governance 橫跨所有模組。</span></article>
+        </div>
+      </section>
+
+      <section id="modules">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">完整模組細節</span>
+            <h2>13 個模組形成一個社群優先的 IM 架構</h2>
+          </div>
+          <p class="muted">模組不是一次全部做滿，而是讓 V1 的資料模型和產品語言能支撐後續擴展。</p>
+        </div>
+
+        <div class="cc-module-grid">
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/users.svg" alt="">
+              <span>Module 1</span>
+              <h3>Community Space</h3>
+            </div>
+            <p><strong>Purpose：</strong>創作者、商家、團隊、公司、課程、專案或私密社群的頂層容器。</p>
+            <ul>
+              <li>空間名稱、Logo、封面</li>
+              <li>公開或私密空間</li>
+              <li>創作者 / 擁有者檔案</li>
+              <li>About page</li>
+              <li>成員數與活動狀態</li>
+              <li>Home、Community、Classroom、Chat、Events、Members、Resources</li>
+              <li>owner、admin、moderator、member、guest、paid member、VIP、student、employee</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/send.svg" alt="">
+              <span>Module 2</span>
+              <h3>Public Landing / 外部入口</h3>
+            </div>
+            <p><strong>Purpose：</strong>讓使用者在註冊或下載前先預覽價值。</p>
+            <ul>
+              <li>公開空間頁</li>
+              <li>創作者 / 組織介紹</li>
+              <li>免費內容預覽</li>
+              <li>熱門貼文預覽</li>
+              <li>課程或會員預覽</li>
+              <li>成員見證</li>
+              <li>Join CTA、邀請連結、推薦連結、QR code</li>
+              <li>UTM / campaign source tracking</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/user.svg" alt="">
+              <span>Module 3</span>
+              <h3>Identity &amp; Member System</h3>
+            </div>
+            <p><strong>Purpose：</strong>保留原 IM 底座，同時支撐社群成員身份。</p>
+            <ul>
+              <li>手機、email、社交登入</li>
+              <li>Username / ID 搜尋</li>
+              <li>公開個人檔案</li>
+              <li>每個空間內的成員檔案</li>
+              <li>好友 / 聯絡人關係</li>
+              <li>follow / join 關係</li>
+              <li>封鎖、檢舉、線上狀態</li>
+              <li>成員標籤、角色與權限身份</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/lock.svg" alt="">
+              <span>Module 4</span>
+              <h3>Membership &amp; Access</h3>
+            </div>
+            <p><strong>Purpose：</strong>控制誰能看見什麼、加入什麼、解鎖什麼。</p>
+            <ul>
+              <li>免費社群、私密社群、邀請制社群</li>
+              <li>付費會員、試用權限、VIP tier</li>
+              <li>課程 access、cohort access</li>
+              <li>Role-based access</li>
+              <li>課程、聊天室、資源、活動解鎖</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
+              <span>Module 5</span>
+              <h3>Community Feed / 社區討論</h3>
+            </div>
+            <p><strong>Purpose：</strong>讓有價值的討論可以被搜尋和沉澱，而不是被群聊速度沖走。</p>
+            <ul>
+              <li>貼文、問題、投票、公告、資源</li>
+              <li>wins / progress updates</li>
+              <li>留言、回覆、反應</li>
+              <li>最佳答案、分類、標籤</li>
+              <li>置頂、收藏、檢舉、管理</li>
+              <li>依最新、熱門、未回答排序</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/graduation-cap.svg" alt="">
+              <span>Module 6</span>
+              <h3>Classroom / 課程與資料</h3>
+            </div>
+            <p><strong>Purpose：</strong>交付課程、課時、文件與結構化學習內容。</p>
+            <ul>
+              <li>課程、模組、課時</li>
+              <li>影片、文字、文件、連結</li>
+              <li>測驗、作業、完成狀態</li>
+              <li>進度追蹤、課時留言</li>
+              <li>關聯討論 topic</li>
+              <li>依會員或等級解鎖</li>
+              <li>Resource library</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card cc-module-card-strong">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/message-circle.svg" alt="">
+              <span>Module 7</span>
+              <h3>IM &amp; Chat</h3>
+            </div>
+            <p><strong>Purpose：</strong>保留核心 IM 能力，形成比論壇型產品更強的關係優勢。</p>
+            <ul>
+              <li>1:1 私聊、成員互聊、創作者 / 管理員對成員聊天</li>
+              <li>群聊、cohort chat、VIP chat、event chat、course discussion chat</li>
+              <li>文字、語音、圖片、文件、連結預覽</li>
+              <li>回覆、反應、已讀、置頂、通知</li>
+              <li>Contextual DM：來源內容、加入課程、提問、會員狀態、近期活動</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/video.svg" alt="">
+              <span>Module 8</span>
+              <h3>Events / Calendar</h3>
+            </div>
+            <p><strong>Purpose：</strong>在社群內建立節奏和週期性參與。</p>
+            <ul>
+              <li>直播課、AMA、office hour、webinar</li>
+              <li>Challenge、meetup、event calendar</li>
+              <li>RSVP、提醒、live chat</li>
+              <li>回放、出席追蹤、活動後討論</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/wallet.svg" alt="">
+              <span>Module 9</span>
+              <h3>Incentives / 積分、紅包、等級、裂變</h3>
+            </div>
+            <p><strong>Purpose：</strong>連接熟悉的紅包、積分、獎勵、裂變和參與激勵能力。</p>
+            <ul>
+              <li>積分、等級、徽章、排行榜</li>
+              <li>每日簽到、課程完成獎勵、有幫助回答獎勵</li>
+              <li>邀請獎勵、推薦獎勵、紅包活動</li>
+              <li>群組活動獎勵、活動參與獎勵</li>
+              <li>依等級解鎖內容或聊天權限</li>
+              <li>反垃圾規則，避免低品質刷分</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/chart-no-axes-combined.svg" alt="">
+              <span>Module 10</span>
+              <h3>Creator / Admin Console</h3>
+            </div>
+            <p><strong>Purpose：</strong>讓操作者把社群當成生意或組織來經營。</p>
+            <ul>
+              <li>成員列表、成員活動、成員標籤</li>
+              <li>批准、移除、封禁成員</li>
+              <li>角色分配、內容管理、課程管理</li>
+              <li>活動管理、公告發布、聊天管理</li>
+              <li>活動分析、課程完成分析、member journey</li>
+              <li>收入 / 訂閱總覽、campaign source tracking</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/shield.svg" alt="">
+              <span>Module 11</span>
+              <h3>Trust &amp; Governance</h3>
+            </div>
+            <p><strong>Purpose：</strong>讓社群成長後仍安全、可管理。</p>
+            <ul>
+              <li>檢舉、封鎖、靜音、封禁</li>
+              <li>管理員、版主、加入審核</li>
+              <li>貼文管理、留言管理</li>
+              <li>垃圾訊息偵測、連結安全</li>
+              <li>支付爭議紀錄</li>
+              <li>管理員操作、內容移除、權限變更紀錄</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/search.svg" alt="">
+              <span>Module 12</span>
+              <h3>Search &amp; Discovery</h3>
+            </div>
+            <p><strong>Purpose：</strong>幫使用者找到人、內容、群組、課程、活動和空間。</p>
+            <ul>
+              <li>搜尋 user ID、成員、貼文、課程</li>
+              <li>搜尋文件、活動、群組、公開空間</li>
+              <li>依標籤、角色、課程、topic 篩選</li>
+              <li>公開發現可後續加入，不改核心架構</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/credit-card.svg" alt="">
+              <span>Module 13</span>
+              <h3>Payments / Subscription</h3>
+            </div>
+            <p><strong>Purpose：</strong>支撐創作者變現和付費社群，但不變成標準電商平台。</p>
+            <ul>
+              <li>月訂閱、年訂閱、一次性課程付款</li>
+              <li>付費 cohort、VIP 會員、coupon、trial</li>
+              <li>退款狀態、付款紀錄、訂閱狀態</li>
+              <li>與 access control 整合</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

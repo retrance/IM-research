@@ -25,22 +25,26 @@
       <section class="decision-hero" id="decision-summary">
         <div class="hero-shell">
           <div class="hero-copy">
-            <span class="eyebrow">V1 Architecture Conclusion</span>
-            <h1>IM V1 架構與必要模組推導</h1>
-            <p class="lead">本頁說明：V1 如何從普通用戶與商家 / 商業主的核心需求出發，收斂成以 Identity + Inbox 為底座、支撐私聊 / 群聊、公開內容 / 社群、商業輕量三類旅程的 IM 架構。</p>
+            <span class="eyebrow">V1 架構結論</span>
+            <h1>IM V1 架構與必要模組</h1>
+            <p class="lead">從普通用戶與商家 / 商業主的核心需求出發，收斂成以「身份 + 收件箱」為底座，支撐私聊 / 群聊、公開內容 / 社群、輕量商業三類旅程的 IM 架構。</p>
             <div class="hero-actions" aria-label="頁內章節">
               <a href="#priority-role-needs">角色需求</a>
               <a href="#v1-module-map">模組地圖</a>
-              <a href="#v1-scenario-coverage">情境 mock</a>
+              <a href="#architecture-decisions">決策依據</a>
+              <a href="#v1-scenario-coverage">情境模擬</a>
               <a href="#scope-cut">範圍切割</a>
             </div>
           </div>
 
           <aside class="decision-card conclusion-card">
-            <span class="card-label">V1 架構結論</span>
-            <h2>共享 IM 底座，不是一條漏斗</h2>
-            <p>V1 的核心是 Identity + Inbox。外部入口、頻道、社群、商業輕量與狀態更新都接回這個底座；Governance 橫跨所有旅程。</p>
-            <p class="conclusion-boundary">AI、CRM、Bot/API、mini-apps、完整商務後置。</p>
+            <h2>三類核心旅程</h2>
+            <ol class="conclusion-list">
+              <li><strong>私聊 / 群聊旅程</strong><span>普通用戶建立身份、邀請好友，進入私聊或群聊，並用收件箱留存關係。</span></li>
+              <li><strong>公開內容 / 社群旅程</strong><span>外部內容或邀請先進入公開頻道，再依情境導向關注、加入、群組、討論串或主題。</span></li>
+              <li><strong>商業輕量旅程</strong><span>商家建立商業身份、經營頻道、分享商品卡，並把高意圖用戶帶回聊天。</span></li>
+            </ol>
+            <p class="conclusion-boundary">AI 輔助、CRM、Bot/API、mini-apps、完整商務後置。</p>
           </aside>
         </div>
       </section>
@@ -48,15 +52,14 @@
       <section id="priority-role-needs">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Priority Role Needs</span>
-            <h2>先看優先角色，不先展開所有模組</h2>
+            <span class="eyebrow">需求</span>
+            <h2>優先角色需求</h2>
           </div>
-          <p class="muted">依據 compare_features 的角色需求映射，本頁只用普通用戶與商家 / 商業主作為 V1 判斷起點。</p>
         </div>
 
         <div class="role-needs-grid">
           <article class="role-card">
-            <span class="evidence-pill">Evidence-backed</span>
+            <span class="evidence-pill">C 端</span>
             <h3>普通用戶</h3>
             <ul class="need-list">
               <li>穩定聊天</li>
@@ -65,11 +68,11 @@
               <li>狀態更新</li>
               <li>安全封鎖</li>
             </ul>
-            <p><strong>V1 解讀：</strong> 必須支撐穩定個人聊天、邀請入口、群組參與、基本狀態 / 更新表面，以及封鎖 / 檢舉安全動作。</p>
+            <p><strong>V1：</strong> 必須支撐穩定個人聊天、邀請入口、群組參與、基本狀態 / 更新，以及封鎖 / 檢舉安全動作。</p>
           </article>
 
           <article class="role-card">
-            <span class="evidence-pill">Evidence-backed</span>
+            <span class="evidence-pill">B 端</span>
             <h3>商家 / 商業主</h3>
             <ul class="need-list">
               <li>商業檔案</li>
@@ -78,8 +81,8 @@
               <li>AI 客服</li>
               <li>外部投放</li>
             </ul>
-            <p><strong>V1 解讀：</strong> 必須支撐商業身份、頻道經營、聊天 / 頻道內的輕量商品卡，以及外部流量承接。</p>
-            <p class="guardrail-note">AI 客服不代表 V1 要做完整 AI support system；這裡只保留後續服務接入 hook。</p>
+            <p><strong>V1：</strong> 必須支撐商業身份、頻道經營、聊天 / 頻道內的輕量商品卡，以及外部流量承接。</p>
+            <p class="guardrail-note">AI 客服不代表 V1 要做完整 AI 客服系統；這裡只保留後續服務接入點。</p>
           </article>
         </div>
       </section>
@@ -87,35 +90,67 @@
       <section id="v1-module-map">
         <div class="section-head">
           <div>
-            <span class="eyebrow">V1 Module Map</span>
+            <span class="eyebrow">V1 模組地圖</span>
             <h2>一張表說清楚必要、輕量與後置</h2>
           </div>
-          <p class="muted">模組先服務優先角色需求，再決定是否需要情境 mock。這裡是唯一的 V1 core / lightweight / later 分類。</p>
+          <p class="muted">模組先服務優先角色需求，再決定是否需要情境 mock。這裡是唯一的 V1 必要 / 輕量 / 後置 分類。</p>
         </div>
 
         <div class="coverage-wrap module-map-wrap">
           <table class="coverage-table module-map-table">
             <thead>
               <tr>
-                <th>Priority role need</th>
-                <th>Required module</th>
-                <th>V1 classification</th>
-                <th>Needs scenario mock?</th>
-                <th>Architecture placement</th>
+                <th>優先角色需求</th>
+                <th>必要模組</th>
+                <th>V1 分類</th>
+                <th>是否需要情境 mock</th>
+                <th>架構位置</th>
               </tr>
             </thead>
             <tbody>
-              <tr><th>普通用戶：穩定聊天</th><td>messaging-identity</td><td><span class="status-chip required">V1 necessary</span></td><td>Detailed</td><td>Identity + Inbox Layer</td></tr>
-              <tr><th>普通用戶：好友邀請</th><td>external-entry</td><td><span class="status-chip required">V1 necessary</span></td><td>Detailed</td><td>External Entry</td></tr>
-              <tr><th>普通用戶：群組</th><td>community-governance</td><td><span class="status-chip required">V1 necessary</span></td><td>Detailed</td><td>Community / Discussion Layer</td></tr>
-              <tr><th>普通用戶：狀態更新</th><td>status-updates</td><td><span class="status-chip lightweight">V1 lightweight</span></td><td>Lightweight</td><td>Status / Updates Surface</td></tr>
-              <tr><th>普通用戶：安全封鎖</th><td>trust-risk</td><td><span class="status-chip required">V1 necessary</span></td><td>Detailed</td><td>Governance Layer</td></tr>
-              <tr><th>商家 / 商業主：商業檔案</th><td>business-commerce</td><td><span class="status-chip lightweight">V1 lightweight necessary</span></td><td>Lightweight</td><td>Business Lightweight Layer</td></tr>
-              <tr><th>商家 / 商業主：頻道經營</th><td>channel-loop</td><td><span class="status-chip required">V1 necessary</span></td><td>Detailed</td><td>Channel Loop</td></tr>
-              <tr><th>商家 / 商業主：商品卡</th><td>business-commerce</td><td><span class="status-chip lightweight">V1 lightweight necessary</span></td><td>Lightweight</td><td>Business Lightweight Layer + Inbox</td></tr>
-              <tr><th>商家 / 商業主：外部投放承接</th><td>external-entry + channel-loop</td><td><span class="status-chip required">V1 necessary</span></td><td>Detailed</td><td>External Entry + Channel Loop</td></tr>
-              <tr><th>商家 / 商業主：AI 客服</th><td>support-crm + platform-ai-ops</td><td><span class="status-chip later">Later extension</span></td><td>No</td><td>Later Extension Hooks</td></tr>
-              <tr><th>平台能力：Bot/API / mini-apps / full commerce</th><td>platform-ai-ops + mini-apps + full commerce</td><td><span class="status-chip later">Later extension</span></td><td>No</td><td>Separated from V1 proof</td></tr>
+              <tr><th>普通用戶：穩定聊天</th><td>messaging-identity</td><td><span class="status-chip required">V1 必要</span></td><td>詳細</td><td>身份與收件箱層</td></tr>
+              <tr><th>普通用戶：好友邀請</th><td>external-entry</td><td><span class="status-chip required">V1 必要</span></td><td>詳細</td><td>外部入口</td></tr>
+              <tr><th>普通用戶：群組</th><td>community-governance</td><td><span class="status-chip required">V1 必要</span></td><td>詳細</td><td>社群 / 討論層</td></tr>
+              <tr><th>普通用戶：狀態更新</th><td>status-updates</td><td><span class="status-chip lightweight">V1 輕量</span></td><td>輕量</td><td>狀態 / 更新表面</td></tr>
+              <tr><th>普通用戶：安全封鎖</th><td>trust-risk</td><td><span class="status-chip required">V1 必要</span></td><td>詳細</td><td>治理層</td></tr>
+              <tr><th>商家 / 商業主：商業檔案</th><td>business-commerce</td><td><span class="status-chip lightweight">V1 必要但輕量</span></td><td>輕量</td><td>輕量商業層</td></tr>
+              <tr><th>商家 / 商業主：頻道經營</th><td>channel-loop</td><td><span class="status-chip required">V1 必要</span></td><td>詳細</td><td>頻道閉環</td></tr>
+              <tr><th>商家 / 商業主：商品卡</th><td>business-commerce</td><td><span class="status-chip lightweight">V1 必要但輕量</span></td><td>輕量</td><td>輕量商業層 + 收件箱</td></tr>
+              <tr><th>商家 / 商業主：外部投放承接</th><td>external-entry + channel-loop</td><td><span class="status-chip required">V1 必要</span></td><td>詳細</td><td>外部入口 + 頻道閉環</td></tr>
+              <tr><th>商家 / 商業主：AI 客服</th><td>support-crm + platform-ai-ops</td><td><span class="status-chip later">後續擴展</span></td><td>不需要</td><td>後續擴展接點</td></tr>
+              <tr><th>平台能力：Bot/API / mini-apps / 完整商務</th><td>platform-ai-ops + mini-apps + 完整商務</td><td><span class="status-chip later">後續擴展</span></td><td>不需要</td><td>不作為 V1 證明</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="architecture-decisions">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">架構決策依據</span>
+            <h2>把主要取捨寫成可交付的決策</h2>
+          </div>
+          <p class="muted">這裡只列會影響 V1 架構的核心選擇，避免把後續能力提前做成平台。</p>
+        </div>
+
+        <div class="coverage-wrap">
+          <table class="coverage-table">
+            <thead>
+              <tr>
+                <th>決策</th>
+                <th>採用 pattern</th>
+                <th>不採用 pattern</th>
+                <th>證據類型</th>
+                <th>V1 架構含義</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><th>聊天底座</th><td>身份 + 收件箱作為共享入口。</td><td>把私聊、群組、頻道、商業訊息拆成多個主入口。</td><td>Evidence-backed</td><td>messaging-identity 成為 V1 底座，所有回訪先回到收件箱。</td></tr>
+              <tr><th>外部流量承接</th><td>外部入口先判斷目標、來源與加入規則。</td><td>所有連結直接落到同一個聊天或頻道頁。</td><td>Evidence-backed</td><td>external-entry 同時支撐增長、邀請與風險邊界。</td></tr>
+              <tr><th>公開內容</th><td>頻道作為公開預覽、關注與討論入口。</td><td>把頻道擴成完整動態流或推薦系統。</td><td>Product judgment</td><td>channel-loop 只證明公開內容如何回到可治理討論。</td></tr>
+              <tr><th>社群互動</th><td>小群直聊，大型或高流量社群才使用主題分流。</td><td>所有群組預設主題優先。</td><td>Product judgment</td><td>community-governance 需要同時覆蓋小群與大型社群。</td></tr>
+              <tr><th>商業能力</th><td>商業檔案、商業聊天標籤、商品卡。</td><td>市集、支付、訂單、履約平台。</td><td>Product judgment</td><td>business-commerce 是必要但輕量的 V1 模組。</td></tr>
+              <tr><th>後續平台能力</th><td>AI、CRM、Bot/API、mini-apps 只保留接點。</td><td>在 V1 建完整客服、自動化、開放平台或服務容器。</td><td>Hypothesis</td><td>support-crm 與 platform-ai-ops 不作為 V1 架構證明。</td></tr>
             </tbody>
           </table>
         </div>
@@ -124,56 +159,64 @@
       <section id="v1-scenario-coverage">
         <div class="section-head">
           <div>
-            <span class="eyebrow">V1 Scenario Mock Coverage</span>
-            <h2>每個模組只列 mock 入口與決策重點</h2>
+            <span class="eyebrow">V1 情境 mock 覆蓋</span>
+            <h2>用情境證明 V1 決策</h2>
           </div>
-          <p class="muted">詳細流程放在 interaction_playground；這裡只說每個模組用哪個 mock 證明哪個 V1 pattern。</p>
+          <p class="muted">這裡不列完整情境清單，只說每組 mock 為什麼重要、證明哪個 V1 判斷。</p>
         </div>
 
         <div class="route-reference-wrap scenario-coverage-wrap">
           <table class="route-reference-table scenario-coverage-table">
             <thead>
               <tr>
-                <th>Module</th>
-                <th>Open scenario</th>
-                <th>Decision / pattern demonstrated</th>
+                <th>模組</th>
+                <th>為什麼重要</th>
+                <th>打開情境</th>
+                <th>情境證明什麼</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <th>messaging-identity</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=messaging-identity&scenario=mixed-inbox-type-labels">mixed inbox</a><a href="../interaction_playground/index.html?module=messaging-identity&scenario=private-chat-entry">private chat</a><a href="../interaction_playground/index.html?module=messaging-identity&scenario=business-chat-identity">business identity</a></div></td>
-                <td>一個 inbox 承接 private / group / channel / business，用 type label 解決辨識問題。</td>
+                <td>如果入口分裂，使用者會分不清聊天、頻道和商業關係。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=messaging-identity&scenario=mixed-inbox-type-labels">混合收件箱</a><a href="../interaction_playground/index.html?module=messaging-identity&scenario=private-chat-entry">私聊</a></div></td>
+                <td>身份 + 收件箱可以用類型標籤承接多種關係，不需要多個主入口。</td>
               </tr>
               <tr>
                 <th>external-entry</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=external-entry&scenario=friend-invite">friend invite</a><a href="../interaction_playground/index.html?module=external-entry&scenario=group-invite">group invite</a><a href="../interaction_playground/index.html?module=external-entry&scenario=business-cta-entry">business CTA</a></div></td>
-                <td>外部入口先標示 target type、source、join rule 與 risk state，再導向正確表面。</td>
+                <td>外部連結同時是增長入口和風險邊界。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=external-entry&scenario=friend-invite">好友邀請</a><a href="../interaction_playground/index.html?module=external-entry&scenario=group-invite">群組邀請</a><a href="../interaction_playground/index.html?module=external-entry&scenario=business-cta-entry">商業 CTA</a></div></td>
+                <td>入口先判斷目標類型、來源、加入規則，再進入聊天、群組、頻道或商業檔案。</td>
               </tr>
               <tr>
                 <th>channel-loop</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=channel-loop&scenario=public-channel-preview">public channel</a><a href="../interaction_playground/index.html?module=channel-loop&scenario=follow-channel">follow</a><a href="../interaction_playground/index.html?module=channel-loop&scenario=post-to-discussion">post discussion</a></div></td>
-                <td>頻道是低噪音內容承接；討論與商業 CTA 是明確轉換，不做完整 feed。</td>
+                <td>公開內容需要低壓力預覽，也需要回到可治理討論。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=channel-loop&scenario=public-channel-preview">公開頻道</a><a href="../interaction_playground/index.html?module=channel-loop&scenario=post-to-discussion">貼文討論</a></div></td>
+                <td>頻道不是動態流；它是公開預覽、關注和討論 CTA 的閉環。</td>
               </tr>
               <tr>
                 <th>community-governance</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=community-governance&scenario=direct-group-chat">direct group</a><a href="../interaction_playground/index.html?module=community-governance&scenario=public-group-join">public join</a><a href="../interaction_playground/index.html?module=community-governance&scenario=topic-based-discussion">topic mode</a></div></td>
-                <td>小群直接聊天；大型或高流量社群才使用 topic mode。</td>
+                <td>小群和大型社群不能被同一個主題優先模型綁死。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=community-governance&scenario=direct-group-chat">小群直聊</a><a href="../interaction_playground/index.html?module=community-governance&scenario=topic-based-discussion">主題模式</a></div></td>
+                <td>小群直接聊天；主題是大型或高流量社群的模式，不是所有群的預設路徑。</td>
               </tr>
               <tr>
                 <th>trust-risk</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=trust-risk&scenario=user-block-report-mute">user safety</a><a href="../interaction_playground/index.html?module=trust-risk&scenario=join-risk-control">join risk</a><a href="../interaction_playground/index.html?module=trust-risk&scenario=admin-action-log">admin log</a></div></td>
-                <td>Governance 橫跨所有旅程；V1 只做基本安全動作與最小紀錄。</td>
+                <td>公開入口、商業訊息和社群互動都需要基本安全底線。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=trust-risk&scenario=user-block-report-mute">用戶安全</a><a href="../interaction_playground/index.html?module=trust-risk&scenario=join-risk-control">加入風險</a></div></td>
+                <td>V1 需要封鎖 / 檢舉 / 靜音、加入限制和基本管理紀錄，但不做完整合規平台。</td>
               </tr>
               <tr>
                 <th>business-commerce</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=business-commerce&scenario=business-profile">business profile</a><a href="../interaction_playground/index.html?module=business-commerce&scenario=product-card-in-chat">card in chat</a><a href="../interaction_playground/index.html?module=business-commerce&scenario=product-card-in-channel">card in channel</a></div></td>
-                <td>商務層只做商業身份、商品卡與聊天 / 頻道承接，不做交易系統。</td>
+                <td>商業需求要被承接，但不能把 V1 拉成交易平台。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=business-commerce&scenario=business-profile">商業檔案</a><a href="../interaction_playground/index.html?module=business-commerce&scenario=product-card-in-chat">聊天商品卡</a></div></td>
+                <td>商業身份和商品卡足以保留購買意圖；支付、訂單、履約後置。</td>
               </tr>
               <tr>
                 <th>status-updates</th>
-                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=status-updates&scenario=personal-status-reply">personal status</a><a href="../interaction_playground/index.html?module=status-updates&scenario=update-return-to-inbox">return path</a></div></td>
-                <td>Status 是 lightweight update object；互動回到 inbox / chat。</td>
+                <td>近況更新可以增加回訪，但不應變成內容產品。</td>
+                <td><div class="scenario-link-list"><a href="../interaction_playground/index.html?module=status-updates&scenario=personal-status-reply">個人狀態</a><a href="../interaction_playground/index.html?module=status-updates&scenario=update-return-to-inbox">回訪路徑</a></div></td>
+                <td>狀態是輕量更新物件；互動回到收件箱 / 聊天，不做動態流或推薦。</td>
               </tr>
             </tbody>
           </table>
@@ -183,64 +226,64 @@
       <section id="final-v1-architecture-map">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Final V1 Architecture Map</span>
+            <span class="eyebrow">最終 V1 架構圖</span>
             <h2>V1 是共享 IM 架構，不是一條強制路線</h2>
           </div>
-          <p class="muted">這裡只畫架構位置；完整 scenario 清單留在上一節。</p>
+          <p class="muted">這裡只畫架構位置；完整情境清單留在上一節。</p>
         </div>
 
-        <div class="architecture-network-map" aria-label="Final V1 non-linear architecture map">
+        <div class="architecture-network-map" aria-label="V1 非線性架構圖">
           <a class="network-core" href="../interaction_playground/index.html?module=messaging-identity&scenario=mixed-inbox-type-labels">
             <span>中心</span>
-            <h3>Identity + Inbox Layer</h3>
-            <p>共享 IM 底座：identity、private chat、group chat、channel update、business chat label、unread / notification return。</p>
+            <h3>身份與收件箱層</h3>
+            <p>共享 IM 底座：身份、私聊、群聊、頻道更新、商業聊天標籤、未讀 / 通知回訪。</p>
           </a>
 
           <div class="network-spokes">
             <article class="network-node external">
-              <span>External Entry</span>
+              <span>外部入口</span>
               <h3>外部入口</h3>
-              <p>處理 friend invite、group invite、channel link、business CTA、QR / search。</p>
+              <p>處理好友邀請、群組邀請、頻道連結、商業 CTA、QR / 搜尋。</p>
               <a class="node-scenario-link" href="../interaction_playground/index.html?module=external-entry&scenario=friend-invite">代表 mock</a>
             </article>
 
             <article class="network-node channel">
-              <span>Channel Loop</span>
+              <span>頻道閉環</span>
               <h3>頻道閉環</h3>
-              <p>公開預覽、follow、post-to-discussion CTA、business / product CTA。</p>
+              <p>公開預覽、關注、貼文討論 CTA、商業 / 商品 CTA。</p>
               <a class="node-scenario-link" href="../interaction_playground/index.html?module=channel-loop&scenario=public-channel-preview">代表 mock</a>
             </article>
 
             <article class="network-node community">
-              <span>Community / Discussion Layer</span>
+              <span>社群 / 討論層</span>
               <h3>社群與討論</h3>
-              <p>小群直接聊天；大型或高流量社群才使用 topic mode。</p>
+              <p>小群直接聊天；大型或高流量社群才使用主題模式。</p>
               <a class="node-scenario-link" href="../interaction_playground/index.html?module=community-governance&scenario=direct-group-chat">代表 mock</a>
             </article>
 
             <article class="network-node business">
-              <span>Business Lightweight Layer</span>
+              <span>輕量商業層</span>
               <h3>輕量商業層</h3>
-              <p>business profile、business chat label、product card。V1 不做 payment、order、fulfillment。</p>
+              <p>商業檔案、商業聊天標籤、商品卡。V1 不做支付、訂單、履約。</p>
               <a class="node-scenario-link" href="../interaction_playground/index.html?module=business-commerce&scenario=product-card-in-chat">代表 mock</a>
             </article>
 
             <article class="network-node status">
-              <span>Status / Updates Surface</span>
+              <span>狀態 / 更新表面</span>
               <h3>輕量更新表面</h3>
-              <p>personal status、business/channel update、reply back to inbox/chat。</p>
+              <p>個人狀態、商業 / 頻道更新、回覆後回到收件箱 / 聊天。</p>
               <a class="node-scenario-link" href="../interaction_playground/index.html?module=status-updates&scenario=personal-status-reply">代表 mock</a>
             </article>
           </div>
 
           <a class="network-governance" href="../interaction_playground/index.html?module=trust-risk&scenario=user-block-report-mute">
-            <span>Governance Layer</span>
-            <p>Cross-cutting: report、block、mute、admin、remove member、basic moderation log。</p>
+            <span>治理層</span>
+            <p>橫跨所有旅程：檢舉、封鎖、靜音、管理員、移除成員、基本治理紀錄。</p>
           </a>
 
-          <div class="network-later-hooks" aria-label="Later extension hooks">
-            <span>Later Extension Hooks</span>
-            <p>AI support、CRM、Bot/API、mini-apps、full commerce 後置。</p>
+          <div class="network-later-hooks" aria-label="後續擴展接點">
+            <span>後續擴展接點</span>
+            <p>AI 客服、CRM、Bot/API、mini-apps、完整商務後置。</p>
           </div>
         </div>
       </section>
@@ -248,30 +291,30 @@
       <section id="scope-cut">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Scope Cut Derived from Journeys</span>
+            <span class="eyebrow">由旅程推導範圍切割</span>
             <h2>V1 範圍用旅程切，不用功能願望清單切</h2>
           </div>
-          <p class="muted">每個模組只列 V1 需要覆蓋的代表旅程，Later 與不作為 V1 架構證明的能力保持後置。</p>
+          <p class="muted">每個模組只列 V1 需要覆蓋的代表旅程，後續與不作為 V1 架構證明的能力保持後置。</p>
         </div>
 
         <div class="scope-table-wrap">
           <table class="scope-table journey-scope-table">
             <thead>
               <tr>
-                <th>Layer / Module</th>
+                <th>層級 / 模組</th>
                 <th>V1 覆蓋旅程</th>
-                <th>Later</th>
+                <th>後續</th>
                 <th>不作為 V1 架構證明</th>
               </tr>
             </thead>
             <tbody>
-              <tr><th>Messaging identity</th><td><ul><li>用戶進入私聊</li><li>用戶進入群聊</li><li>用戶在 inbox 分辨 private / group / channel / business</li><li>用戶從未讀返回對應聊天</li></ul></td><td>multi persona、enterprise identity mapping。</td><td>完整企業身份 / KYC 系統。</td></tr>
-              <tr><th>External entry</th><td><ul><li>好友邀請</li><li>群組邀請</li><li>頻道分享</li><li>商業外部 CTA 進入 profile / chat</li></ul></td><td>advanced attribution、ad optimization、creator campaign tools。</td><td>完整推薦或廣告平台。</td></tr>
-              <tr><th>Channel loop</th><td><ul><li>用戶從外部連結預覽公開頻道</li><li>用戶 follow 頻道</li><li>用戶從頻道貼文進入討論</li><li>商家用頻道承接商品卡 / CTA</li></ul></td><td>advanced analytics、paid channels、creator tools。</td><td>短影音 feed、直播、完整內容推薦。</td></tr>
-              <tr><th>Community / discussion</th><td><ul><li>小群直接聊天</li><li>公開群先看規則 / 加入狀態</li><li>頻道貼文進入 thread</li><li>大群使用 topic 分流</li></ul></td><td>role automation、advanced onboarding、events。</td><td>Discord-level server system。</td></tr>
-              <tr><th>Trust risk</th><td><ul><li>用戶 block / report / mute</li><li>新成員限制高風險動作</li><li>管理員移除 / 禁言成員</li><li>商業訊息可封鎖 / 退訂</li></ul></td><td>AutoMod、audit log、risk scoring。</td><td>完整企業合規 / AI 審核平台。</td></tr>
-              <tr><th>Business commerce</th><td><ul><li>商家建立商業檔案</li><li>用戶在聊天中看到商品卡</li><li>商品卡出現在頻道或私聊</li><li>高意圖用戶回到 business chat</li></ul></td><td>catalog sync、order summary hook、service integration。</td><td>full marketplace、payment、order / fulfillment。</td></tr>
-              <tr><th>Status updates</th><td><ul><li>用戶發布輕量狀態</li><li>他人回覆進私聊</li><li>商家 / 頻道發布輕量更新</li></ul></td><td>richer templates、business campaign status。</td><td>full stories editor、social feed、recommendation。</td></tr>
+              <tr><th>Messaging identity</th><td><ul><li>用戶進入私聊</li><li>用戶進入群聊</li><li>用戶在收件箱分辨私聊 / 群組 / 頻道 / 商業聊天</li><li>用戶從未讀返回對應聊天</li></ul></td><td>多身份、企業身份映射。</td><td>完整企業身份 / KYC 系統。</td></tr>
+              <tr><th>External entry</th><td><ul><li>好友邀請</li><li>群組邀請</li><li>頻道分享</li><li>商業外部 CTA 進入檔案 / 聊天</li></ul></td><td>進階歸因、廣告優化、創作者活動工具。</td><td>完整推薦或廣告平台。</td></tr>
+              <tr><th>Channel loop</th><td><ul><li>用戶從外部連結預覽公開頻道</li><li>用戶關注頻道</li><li>用戶從頻道貼文進入討論</li><li>商家用頻道承接商品卡 / CTA</li></ul></td><td>進階分析、付費頻道、創作者工具。</td><td>短影音動態流、直播、完整內容推薦。</td></tr>
+              <tr><th>Community / discussion</th><td><ul><li>小群直接聊天</li><li>公開群先看規則 / 加入狀態</li><li>頻道貼文進入討論串</li><li>大群使用主題分流</li></ul></td><td>角色自動化、進階引導、活動。</td><td>Discord 等級的伺服器系統。</td></tr>
+              <tr><th>Trust risk</th><td><ul><li>用戶封鎖 / 檢舉 / 靜音</li><li>新成員限制高風險動作</li><li>管理員移除 / 禁言成員</li><li>商業訊息可封鎖 / 退訂</li></ul></td><td>自動治理、稽核紀錄、風險評分。</td><td>完整企業合規 / AI 審核平台。</td></tr>
+              <tr><th>Business commerce</th><td><ul><li>商家建立商業檔案</li><li>用戶在聊天中看到商品卡</li><li>商品卡出現在頻道或私聊</li><li>高意圖用戶回到商業聊天</li></ul></td><td>型錄同步、訂單摘要接點、服務整合。</td><td>完整市集、支付、訂單 / 履約。</td></tr>
+              <tr><th>Status updates</th><td><ul><li>用戶發布輕量狀態</li><li>他人回覆進私聊</li><li>商家 / 頻道發布輕量更新</li></ul></td><td>更豐富模板、商業活動狀態。</td><td>完整限時動態編輯器、社交動態流、推薦。</td></tr>
             </tbody>
           </table>
         </div>
@@ -280,18 +323,18 @@
       <section id="later-expansion-notes">
         <div class="section-head">
           <div>
-            <span class="eyebrow">Later Expansion Notes</span>
-            <h2>保留 hook，但不提前建平台</h2>
+            <span class="eyebrow">後續擴展說明</span>
+            <h2>保留接點，但不提前建平台</h2>
           </div>
           <p class="muted">這些方向可以在資料模型上留接點，但不應消耗 V1 的互動 mock 與架構證明。</p>
         </div>
 
         <div class="later-note-grid">
-          <article><span>AI support</span><p>只作 support / automation hook；不做 V1 AI 客服系統。</p></article>
-          <article><span>CRM</span><p>只保留商業聊天標籤與未來接入點；不做 ticketing / routing / SLA。</p></article>
-          <article><span>Bot/API</span><p>只預留授權與風控概念；不做完整 bot ecosystem。</p></article>
-          <article><span>Mini-apps</span><p>只作未來服務容器方向；不做 marketplace 或開放平台。</p></article>
-          <article><span>Full commerce</span><p>商品卡留在聊天 / 頻道；payment、order、fulfillment 後置。</p></article>
+          <article><span>AI 客服</span><p>只作客服 / 自動化接點；不做 V1 AI 客服系統。</p></article>
+          <article><span>CRM</span><p>只保留商業聊天標籤與未來接入點；不做工單 / 分流 / SLA。</p></article>
+          <article><span>Bot/API</span><p>只預留授權與風控概念；不做完整 Bot 生態。</p></article>
+          <article><span>Mini-apps</span><p>只作未來服務容器方向；不做市集或開放平台。</p></article>
+          <article><span>完整商務</span><p>商品卡留在聊天 / 頻道；支付、訂單、履約後置。</p></article>
         </div>
       </section>
     </main>
