@@ -238,12 +238,12 @@
               <span>場景 A</span>
               <h3>成員從外部內容進入空間</h3>
             </div>
-            <div class="cc-step-flow">
-              <span>Public Entry：內容、廣告、QR、朋友分享</span>
-              <span>公開承接頁：先理解空間主、內容和會員價值</span>
-              <span>空間：進入公告、討論區、交付中心或活動</span>
-              <span>Chat：帶著來源、問題和會員狀態進入對話</span>
-              <span>通知與權限：把成員帶回原內容、討論或交付項目</span>
+            <div class="cc-lane-flow">
+              <span>Public Entry</span>
+              <span>公開承接頁</span>
+              <span>Space</span>
+              <span>Chat</span>
+              <span>通知回訪</span>
             </div>
           </article>
 
@@ -252,13 +252,12 @@
               <span>場景 B</span>
               <h3>空間主經營一個長期成員池</h3>
             </div>
-            <div class="cc-loop-flow">
+            <div class="cc-lane-flow">
               <span>內容與公告</span>
-              <span>討論區分流</span>
-              <span>交付中心沉澱資料</span>
-              <span>活動建立節奏</span>
-              <span>Chat 承接高意圖問題</span>
-              <span>經營後台管理成員</span>
+              <span>討論區</span>
+              <span>交付中心</span>
+              <span>活動</span>
+              <span>經營後台</span>
               <span>通知回訪</span>
             </div>
           </article>
@@ -269,49 +268,68 @@
             <span>01</span>
             <h3>空間是核心容器</h3>
             <p>平台下面是空間；空間裡再組織群組、討論區、交付中心、活動、成員和聊天。</p>
+            <ul class="cc-mechanism-chips">
+              <li>加入空間</li>
+              <li>查看成員</li>
+              <li>進入群組</li>
+              <li>空間內搜尋</li>
+            </ul>
           </article>
           <article>
             <span>02</span>
             <h3>內容與公告負責低噪音承接</h3>
             <p>公告、內容、活動和服務更新不被群聊淹沒，先建立理解和信任。</p>
+            <ul class="cc-mechanism-chips">
+              <li>閱讀公告</li>
+              <li>查看更新</li>
+              <li>收藏內容</li>
+              <li>收到提醒</li>
+            </ul>
           </article>
           <article>
             <span>03</span>
             <h3>討論區把問題拆開</h3>
             <p>問答、活動、服務、資源和經驗分享分開，降低新成員進入成本。</p>
+            <ul class="cc-mechanism-chips">
+              <li>主題討論</li>
+              <li>提問回答</li>
+              <li>經驗分享</li>
+              <li>最佳答案</li>
+            </ul>
           </article>
           <article>
             <span>04</span>
             <h3>交付中心沉澱可交付價值</h3>
             <p>課程、文件、工具、案例、SOP、直播回放和會員資料都在交付中心內被權限控制。</p>
+            <ul class="cc-mechanism-chips">
+              <li>課程</li>
+              <li>文件工具</li>
+              <li>案例資料</li>
+              <li>直播回放</li>
+            </ul>
           </article>
           <article>
             <span>05</span>
             <h3>Chat 承接高意圖關係</h3>
             <p>成員從哪個內容、討論、交付項目或活動進來，空間主能帶著上下文回覆。</p>
+            <ul class="cc-mechanism-chips">
+              <li>私聊</li>
+              <li>群聊</li>
+              <li>上下文 DM</li>
+              <li>加為聯絡人</li>
+            </ul>
           </article>
           <article>
             <span>06</span>
             <h3>信任與權限貫穿全流程</h3>
             <p>身份、成員、權限、付費狀態、檢舉、封鎖和審核紀錄要跨模組成立。</p>
+            <ul class="cc-mechanism-chips">
+              <li>會員權限</li>
+              <li>付費狀態</li>
+              <li>檢舉封鎖</li>
+              <li>積分獎勵</li>
+            </ul>
           </article>
-        </div>
-
-        <div class="cc-capability-band">
-          <div>
-            <span class="eyebrow">會員在同一個空間內可以做什麼</span>
-            <h3>內容、關係與長期互動不要分散在多個產品</h3>
-          </div>
-          <ul class="cc-capability-list">
-            <li>閱讀官方公告</li>
-            <li>加入主題討論</li>
-            <li>取得交付中心內的課程、文件、工具或回放</li>
-            <li>與空間主、管理員、協作者或成員聊天</li>
-            <li>加入群組或私密討論區</li>
-            <li>搜尋成員並加為聯絡人</li>
-            <li>獲得積分、等級、獎勵或紅包式激勵</li>
-            <li>在同一產品內建立長期關係</li>
-          </ul>
         </div>
       </section>
 
@@ -321,17 +339,11 @@
             <span class="eyebrow">產品架構</span>
             <h2>必要閉環：模組要能互相接線，產品才跑得起來</h2>
           </div>
-          <p class="muted">點擊任一模組可查看內部流、輸入輸出、借鑑競品功能，以及採用 / 不採用的產品 pattern。</p>
-        </div>
-
-        <div class="cc-architecture-legend" aria-label="架構圖標記說明">
-          <span><b></b>必要</span>
-          <span><b class="plug"></b>可插拔活動模組</span>
-          <span><b class="later"></b>後續擴展</span>
+          <p class="muted">架構圖呈現模組接線；點擊節點可查看用途、內部流、輸入輸出和借鑑競品功能。</p>
         </div>
 
         <div class="cc-architecture-map" aria-label="必要閉環架構圖">
-          <div class="cc-arch-primary-flow" aria-label="進入與權限主流程">
+          <div class="cc-arch-primary-flow" aria-label="入口到空間主流程">
             <button class="cc-arch-node cc-arch-required" type="button" data-module="external-entry">
               <span>必要</span>
               <strong>外部入口 / Public Entry</strong>
@@ -349,26 +361,28 @@
               <strong>空間 / Space</strong>
               <p>公告、討論、聊天、會員和經營後台的主容器。</p>
             </button>
-            <div class="cc-arch-arrow" aria-hidden="true">→</div>
+          </div>
+
+          <div class="cc-arch-gate-flow" aria-label="身份、權限與付費 gate">
             <button class="cc-arch-node cc-arch-required" type="button" data-module="identity-member">
               <span>必要</span>
               <strong>身份與成員 / Identity &amp; Members</strong>
               <p>把使用者變成空間成員，建立角色、好友與成員身份。</p>
             </button>
             <div class="cc-arch-arrow" aria-hidden="true">→</div>
-            <button class="cc-arch-node cc-arch-required" type="button" data-module="membership-payment">
-              <span>必要</span>
-              <strong>權限與會員 / Access &amp; Membership</strong>
-              <p>把會員、訂閱、付款狀態轉成可見範圍與解鎖權限。</p>
-            </button>
-          </div>
-
-          <div class="cc-arch-payment-row" aria-label="付費與訂閱模組">
-            <button class="cc-arch-node cc-arch-required cc-arch-payment" type="button" data-module="payments-subscription">
-              <span>必要</span>
-              <strong>付費與訂閱 / Payments &amp; Subscription</strong>
-              <p>付款、訂閱、退款與到期狀態回寫權限與會員。</p>
-            </button>
+            <div class="cc-arch-gate-cluster" aria-label="權限與付費狀態互相回寫">
+              <button class="cc-arch-node cc-arch-required" type="button" data-module="membership-payment">
+                <span>必要</span>
+                <strong>權限與會員 / Access &amp; Membership</strong>
+                <p>把會員、訂閱、付款狀態轉成可見範圍與解鎖權限。</p>
+              </button>
+              <div class="cc-arch-sync" aria-hidden="true">↔</div>
+              <button class="cc-arch-node cc-arch-required cc-arch-payment" type="button" data-module="payments-subscription">
+                <span>必要</span>
+                <strong>付費與訂閱 / Payments &amp; Subscription</strong>
+                <p>付款、訂閱、退款與到期狀態回寫權限與會員。</p>
+              </button>
+            </div>
           </div>
 
           <div class="cc-arch-branch-label">權限通過後，會員進入日常互動與搜尋面</div>
@@ -394,6 +408,11 @@
               <strong>In-space Search / 空間內搜尋</strong>
               <p>在單一空間內搜尋成員、公告、topic、交付內容、文件、回放和聊天上下文。</p>
             </button>
+            <button class="cc-arch-node cc-arch-required cc-arch-return" type="button" data-module="notifications-return">
+              <span>必要</span>
+              <strong>Notifications / 通知</strong>
+              <p>未讀、提醒、回覆、付款狀態和活動節奏把會員帶回空間。</p>
+            </button>
           </div>
 
           <div class="cc-search-scope" aria-label="空間內搜尋連接範圍">
@@ -405,14 +424,6 @@
             <span>Events</span>
             <span>Members</span>
             <span>Chat</span>
-          </div>
-
-          <div class="cc-arch-return-row" aria-label="回訪閉環">
-            <button class="cc-arch-node cc-arch-required cc-arch-return" type="button" data-module="notifications-return">
-              <span>必要</span>
-              <strong>Notifications / 通知</strong>
-              <p>未讀、提醒、回覆、付款狀態和活動節奏把會員帶回空間。</p>
-            </button>
           </div>
 
           <div class="cc-arch-operator-row" aria-label="經營與活動模組">
@@ -452,313 +463,12 @@
               <strong>全站空間發現 / Space Discovery</strong>
               <p>搜尋公開空間、分類探索、空間主發現、推薦排序和公開索引。</p>
             </button>
+            <button class="cc-arch-node cc-arch-later" type="button" data-module="incentives">
+              <span>後續擴展</span>
+              <strong>激勵系統 / Incentives</strong>
+              <p>積分、等級、徽章、付費分紅與紅包式活動，作為參與留存的後續增長工具。</p>
+            </button>
           </div>
-        </div>
-        <div class="section-head cc-architecture-details">
-          <div>
-            <span class="eyebrow">架構模組細節</span>
-            <h2>17 個模組形成一個空間型 IM 架構</h2>
-          </div>
-          <p class="muted">模組不是一次全部做滿，而是讓資料模型和產品語言能支撐後續擴展。</p>
-        </div>
-
-        <div class="cc-module-grid">
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/users.svg" alt="">
-              <span>Module 1</span>
-              <h3>空間 / Space</h3>
-            </div>
-            <p><strong>Purpose：</strong>空間主、團隊、公司、課程、專案或私密組織的頂層容器。</p>
-            <ul>
-              <li>空間名稱、Logo、封面</li>
-              <li>公開或私密空間</li>
-              <li>空間主 / Space Owner 檔案</li>
-              <li>About page</li>
-              <li>成員數與活動狀態</li>
-              <li>Home、Discussion、Delivery Hub（含 Resources）、Chat、Events、Members</li>
-              <li>Space Owner、Admin、Moderator / Operator、Member、Guest、Paid Member、VIP</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/send.svg" alt="">
-              <span>Module 2</span>
-              <h3>外部入口 / Public Entry</h3>
-            </div>
-            <b class="cc-module-state">必要</b>
-            <p><strong>Purpose：</strong>把外部內容、廣告、QR、邀請連結和活動入口導入指定空間。</p>
-            <ul>
-              <li>邀請連結、QR code、分享連結</li>
-              <li>外部內容 CTA、廣告入口</li>
-              <li>入口來源與 campaign tracking</li>
-              <li>導向公開承接頁、指定討論、交付內容或私聊</li>
-              <li>風險檢查與入口權限</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/megaphone.svg" alt="">
-              <span>Module 3</span>
-              <h3>Public Landing / 公開承接頁</h3>
-            </div>
-            <p><strong>Purpose：</strong>讓使用者在註冊或下載前先預覽價值。</p>
-            <ul>
-              <li>公開空間頁</li>
-              <li>空間主 / 組織介紹</li>
-              <li>免費內容預覽</li>
-              <li>熱門貼文預覽</li>
-              <li>課程或會員預覽</li>
-              <li>成員見證</li>
-              <li>Join CTA、邀請連結、推薦連結、QR code</li>
-              <li>UTM / campaign source tracking</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/user.svg" alt="">
-              <span>Module 4</span>
-              <h3>身份與成員 / Identity &amp; Members</h3>
-            </div>
-            <p><strong>Purpose：</strong>保留原 IM 底座，同時支撐空間成員身份。</p>
-            <ul>
-              <li>手機、email、社交登入</li>
-              <li>Username / ID 搜尋</li>
-              <li>公開個人檔案</li>
-              <li>每個空間內的成員檔案</li>
-              <li>好友 / 聯絡人關係</li>
-              <li>follow / join 關係</li>
-              <li>封鎖、檢舉、線上狀態</li>
-              <li>成員標籤、角色與權限身份</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/lock.svg" alt="">
-              <span>Module 5</span>
-              <h3>權限與會員 / Access &amp; Membership</h3>
-            </div>
-            <b class="cc-module-state">必要</b>
-            <p><strong>Purpose：</strong>控制誰能看見什麼、加入什麼、解鎖什麼，並把付款 / 訂閱狀態轉成權限。</p>
-            <ul>
-              <li>免費空間、私密空間、邀請制空間</li>
-              <li>付費會員、試用權限、VIP tier</li>
-              <li>課程 access、cohort access</li>
-              <li>Role-based access</li>
-              <li>課程、聊天室、資源、活動解鎖</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
-              <span>Module 6</span>
-              <h3>內容與公告 / Content &amp; Announcements</h3>
-            </div>
-            <b class="cc-module-state">必要</b>
-            <p><strong>Purpose：</strong>讓空間主用低噪音方式發布官方內容、公告、活動和服務更新。</p>
-            <ul>
-              <li>公告、內容貼文、活動通知</li>
-              <li>商品 / 服務卡、交付內容更新</li>
-              <li>置頂、保存、轉發</li>
-              <li>導向討論區、私聊或付費入口</li>
-              <li>發布權限與審核紀錄</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
-              <span>Module 7</span>
-              <h3>討論區 / Discussion</h3>
-            </div>
-            <p><strong>Purpose：</strong>讓有價值的討論可以被搜尋和沉澱，而不是被群聊速度沖走。</p>
-            <ul>
-              <li>貼文、問題、投票、公告、資源</li>
-              <li>wins / progress updates</li>
-              <li>留言、回覆、反應</li>
-              <li>最佳答案、分類、標籤</li>
-              <li>置頂、收藏、檢舉、管理</li>
-              <li>依最新、熱門、未回答排序</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/graduation-cap.svg" alt="">
-              <span>Module 8</span>
-              <h3>Delivery Hub / 交付中心</h3>
-            </div>
-            <b class="cc-module-state cc-module-state-plug">可插拔活動模組</b>
-            <p><strong>Purpose：</strong>交付課程、會員內容、文件、工具、案例、服務說明、SOP、培訓資料與直播回放。</p>
-            <ul>
-              <li>課程、會員內容、案例、服務說明</li>
-              <li>影片、文字、文件、工具、連結、回放</li>
-              <li>測驗、作業、完成狀態或服務交付狀態</li>
-              <li>進度追蹤、交付項目留言</li>
-              <li>關聯討論 topic</li>
-              <li>依會員或等級解鎖</li>
-              <li>Resource library</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card cc-module-card-strong">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/message-circle.svg" alt="">
-              <span>Module 9</span>
-              <h3>即時通訊 / Chat</h3>
-            </div>
-            <p><strong>Purpose：</strong>保留核心 IM 能力，形成比論壇型產品更強的關係優勢。</p>
-            <ul>
-              <li>1:1 私聊、成員互聊、空間主 / 管理員對成員聊天</li>
-              <li>群聊、cohort chat、VIP chat、event chat、course discussion chat</li>
-              <li>文字、語音、圖片、文件、連結預覽</li>
-              <li>回覆、反應、已讀、置頂、通知</li>
-              <li>Contextual DM：來源內容、加入的交付項目、提問、會員狀態、近期活動</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/video.svg" alt="">
-              <span>Module 10</span>
-              <h3>活動 / Events</h3>
-            </div>
-            <b class="cc-module-state cc-module-state-plug">可插拔活動模組</b>
-            <p><strong>Purpose：</strong>在空間內建立節奏和週期性參與。</p>
-            <ul>
-              <li>直播課、AMA、office hour、webinar</li>
-              <li>Challenge、meetup、event calendar</li>
-              <li>RSVP、提醒、live chat</li>
-              <li>回放、出席追蹤、活動後討論</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/wallet.svg" alt="">
-              <span>Module 11</span>
-              <h3>激勵機制 / Incentives</h3>
-            </div>
-            <p><strong>Purpose：</strong>連接熟悉的紅包、積分、獎勵、裂變和參與激勵能力。</p>
-            <ul>
-              <li>積分、等級、徽章、排行榜</li>
-              <li>每日簽到、交付項目完成獎勵、有幫助回答獎勵</li>
-              <li>邀請獎勵、推薦獎勵、紅包活動</li>
-              <li>群組活動獎勵、活動參與獎勵</li>
-              <li>依等級解鎖內容或聊天權限</li>
-              <li>反垃圾規則，避免低品質刷分</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/chart-no-axes-combined.svg" alt="">
-              <span>Module 12</span>
-              <h3>經營後台 / Admin Console</h3>
-            </div>
-            <p><strong>Purpose：</strong>讓空間主把空間當成生意、服務或組織來經營。</p>
-            <ul>
-              <li>成員列表、成員活動、成員標籤</li>
-              <li>批准、移除、封禁成員</li>
-              <li>角色分配、內容管理、交付中心管理</li>
-              <li>活動管理、公告發布、聊天管理</li>
-              <li>活動分析、交付完成分析、member journey</li>
-              <li>收入 / 訂閱總覽、campaign source tracking</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/shield.svg" alt="">
-              <span>Module 13</span>
-              <h3>信任與治理 / Trust &amp; Governance</h3>
-            </div>
-            <p><strong>Purpose：</strong>讓空間成長後仍安全、可管理。</p>
-            <ul>
-              <li>檢舉、封鎖、靜音、封禁</li>
-              <li>管理員、版主、加入審核</li>
-              <li>貼文管理、留言管理</li>
-              <li>垃圾訊息偵測、連結安全</li>
-              <li>付款爭議紀錄</li>
-              <li>管理員操作、內容移除、權限變更紀錄</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/search.svg" alt="">
-              <span>Module 14</span>
-              <h3>In-space Search / 空間內搜尋</h3>
-            </div>
-            <b class="cc-module-state">必要</b>
-            <p><strong>Purpose：</strong>幫成員在已加入的空間內找到人、內容、討論、交付內容、活動與聊天上下文。</p>
-            <ul>
-              <li>搜尋成員</li>
-              <li>搜尋公告</li>
-              <li>搜尋 topic / 問答</li>
-              <li>搜尋交付內容</li>
-              <li>搜尋文件 / 工具 / 回放</li>
-              <li>搜尋活動</li>
-              <li>搜尋聊天中的上下文</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/inbox.svg" alt="">
-              <span>Module 15</span>
-              <h3>Notifications / 通知</h3>
-            </div>
-            <b class="cc-module-state">必要</b>
-            <p><strong>Purpose：</strong>把公告、回覆、私聊、付款狀態、活動提醒和交付進度帶回原上下文。</p>
-            <ul>
-              <li>未讀、push、inbox item</li>
-              <li>公告、回覆、私聊提醒</li>
-              <li>活動提醒、付款與權限變更</li>
-              <li>靜音、退訂、通知強度控制</li>
-              <li>回到原內容、討論或聊天</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/sparkles.svg" alt="">
-              <span>Module 16</span>
-              <h3>全站空間發現 / Space Discovery</h3>
-            </div>
-            <b class="cc-module-state cc-module-state-later">後續擴展</b>
-            <p><strong>Purpose：</strong>幫使用者在平台層找到更多公開空間、空間主和熱門空間。</p>
-            <ul>
-              <li>搜尋公開空間</li>
-              <li>按分類探索 spaces</li>
-              <li>公開空間索引</li>
-              <li>推薦與排序</li>
-              <li>熱門空間</li>
-              <li>風險審核與公開可見性</li>
-              <li>私密空間與私聊內容不進全站發現</li>
-            </ul>
-          </article>
-
-          <article class="cc-module-card">
-            <div class="cc-module-head">
-              <img src="../app_structures/assets/icons/ui/credit-card.svg" alt="">
-              <span>Module 17</span>
-              <h3>付費與訂閱 / Payments &amp; Subscription</h3>
-            </div>
-            <b class="cc-module-state">必要</b>
-            <p><strong>Purpose：</strong>支撐空間主變現和付費空間，但不變成標準電商平台。</p>
-            <ul>
-              <li>月訂閱、年訂閱、一次性交付內容付款</li>
-              <li>付費 cohort、VIP 會員、coupon、trial</li>
-              <li>退款狀態、付款紀錄、訂閱狀態</li>
-              <li>與 access control 整合</li>
-            </ul>
-          </article>
         </div>
       </section>
     </main>
@@ -825,7 +535,7 @@
             rejected: "不把所有外部流量直接丟進聊天；沒有來源、目標和加入規則，後續營運會失去上下文。"
           },
           "public-landing": {
-            title: "Public Landing / 公開承接頁",
+            title: "公開承接頁 / Public Landing",
             role: "必要",
             summary: "讓使用者先理解空間價值，再決定註冊、加入、私聊或付費。",
             flow: ["訪客進入", "看空間主 / 組織介紹", "預覽內容與會員價值", "加入 / 付費 / 私聊"],
@@ -902,7 +612,7 @@
             rejected: "不把所有討論做成即時群聊；需要長期沉澱的內容必須可分類、可搜尋、可管理。"
           },
           "im-inbox": {
-            title: "即時通訊 / Chat",
+            title: "聊天 / Chat",
             role: "必要",
             summary: "保留 IM 核心優勢，讓私聊、群聊、服務對話和上下文 DM 都能回到同一入口。",
             flow: ["從內容 / topic / 成員進入", "帶上下文開啟對話", "私聊或群聊互動", "收件箱回訪"],
@@ -913,7 +623,7 @@
             rejected: "不把空間型 IM 做成純論壇；長期關係仍要靠 IM 的即時性與回訪能力。"
           },
           "in-space-search": {
-            title: "In-space Search / 空間內搜尋",
+            title: "空間內搜尋 / In-space Search",
             role: "必要",
             summary: "只在已加入或有權限的空間內搜尋，幫成員找回內容、成員、交付項目、活動與對話上下文。",
             flow: ["輸入搜尋詞", "套用空間與權限範圍", "查找內容 / 人 / 討論", "回到原模組"],
@@ -924,7 +634,7 @@
             rejected: "不把私聊、私密空間內容或未授權交付項目放進全站搜尋；內部搜尋和平台發現必須分層。"
           },
           "notifications-return": {
-            title: "Notifications / 通知",
+            title: "通知 / Notifications",
             role: "必要",
             summary: "把公告、回覆、私聊、付款狀態、活動提醒和交付進度帶回收件箱或空間首頁。",
             flow: ["事件產生", "判斷通知強度", "送達收件箱 / push", "回到原內容或對話"],
@@ -999,6 +709,17 @@
             competitors: ["Skool discovery", "LINE OpenChat discovery", "Discord Server Discovery", "Facebook Groups discovery"],
             adopted: "採用後續擴展的全站發現層，只索引公開且通過治理的空間與內容摘要。",
             rejected: "不把空間內搜尋、私密空間內容或私聊內容混入全站發現；平台曝光需要獨立風控。"
+          },
+          incentives: {
+            title: "激勵系統 / Incentives",
+            role: "後續擴展",
+            summary: "以可配置規則驅動成員參與，支援積分、等級、徽章、付費分紅與紅包式活動。",
+            flow: ["設定任務 / 參與條件", "行為產生積分與徽章", "達標升級與權益更新", "觸發分紅或紅包活動", "回寫到用戶成長與營運資料"],
+            inputs: ["內容互動資料", "話題參與紀錄", "活動與直播參與", "商家分配規則", "防濫用規則", "活動審核狀態"],
+            outputs: ["積分餘額", "等級", "徽章清單", "分紅/紅包活動紀錄", "推播與成員通知", "營運觀測資料"],
+            competitors: ["Discord server leveling", "WeChat/微信紅包活動", "Telegram channel rewards", "LINE 官方帳號互動活動"],
+            adopted: "採用激勵層與現有成員行為事件鏈解耦，先建立行為記錄、權益映射和風控邊界。",
+            rejected: "不在 V1 擴展為完整商業分潤結算與大額財務模組；先保留為行為化激勵與有限分發事件。"
           }
         };
 
