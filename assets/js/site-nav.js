@@ -1,12 +1,12 @@
 (function () {
   const NAV_ITEMS = [
     { id: "creator-community", label: "首頁", href: "creator_community/index.html" },
-    { id: "v1-decision", label: "V1 架構推導", href: "v1_decision/index.html" },
-    { id: "interaction-playground", label: "V1 情境流程", href: "interaction_playground/index.html" },
+    { id: "v1-decision", label: "架構推導", href: "v1_decision/index.html" },
+    { id: "interaction-playground", label: "情境流程", href: "interaction_playground/index.html" },
     { id: "compare-features", label: "功能比較", href: "compare_features/index.html" },
     { id: "app-structures", label: "競品架構庫", href: "app_structures/index.html" },
     { id: "product-architecture", label: "產品架構", href: "product_architecture/index.html" },
-    { id: "report", label: "完整報告", href: "reports/report.html" },
+    { id: "report", label: "報告", href: "reports/report.html" },
   ];
 
   function joinPath(root, path) {

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Skool 空間型 IM 參考報告</title>
+    <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../assets/css/site.css?v=shared-ui-20260521">
+    <link rel="stylesheet" href="../assets/css/components.css?v=shared-ui-20260521">
+    <link rel="stylesheet" href="../assets/css/pages/report.css?v=report-20260530-skool">
+    <link rel="stylesheet" href="../assets/css/liquid-glass.css?v=ios26-20260526">
+  </head>
+  <body>
+    <header class="topbar is-compact">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>Skool 空間型 IM 參考報告</strong>
+        </div>
+        <nav class="nav" aria-label="頁面切換" data-site-nav data-nav-root="../" data-active="report"></nav>
+      </div>
+    </header>
+    <script src="../assets/js/site-nav.js?v=site-nav-20260530-skool"></script>
+    <main>
+      <article class="report-shell">
+        <nav class="report-switch" aria-label="報告切換">
+          <a href="report.html">完整 IM 報告</a>
+          <a class="active" href="skool.html" aria-current="page">Skool 參考報告</a>
+        </nav>
+        <div class="report-note">
+          <p>此頁把 Skool 研究整理成可用於空間型 IM 首頁與 V1 架構判斷的參考。主基底採用較精煉的行為與經濟驅動報告，另一份盈利研究作為補充。</p>
+        </div>
+        <div class="markdown-body">
+          <h1>Skool 對空間型 IM 首頁的產品參考</h1>
+          <p><strong>結論：</strong>較適合作為首頁內容參考的是 <a href="Skool%20Communities%20Economic%20and%20Behavioral%20Drivers%20of%20Profitability.md">Skool Communities: Economic and Behavioral Drivers of Profitability</a>。它比另一份報告更短、更可落地，重點集中在社群首頁、會員轉化、留存、激勵與訂閱經濟，能直接支撐目前「空間型 IM」首頁的產品敘事。</p>
+
+          <h2>1. 為什麼選這份</h2>
+          <div class="decision-grid">
+            <article class="decision-card">
+              <span>Evidence-backed</span>
+              <h3>更接近產品首頁</h3>
+              <p>報告把 Skool 拆成 Community、Classroom、Calendar、Members、Leaderboard / levels 幾個清楚入口，對應首頁已經在描述的空間、交付、活動、成員與激勵。</p>
+            </article>
+            <article class="decision-card">
+              <span>Product judgment</span>
+              <h3>更能支撐定位</h3>
+              <p>它的核心不是「Skool 如何賺錢」，而是付費社群為什麼能留住人：進度、歸屬、身份、週期性互動和可見成果。</p>
+            </article>
+            <article class="decision-card">
+              <span>Risk control</span>
+              <h3>更少誇張敘事</h3>
+              <p>另一份報告資訊更完整，但宏觀市場、案例收入和創作者經濟篇幅較重。若直接用於首頁，容易把 IM 產品推成「創作者變現平台」。</p>
+            </article>
+          </div>
+
+          <h2>2. 對 IM 首頁最有用的判斷</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Skool 觀察</th>
+                <th>對空間型 IM 的含義</th>
+                <th>首頁應呈現</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>社群是預設落點，不是課程附屬功能。</td>
+                <td>首頁要把「空間」放在第一層，而不是把它描述成聊天或內容工具的組合。</td>
+                <td>空間承接公開入口，內部包含公告、討論、交付、活動、私聊與治理。</td>
+              </tr>
+              <tr>
+                <td>訂閱產品靠留存，不靠單次上架。</td>
+                <td>產品敘事要強調成員每週回來的理由，而不是只強調內容發布或群聊。</td>
+                <td>週期活動、office hour、任務、回放、問答與成員進度。</td>
+              </tr>
+              <tr>
+                <td>點讚、等級、排行榜把參與轉成可見身份。</td>
+                <td>激勵機制應服務高質量互動和空間治理，不應只做簽到或遊戲化裝飾。</td>
+                <td>積分、等級、貢獻、權限解鎖、可信成員身份。</td>
+              </tr>
+              <tr>
+                <td>付費社群賣的是轉變，不是資料庫。</td>
+                <td>首頁要說清楚使用者進入空間後能完成什麼進展。</td>
+                <td>從內容預覽到提問、參與、交付、私聊轉化的連續路徑。</td>
+              </tr>
+              <tr>
+                <td>發現排名與活躍、留存相關。</td>
+                <td>IM 的公開入口、搜尋與推薦不能只看流量，要看進入後是否形成互動和回訪。</td>
+                <td>來源、活躍、轉化、留存和空間健康度，而不是單純曝光數。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>3. 可採用 pattern</h2>
+          <h3>Recommended pattern：空間作為主容器</h3>
+          <p><strong>Because：</strong>Skool 的參考價值在於把社群 feed、課程交付、活動、成員和付款集中到同一個身份與入口下，降低工具切換，也讓成員知道回到哪裡。</p>
+          <p><strong>Evidence：</strong>主報告把 Skool 定義為 community-first subscription business tool，並指出 Community、Classroom、Calendar、Members、Leaderboards / levels 是實際使用中的核心結構。</p>
+          <p><strong>Adopted pattern：</strong>IM 首頁維持「Space」為主體，下面才是公告、討論、交付、活動、成員、私聊和管理台。</p>
+          <p><strong>Rejected pattern：</strong>不把首頁做成一般社交 feed、課程平台首頁、商城首頁或客服工具首頁。</p>
+          <p><strong>V1 architecture implication：</strong>V1 應先證明公開入口如何進入空間、空間如何承接互動、互動如何回到私聊或交付；完整創作者變現、推薦分發與高階分析可以後置。</p>
+
+          <h3>Recommended pattern：留存先於變現</h3>
+          <p><strong>Because：</strong>Skool 報告反覆指出付費社群是訂閱產品，存活取決於 churn，而不是一次性 launch。這與空間型 IM 的首頁定位一致：讓人留下來，才有後續商業化。</p>
+          <p><strong>Evidence：</strong>報告把「progress、accountability、belonging」列為社群成功前提，並把 weekly cadence、onboarding、first win 視為降低流失的關鍵。</p>
+          <p><strong>Adopted pattern：</strong>首頁保留活動節奏、成員進度、任務、回訪與留存分析。</p>
+          <p><strong>Rejected pattern：</strong>不把付款、訂閱、課程銷售放成第一屏唯一賣點。</p>
+          <p><strong>V1 architecture implication：</strong>付費與訂閱可以是模組，但 V1 的核心證明應是「外部流量進來後如何形成可持續互動」。</p>
+
+          <h3>Recommended pattern：激勵綁定貢獻與權限</h3>
+          <p><strong>Because：</strong>Skool 的點數和等級讓互動產生可見身份，並可與內容解鎖連動。這對 IM 產品有價值，因為群組與公開空間需要可信成員、貢獻識別和治理秩序。</p>
+          <p><strong>Evidence：</strong>主報告指出點數、等級、leaderboard 和 level-locked courses 會把參與轉成狀態與權限。</p>
+          <p><strong>Adopted pattern：</strong>首頁可描述積分、等級、徽章、權限解鎖與貢獻身份，但要服務空間秩序。</p>
+          <p><strong>Rejected pattern：</strong>不採用純排行榜導向的競爭設計，避免讓高信任空間變成刷互動場景。</p>
+          <p><strong>Risk / assumption：</strong>激勵設計可能反噬討論品質，V1 需要把積分來源限制在被他人認可的貢獻、完成任務或管理動作上。</p>
+
+          <h2>4. 對現有首頁內容的校準</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>首頁區塊</th>
+                <th>保留方向</th>
+                <th>用 Skool 校準後的重點</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hero</td>
+                <td>空間作為核心組織單位。</td>
+                <td>加強「內容、訂閱與即時互動」不是功能堆疊，而是一個可留存的會員空間。</td>
+              </tr>
+              <tr>
+                <td>定位收斂</td>
+                <td>不做一般 IM 替代品。</td>
+                <td>補強「使用者為空間主、轉變、活動和同伴而來」。</td>
+              </tr>
+              <tr>
+                <td>核心機制</td>
+                <td>公開入口 → 空間 → 討論 / 私聊 / 交付。</td>
+                <td>把首週 onboarding、first win、週期活動和回訪理由說得更清楚。</td>
+              </tr>
+              <tr>
+                <td>產品架構</td>
+                <td>Space、Admin Console、Analytics、Membership、Delivery、Events、Gamification。</td>
+                <td>這組模組與 Skool 參考高度一致，適合保留。</td>
+              </tr>
+              <tr>
+                <td>商業化</td>
+                <td>會員、訂閱、課程、訓練營、進階服務。</td>
+                <td>商業化應放在留存與交付之後，不要搶走首頁主敘事。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>5. V1 範圍切割</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>V1 必須證明</th>
+                <th>V1 可輕量</th>
+                <th>Later hook</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>公開入口進入指定空間。</td>
+                <td>簡單付費或會員狀態。</td>
+                <td>完整訂閱定價、分潤、創作者 marketplace。</td>
+              </tr>
+              <tr>
+                <td>公告、討論、私聊、交付與活動在同一空間內可理解。</td>
+                <td>基礎積分、等級或任務。</td>
+                <td>複雜 leaderboard、跨空間排名、平台級發現算法。</td>
+              </tr>
+              <tr>
+                <td>空間主能管理成員、內容、權限和基本數據。</td>
+                <td>簡單 analytics：來源、活躍、轉化、留存。</td>
+                <td>CRM、自動化 funnel、AI 營運助理、Bot / API。</td>
+              </tr>
+              <tr>
+                <td>使用者能理解為什麼要留下、回來、提問和參與。</td>
+                <td>簡單 onboarding 和 first win。</td>
+                <td>高階課程系統、完整 LMS、直播廣場、推薦 feed。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h2>6. 另一份報告怎麼用</h2>
+          <p><a href="Skool%20Community%20Profitability%20Research.md">Skool Community Profitability Research</a> 更像完整盈利研究，適合用來補充商業化、案例、失敗模式和創作者經濟背景。它不適合作為首頁主參考，因為首頁現在要證明的是「空間型 IM 為什麼成立」，不是證明「Skool 社群如何盈利」。</p>
+
+          <h2>7. 最終建議</h2>
+          <p>首頁可以明確吸收 Skool 的三個方向：空間是主容器、留存是核心指標、激勵必須綁定貢獻與權限。但不要把產品收窄成 Skool clone。IM 的差異應該保留在私聊、群聊、公開入口、商業對話、信任治理和後續 Bot / Mini App 擴展。</p>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>

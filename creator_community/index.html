@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Creator-led / Community-led IM 首頁原型</title>
+    <title>空間型 IM 首頁原型</title>
     <link rel="icon" href="../app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
     <link rel="stylesheet" href="../assets/css/site.css?v=shared-ui-20260521">
     <link rel="stylesheet" href="../assets/css/components.css?v=shared-ui-20260521">
@@ -14,7 +14,7 @@
     <header class="topbar is-compact">
       <div class="topbar-inner">
         <div class="brand">
-          <strong>Community-led IM</strong>
+          <strong>空間型 IM</strong>
         </div>
         <nav class="nav" aria-label="頁面切換" data-site-nav data-nav-root="../" data-active="creator-community"></nav>
       </div>
@@ -24,32 +24,31 @@
     <main>
       <section class="cc-hero" id="top">
         <div class="cc-hero-intro">
-          <h1>由頻道主驅動的社群、內容、訂閱與即時互動平台</h1>
-          <p class="lead">使用者從公開內容進入頻道，透過交付內容、社群討論、活動和私聊建立信任；頻道主透過會員、訂閱和進階服務獲得長期收入。</p>
+          <h1>以空間為核心的內容、訂閱與即時互動平台</h1>
+          <p class="lead">空間型 IM 以「空間」為核心組織單位，把公告、討論、群聊、私聊、內容交付、活動、成員管理和激勵機制整合成一套關係經營工具。</p>
           <div class="cc-hero-actions" aria-label="頁內章節">
             <a href="#positioning">定位收斂</a>
             <a href="#scenarios">需求場景</a>
             <a href="#mechanisms">核心機制</a>
             <a href="#architecture">產品架構</a>
-            <a href="#modules">模組細節</a>
           </div>
         </div>
 
-        <div class="cc-hero-flow" aria-label="Creator-led Community IM 核心流程">
+        <div class="cc-hero-flow" aria-label="空間型 IM 核心流程">
           <div class="cc-flow-node cc-flow-wide">
-            <span>Discovery / Public Landing</span>
+            <span>Public Entry / Public Landing</span>
             <strong>公開內容、廣告、搜尋、QR、邀請連結</strong>
           </div>
           <div class="cc-flow-arrow" aria-hidden="true">↓</div>
           <div class="cc-flow-triad">
             <div class="cc-flow-node">
-              <span>Creator Space</span>
-              <strong>內容、社群、交付中心、私聊的主空間</strong>
+              <span>Space</span>
+              <strong>公告、討論、交付中心、聊天的主容器</strong>
             </div>
             <b aria-hidden="true">←→</b>
             <div class="cc-flow-node">
-              <span>Creator Console</span>
-              <strong>成員、內容、活動、收入管理</strong>
+              <span>Admin Console</span>
+              <strong>成員、內容、活動、收入與治理</strong>
             </div>
             <b aria-hidden="true">←→</b>
             <div class="cc-flow-node">
@@ -69,7 +68,7 @@
               <strong>課程、資料、工具、回放交付</strong>
             </article>
             <article>
-              <span>Community</span>
+              <span>Discussion</span>
               <strong>討論沉澱</strong>
             </article>
             <article>
@@ -103,27 +102,43 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">定位收斂</span>
-            <h2>不是放棄 IM，是先找到更窄的進場理由</h2>
+            <h2>為什麼要從泛 IM 收窄到空間主與高信任關係？</h2>
           </div>
-          <p class="muted">原方向仍成立，但首頁需要先回答「使用者為什麼今天要進來」。</p>
+          <p class="muted">問題不是 IM 能做什麼，而是誰有足夠強的理由，把用戶帶進一個新的 IM-based 空間。</p>
         </div>
 
         <div class="cc-decision-grid">
           <article class="cc-decision-card">
-            <span>Product judgment</span>
-            <h3>通用 IM 定位太寬</h3>
-            <p>V1 不應同時對標 WhatsApp、Telegram、Discord、淘寶、Amazon、小紅書和 TikTok。那會讓首頁像功能清單，而不是一個清楚的進場場景。</p>
+            <span>不能假設 01</span>
+            <h3>用戶會來這裡「買東西」</h3>
+            <p>有明確購物需求時，用戶會去 Amazon、淘寶、Shopee；沒有購物需求時，需要靠內容、信任、空間氛圍和他人經驗慢慢轉化。</p>
+            <strong>更適合：高信任、高解釋成本、高互動成本、高復購或長週期關係的產品與服務。</strong>
           </article>
           <article class="cc-decision-card cc-decision-card-strong">
-            <span>Recommended pattern</span>
-            <h3>先從有組織者的空間開始</h3>
-            <p>創作者、商家、教育者、專案團隊和私密組織本來就有聚集人群的理由；IM 變成承接內容、討論、服務和長期關係的空間。</p>
+            <span>不能假設 02</span>
+            <h3>用戶會把它當成一般 IM 替代品</h3>
+            <p>用戶已經有 WhatsApp、Telegram、微信、LINE、Discord。新產品若只提供私聊、群聊、通知和好友，沒有足夠遷移理由。</p>
+            <strong>第一個問題應該是：哪一類人能把用戶帶進新的 IM-based 空間？</strong>
           </article>
           <article class="cc-decision-card">
-            <span>V1 architecture implication</span>
-            <h3>仍保留原 IM 底座</h3>
-            <p>私聊、群聊、好友、搜尋、通知、成員身份、權限、檢舉、封鎖、文件、公告和群管理都繼續成立，只是首個 landing 場景更具體。</p>
+            <span>不能假設 03</span>
+            <h3>早期用戶會為平台而來</h3>
+            <p>早期用戶更可能為某個空間主、課程、討論區、活動、服務、福利、資料或組織而來，而不是因為「這是一個新 IM」。</p>
+            <strong>所以第一版應服務能帶來用戶的空間主：老師、專業服務負責人、內容型空間主、私密組織與項目負責人。</strong>
           </article>
+        </div>
+
+        <div class="cc-position-path" aria-label="高信任關係轉化路徑">
+          <span>看到內容 / 推薦 / 活動 / 朋友分享</span>
+          <span>有興趣，但還不夠信任</span>
+          <span>想看更多內容與他人提問</span>
+          <span>提出具體問題</span>
+          <span>信任建立後購買、報名、預約或留下</span>
+        </div>
+
+        <div class="cc-position-summary">
+          <strong>產品解決的不是「讓用戶買東西」。</strong>
+          <p>它幫助用戶在決策前完成理解、觀察、提問與信任建立；也幫助空間主把一次性內容觸達，轉化成可互動、可服務、可付費、可留存的長期關係。</p>
         </div>
       </section>
 
@@ -131,7 +146,7 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">需求場景</span>
-            <h2>第一批操作者本來就有聚集人群的理由</h2>
+            <h2>第一批空間主本來就有聚集人群的理由</h2>
           </div>
           <p class="muted">使用者不是為了下載另一個 IM 而來，而是為了跟隨、學習、提問、參與活動或獲得持續服務。</p>
         </div>
@@ -140,26 +155,26 @@
           <article class="cc-scenario-card">
             <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
             <span>01</span>
-            <h3>Creator / 頻道主社群</h3>
+            <h3>空間主 / 高信任興趣空間</h3>
             <p>高信任興趣消費，例如茶、酒、收藏、戶外裝備、攝影器材。</p>
-            <p>需要內容種草、專家解釋、社群討論和商品轉化。</p>
-            <strong>用途：付費社群、課程、會員討論、直播活動、私聊、訂閱、長期關係管理。</strong>
+            <p>需要內容種草、專家解釋、討論區互動和商品轉化。</p>
+            <strong>用途：付費空間、課程、會員討論、直播活動、私聊、訂閱、長期關係管理。</strong>
           </article>
 
           <article class="cc-scenario-card">
             <img src="../app_structures/assets/icons/ui/graduation-cap.svg" alt="">
             <span>02</span>
             <h3>教育 / 課程 / 訓練營</h3>
-            <p>金融、投資教育社群、高客單價知識產品、課程或訓練營。</p>
-            <p>使用者購買前需要信任、問答、社群氛圍和老師人設。</p>
+            <p>金融、投資教育空間、高客單價知識產品、課程或訓練營。</p>
+            <p>使用者購買前需要信任、問答、空間氛圍和老師人設。</p>
             <strong>用途：課程交付、課後討論、作業、Q&amp;A、班級群、office hour、進度追蹤。</strong>
           </article>
 
           <article class="cc-scenario-card">
             <img src="../app_structures/assets/icons/ui/briefcase.svg" alt="">
             <span>03</span>
-            <h3>商業 / 專業服務社群</h3>
-            <p>顧問、品牌、門店、專業服務、小型商家與高信任銷售。</p>
+            <h3>專業服務 / 內容型空間</h3>
+            <p>顧問、品牌、門店、專業服務、小型內容型空間主與高信任銷售。</p>
             <p>關鍵不是一次成交，而是持續教育、回覆問題和關係轉化。</p>
             <strong>用途：內容教育、客戶提問、諮詢、活動公告、會員服務、關係轉化。</strong>
           </article>
@@ -181,14 +196,14 @@
             <span class="eyebrow">競品缺口</span>
             <h2>現有工具各有強項，但不等於這個 landing 場景</h2>
           </div>
-          <p class="muted">新方向不是複製某一個競品，而是把頻道、社群、私聊、會員和治理放進同一個 IM 容器。</p>
+          <p class="muted">新方向不是複製某一個競品，而是把內容與公告、討論區、聊天、會員和治理放進同一個空間型 IM 容器。</p>
         </div>
 
         <div class="cc-competitor-grid">
           <article class="cc-competitor-card">
             <img src="../app_structures/assets/icons/whatsapp.svg" alt="">
             <h3>WhatsApp</h3>
-            <p>熟人溝通強，商業社群與內容承接弱。</p>
+            <p>熟人溝通強，空間化內容承接與成員關係管理弱。</p>
           </article>
           <article class="cc-competitor-card">
             <img src="../app_structures/assets/icons/telegram.svg" alt="">
@@ -198,12 +213,12 @@
           <article class="cc-competitor-card">
             <img src="../app_structures/assets/icons/discord.svg" alt="">
             <h3>Discord</h3>
-            <p>社群治理強，但結構較重，大眾用戶學習成本高。</p>
+            <p>空間治理強，但結構較重，大眾用戶學習成本高。</p>
           </article>
           <article class="cc-competitor-card">
             <img src="../app_structures/assets/icons/intercom.svg" alt="">
             <h3>傳統客服系統</h3>
-            <p>工單與服務管理強，但缺少社群、內容與自然關係沉澱。</p>
+            <p>工單與服務管理強，但缺少空間、內容與自然關係沉澱。</p>
           </article>
         </div>
       </section>
@@ -212,63 +227,73 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">核心機制</span>
-            <h2>把公開內容、社群討論與私聊轉化接成同一條路</h2>
+            <h2>空間型 IM 要把入口、內容、討論、交付和聊天接成閉環</h2>
           </div>
-          <p class="muted">核心不是「多一個社群頁」，而是讓每次互動都帶著上下文回到 IM 關係。</p>
+          <p class="muted">重點不是立即成交，也不是替代所有 IM，而是讓空間主把一次觸達變成可持續經營的成員關係。</p>
         </div>
 
         <div class="cc-mechanism-layout">
           <article class="cc-flow-card">
             <div class="cc-card-head">
               <span>場景 A</span>
-              <h3>使用者發現一個商家</h3>
+              <h3>成員從外部內容進入空間</h3>
             </div>
             <div class="cc-step-flow">
-              <span>外部內容 / 廣告 / QR</span>
-              <span>公開頻道頁：先看內容，建立信任</span>
-              <span>討論群 / Topic：按問題、活動、服務、資源分流</span>
-              <span>私聊 / 商業對話：帶著上下文進入一對一溝通</span>
-              <span>服務記錄 / 標籤 / 復購觸達：關係持續沉澱</span>
+              <span>Public Entry：內容、廣告、QR、朋友分享</span>
+              <span>公開承接頁：先理解空間主、內容和會員價值</span>
+              <span>空間：進入公告、討論區、交付中心或活動</span>
+              <span>Chat：帶著來源、問題和會員狀態進入對話</span>
+              <span>通知與權限：把成員帶回原內容、討論或交付項目</span>
             </div>
           </article>
 
           <article class="cc-flow-card">
             <div class="cc-card-head">
               <span>場景 B</span>
-              <h3>商家經營一個使用者池</h3>
+              <h3>空間主經營一個長期成員池</h3>
             </div>
             <div class="cc-loop-flow">
-              <span>發布內容</span>
-              <span>外部連結導流</span>
-              <span>頻道承接</span>
-              <span>群組分流討論</span>
-              <span>私聊轉化</span>
-              <span>標籤化營運</span>
-              <span>後續觸達</span>
+              <span>內容與公告</span>
+              <span>討論區分流</span>
+              <span>交付中心沉澱資料</span>
+              <span>活動建立節奏</span>
+              <span>Chat 承接高意圖問題</span>
+              <span>經營後台管理成員</span>
+              <span>通知回訪</span>
             </div>
           </article>
         </div>
 
-        <div class="cc-mechanism-grid" aria-label="四個關鍵機制">
+        <div class="cc-mechanism-grid" aria-label="六個關鍵機制">
           <article>
             <span>01</span>
-            <h3>頻道負責低噪音內容承接</h3>
-            <p>公告、內容、活動、商品資訊不被聊天淹沒。</p>
+            <h3>空間是核心容器</h3>
+            <p>平台下面是空間；空間裡再組織群組、討論區、交付中心、活動、成員和聊天。</p>
           </article>
           <article>
             <span>02</span>
-            <h3>把大群拆成可理解的問題空間</h3>
-            <p>問答、活動、資源、討論分開，降低新成員進入成本。</p>
+            <h3>內容與公告負責低噪音承接</h3>
+            <p>公告、內容、活動和服務更新不被群聊淹沒，先建立理解和信任。</p>
           </article>
           <article>
             <span>03</span>
-            <h3>商業對話帶著上下文進入私聊</h3>
-            <p>使用者從哪個內容、群組和問題進來，商家可以看見。</p>
+            <h3>討論區把問題拆開</h3>
+            <p>問答、活動、服務、資源和經驗分享分開，降低新成員進入成本。</p>
           </article>
           <article>
             <span>04</span>
+            <h3>交付中心沉澱可交付價值</h3>
+            <p>課程、文件、工具、案例、SOP、直播回放和會員資料都在交付中心內被權限控制。</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Chat 承接高意圖關係</h3>
+            <p>成員從哪個內容、討論、交付項目或活動進來，空間主能帶著上下文回覆。</p>
+          </article>
+          <article>
+            <span>06</span>
             <h3>信任與權限貫穿全流程</h3>
-            <p>公開入口、群組、商家身份、客服、AI、API 都要被治理。</p>
+            <p>身份、成員、權限、付費狀態、檢舉、封鎖和審核紀錄要跨模組成立。</p>
           </article>
         </div>
 
@@ -280,9 +305,9 @@
           <ul class="cc-capability-list">
             <li>閱讀官方公告</li>
             <li>加入主題討論</li>
-            <li>取得課程或資源</li>
-            <li>與管理員、創作者、導師或成員聊天</li>
-            <li>加入群組或私密頻道</li>
+            <li>取得交付中心內的課程、文件、工具或回放</li>
+            <li>與空間主、管理員、協作者或成員聊天</li>
+            <li>加入群組或私密討論區</li>
             <li>搜尋成員並加為聯絡人</li>
             <li>獲得積分、等級、獎勵或紅包式激勵</li>
             <li>在同一產品內建立長期關係</li>
@@ -294,47 +319,55 @@
         <div class="section-head">
           <div>
             <span class="eyebrow">產品架構</span>
-            <h2>V1 必要閉環：模組要能互相接線，產品才跑得起來</h2>
+            <h2>必要閉環：模組要能互相接線，產品才跑得起來</h2>
           </div>
           <p class="muted">點擊任一模組可查看內部流、輸入輸出、借鑑競品功能，以及採用 / 不採用的產品 pattern。</p>
         </div>
 
         <div class="cc-architecture-legend" aria-label="架構圖標記說明">
-          <span><b></b>V1 必要</span>
+          <span><b></b>必要</span>
           <span><b class="plug"></b>可插拔活動模組</span>
           <span><b class="later"></b>後續擴展</span>
         </div>
 
-        <div class="cc-architecture-map" aria-label="V1 必要閉環架構圖">
+        <div class="cc-architecture-map" aria-label="必要閉環架構圖">
           <div class="cc-arch-primary-flow" aria-label="進入與權限主流程">
             <button class="cc-arch-node cc-arch-required" type="button" data-module="external-entry">
-              <span>V1 必要</span>
-              <strong>External Entry</strong>
+              <span>必要</span>
+              <strong>外部入口 / Public Entry</strong>
               <p>外部內容、廣告、QR、邀請連結把人帶進指定空間。</p>
             </button>
             <div class="cc-arch-arrow" aria-hidden="true">→</div>
             <button class="cc-arch-node cc-arch-required" type="button" data-module="public-landing">
-              <span>V1 必要</span>
-              <strong>Public Landing</strong>
+              <span>必要</span>
+              <strong>Public Landing / 公開承接頁</strong>
               <p>先看公開價值，再決定註冊、加入或付費。</p>
             </button>
             <div class="cc-arch-arrow" aria-hidden="true">→</div>
-            <button class="cc-arch-node cc-arch-required cc-arch-space" type="button" data-module="community-space">
-              <span>V1 必要</span>
-              <strong>Community Space</strong>
-              <p>社群、內容、聊天、會員和經營後台的主容器。</p>
+            <button class="cc-arch-node cc-arch-required cc-arch-space" type="button" data-module="space">
+              <span>必要</span>
+              <strong>空間 / Space</strong>
+              <p>公告、討論、聊天、會員和經營後台的主容器。</p>
             </button>
             <div class="cc-arch-arrow" aria-hidden="true">→</div>
             <button class="cc-arch-node cc-arch-required" type="button" data-module="identity-member">
-              <span>V1 必要</span>
-              <strong>Identity &amp; Member</strong>
+              <span>必要</span>
+              <strong>身份與成員 / Identity &amp; Members</strong>
               <p>把使用者變成空間成員，建立角色、好友與成員身份。</p>
             </button>
             <div class="cc-arch-arrow" aria-hidden="true">→</div>
             <button class="cc-arch-node cc-arch-required" type="button" data-module="membership-payment">
-              <span>V1 必要</span>
-              <strong>Membership &amp; Payment Gate</strong>
+              <span>必要</span>
+              <strong>權限與會員 / Access &amp; Membership</strong>
               <p>把會員、訂閱、付款狀態轉成可見範圍與解鎖權限。</p>
+            </button>
+          </div>
+
+          <div class="cc-arch-payment-row" aria-label="付費與訂閱模組">
+            <button class="cc-arch-node cc-arch-required cc-arch-payment" type="button" data-module="payments-subscription">
+              <span>必要</span>
+              <strong>付費與訂閱 / Payments &amp; Subscription</strong>
+              <p>付款、訂閱、退款與到期狀態回寫權限與會員。</p>
             </button>
           </div>
 
@@ -342,70 +375,69 @@
 
           <div class="cc-arch-activity-flow" aria-label="會員活動模組">
             <button class="cc-arch-node cc-arch-required" type="button" data-module="channel-announcement">
-              <span>V1 必要</span>
-              <strong>Channel / Announcement</strong>
+              <span>必要</span>
+              <strong>內容與公告 / Content &amp; Announcements</strong>
               <p>低噪音發布公告、內容、活動、商品或服務更新。</p>
             </button>
             <button class="cc-arch-node cc-arch-required" type="button" data-module="topic-discussion">
-              <span>V1 必要</span>
-              <strong>Topic Discussion</strong>
+              <span>必要</span>
+              <strong>討論區 / Discussion</strong>
               <p>把問題、活動、資源、討論拆成可理解的主題空間。</p>
             </button>
             <button class="cc-arch-node cc-arch-required" type="button" data-module="im-inbox">
-              <span>V1 必要</span>
-              <strong>IM / Inbox</strong>
-              <p>私聊、群聊、商業對話和上下文 DM 回到同一關係入口。</p>
+              <span>必要</span>
+              <strong>即時通訊 / Chat</strong>
+              <p>私聊、群聊、服務對話和上下文 DM 回到同一關係入口。</p>
             </button>
             <button class="cc-arch-node cc-arch-required" type="button" data-module="in-space-search">
-              <span>V1 必要</span>
-              <strong>In-space Search</strong>
+              <span>必要</span>
+              <strong>In-space Search / 空間內搜尋</strong>
               <p>在單一空間內搜尋成員、公告、topic、交付內容、文件、回放和聊天上下文。</p>
             </button>
           </div>
 
           <div class="cc-search-scope" aria-label="空間內搜尋連接範圍">
-            <strong>In-space Search 連接</strong>
-            <span>Community Space</span>
-            <span>Channel / Announcement</span>
-            <span>Topic Discussion</span>
-            <span>Delivery Hub</span>
+            <strong>空間內搜尋連接</strong>
+            <span>Space</span>
+            <span>Content &amp; Announcements</span>
+            <span>Discussion</span>
+            <span>Delivery Hub / Resources</span>
             <span>Events</span>
-            <span>Resources</span>
             <span>Members</span>
-            <span>IM / Inbox</span>
+            <span>Chat</span>
           </div>
 
           <div class="cc-arch-return-row" aria-label="回訪閉環">
             <button class="cc-arch-node cc-arch-required cc-arch-return" type="button" data-module="notifications-return">
-              <span>V1 必要</span>
-              <strong>Notifications / Return Loop</strong>
+              <span>必要</span>
+              <strong>Notifications / 通知</strong>
               <p>未讀、提醒、回覆、付款狀態和活動節奏把會員帶回空間。</p>
             </button>
           </div>
 
           <div class="cc-arch-operator-row" aria-label="經營與活動模組">
             <button class="cc-arch-node cc-arch-required cc-arch-admin" type="button" data-module="admin-console">
-              <span>V1 必要</span>
-              <strong>Creator / Admin Console</strong>
+              <span>必要</span>
+              <strong>經營後台 / Admin Console</strong>
               <p>管理內容、成員、付款狀態、審核、活動和基本分析。</p>
             </button>
             <div class="cc-arch-plug-zone" aria-label="可插拔活動模組">
-              <button class="cc-arch-node cc-arch-plug" type="button" data-module="classroom-events">
+              <button class="cc-arch-node cc-arch-plug" type="button" data-module="delivery-hub">
                 <span>可插拔活動模組</span>
-                <strong>Delivery Hub / Events</strong>
-                <p>交付內容、直播課、AMA、office hour、日曆與回放。</p>
+                <strong>交付中心 / Delivery Hub</strong>
+                <p>課程、文件、工具、案例、服務說明、SOP、回放與資源庫。</p>
               </button>
-              <button class="cc-arch-node cc-arch-plug" type="button" data-module="resources">
+              <button class="cc-arch-node cc-arch-plug" type="button" data-module="events">
                 <span>可插拔活動模組</span>
-                <strong>Resources</strong>
-                <p>文件、連結、檔案、模板和精華內容庫。</p>
+                <strong>活動 / Events</strong>
+                <p>直播課、AMA、office hour、webinar、日曆、提醒與回放。</p>
               </button>
             </div>
           </div>
 
           <button class="cc-arch-trust-rail" type="button" data-module="trust-governance">
-            <span>V1 必要 · 橫跨所有模組</span>
-            <strong>Trust &amp; Governance</strong>
+            <span>必要 · 橫跨所有模組</span>
+            <strong>信任與治理 / Trust &amp; Governance</strong>
             <p>身份、權限、檢舉、封鎖、審核、退款爭議、管理紀錄與風險規則。</p>
           </button>
 
@@ -415,27 +447,19 @@
               <strong>AI / CRM / Bot API</strong>
               <p>自動化客服、工單、外部系統與 Bot 能力。</p>
             </button>
-            <button class="cc-arch-node cc-arch-later" type="button" data-module="full-commerce">
-              <span>後續擴展</span>
-              <strong>Full Commerce</strong>
-              <p>市集、購物車、訂單、履約、售後平台。</p>
-            </button>
             <button class="cc-arch-node cc-arch-later" type="button" data-module="space-discovery">
               <span>後續擴展</span>
-              <strong>Space Discovery</strong>
-              <p>搜尋公開社群、分類探索、creator discovery、推薦排序和公開索引。</p>
+              <strong>全站空間發現 / Space Discovery</strong>
+              <p>搜尋公開空間、分類探索、空間主發現、推薦排序和公開索引。</p>
             </button>
           </div>
         </div>
-      </section>
-
-      <section id="modules">
-        <div class="section-head">
+        <div class="section-head cc-architecture-details">
           <div>
-            <span class="eyebrow">完整模組細節</span>
-            <h2>14 個模組形成一個社群優先的 IM 架構</h2>
+            <span class="eyebrow">架構模組細節</span>
+            <h2>17 個模組形成一個空間型 IM 架構</h2>
           </div>
-          <p class="muted">模組不是一次全部做滿，而是讓 V1 的資料模型和產品語言能支撐後續擴展。</p>
+          <p class="muted">模組不是一次全部做滿，而是讓資料模型和產品語言能支撐後續擴展。</p>
         </div>
 
         <div class="cc-module-grid">
@@ -443,17 +467,17 @@
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/users.svg" alt="">
               <span>Module 1</span>
-              <h3>Community Space</h3>
+              <h3>空間 / Space</h3>
             </div>
-            <p><strong>Purpose：</strong>創作者、商家、團隊、公司、課程、專案或私密社群的頂層容器。</p>
+            <p><strong>Purpose：</strong>空間主、團隊、公司、課程、專案或私密組織的頂層容器。</p>
             <ul>
               <li>空間名稱、Logo、封面</li>
               <li>公開或私密空間</li>
-              <li>創作者 / 擁有者檔案</li>
+              <li>空間主 / Space Owner 檔案</li>
               <li>About page</li>
               <li>成員數與活動狀態</li>
-              <li>Home、Community、Delivery Hub、Chat、Events、Members、Resources</li>
-              <li>owner、admin、moderator、member、guest、paid member、VIP、student、employee</li>
+              <li>Home、Discussion、Delivery Hub（含 Resources）、Chat、Events、Members</li>
+              <li>Space Owner、Admin、Moderator / Operator、Member、Guest、Paid Member、VIP</li>
             </ul>
           </article>
 
@@ -461,12 +485,29 @@
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/send.svg" alt="">
               <span>Module 2</span>
-              <h3>Public Landing / 外部入口</h3>
+              <h3>外部入口 / Public Entry</h3>
+            </div>
+            <b class="cc-module-state">必要</b>
+            <p><strong>Purpose：</strong>把外部內容、廣告、QR、邀請連結和活動入口導入指定空間。</p>
+            <ul>
+              <li>邀請連結、QR code、分享連結</li>
+              <li>外部內容 CTA、廣告入口</li>
+              <li>入口來源與 campaign tracking</li>
+              <li>導向公開承接頁、指定討論、交付內容或私聊</li>
+              <li>風險檢查與入口權限</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/megaphone.svg" alt="">
+              <span>Module 3</span>
+              <h3>Public Landing / 公開承接頁</h3>
             </div>
             <p><strong>Purpose：</strong>讓使用者在註冊或下載前先預覽價值。</p>
             <ul>
               <li>公開空間頁</li>
-              <li>創作者 / 組織介紹</li>
+              <li>空間主 / 組織介紹</li>
               <li>免費內容預覽</li>
               <li>熱門貼文預覽</li>
               <li>課程或會員預覽</li>
@@ -479,10 +520,10 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/user.svg" alt="">
-              <span>Module 3</span>
-              <h3>Identity &amp; Member System</h3>
+              <span>Module 4</span>
+              <h3>身份與成員 / Identity &amp; Members</h3>
             </div>
-            <p><strong>Purpose：</strong>保留原 IM 底座，同時支撐社群成員身份。</p>
+            <p><strong>Purpose：</strong>保留原 IM 底座，同時支撐空間成員身份。</p>
             <ul>
               <li>手機、email、社交登入</li>
               <li>Username / ID 搜尋</li>
@@ -498,13 +539,13 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/lock.svg" alt="">
-              <span>Module 4</span>
-              <h3>Membership &amp; Payment Gate</h3>
+              <span>Module 5</span>
+              <h3>權限與會員 / Access &amp; Membership</h3>
             </div>
-            <b class="cc-module-state">V1 必要</b>
+            <b class="cc-module-state">必要</b>
             <p><strong>Purpose：</strong>控制誰能看見什麼、加入什麼、解鎖什麼，並把付款 / 訂閱狀態轉成權限。</p>
             <ul>
-              <li>免費社群、私密社群、邀請制社群</li>
+              <li>免費空間、私密空間、邀請制空間</li>
               <li>付費會員、試用權限、VIP tier</li>
               <li>課程 access、cohort access</li>
               <li>Role-based access</li>
@@ -515,8 +556,25 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
-              <span>Module 5</span>
-              <h3>Community Feed / 社區討論</h3>
+              <span>Module 6</span>
+              <h3>內容與公告 / Content &amp; Announcements</h3>
+            </div>
+            <b class="cc-module-state">必要</b>
+            <p><strong>Purpose：</strong>讓空間主用低噪音方式發布官方內容、公告、活動和服務更新。</p>
+            <ul>
+              <li>公告、內容貼文、活動通知</li>
+              <li>商品 / 服務卡、交付內容更新</li>
+              <li>置頂、保存、轉發</li>
+              <li>導向討論區、私聊或付費入口</li>
+              <li>發布權限與審核紀錄</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/radio.svg" alt="">
+              <span>Module 7</span>
+              <h3>討論區 / Discussion</h3>
             </div>
             <p><strong>Purpose：</strong>讓有價值的討論可以被搜尋和沉澱，而不是被群聊速度沖走。</p>
             <ul>
@@ -532,7 +590,7 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/graduation-cap.svg" alt="">
-              <span>Module 6</span>
+              <span>Module 8</span>
               <h3>Delivery Hub / 交付中心</h3>
             </div>
             <b class="cc-module-state cc-module-state-plug">可插拔活動模組</b>
@@ -551,12 +609,12 @@
           <article class="cc-module-card cc-module-card-strong">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/message-circle.svg" alt="">
-              <span>Module 7</span>
-              <h3>IM &amp; Chat</h3>
+              <span>Module 9</span>
+              <h3>即時通訊 / Chat</h3>
             </div>
             <p><strong>Purpose：</strong>保留核心 IM 能力，形成比論壇型產品更強的關係優勢。</p>
             <ul>
-              <li>1:1 私聊、成員互聊、創作者 / 管理員對成員聊天</li>
+              <li>1:1 私聊、成員互聊、空間主 / 管理員對成員聊天</li>
               <li>群聊、cohort chat、VIP chat、event chat、course discussion chat</li>
               <li>文字、語音、圖片、文件、連結預覽</li>
               <li>回覆、反應、已讀、置頂、通知</li>
@@ -567,11 +625,11 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/video.svg" alt="">
-              <span>Module 8</span>
-              <h3>Events / Calendar</h3>
+              <span>Module 10</span>
+              <h3>活動 / Events</h3>
             </div>
             <b class="cc-module-state cc-module-state-plug">可插拔活動模組</b>
-            <p><strong>Purpose：</strong>在社群內建立節奏和週期性參與。</p>
+            <p><strong>Purpose：</strong>在空間內建立節奏和週期性參與。</p>
             <ul>
               <li>直播課、AMA、office hour、webinar</li>
               <li>Challenge、meetup、event calendar</li>
@@ -583,8 +641,8 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/wallet.svg" alt="">
-              <span>Module 9</span>
-              <h3>Incentives / 積分、紅包、等級、裂變</h3>
+              <span>Module 11</span>
+              <h3>激勵機制 / Incentives</h3>
             </div>
             <p><strong>Purpose：</strong>連接熟悉的紅包、積分、獎勵、裂變和參與激勵能力。</p>
             <ul>
@@ -600,10 +658,10 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/chart-no-axes-combined.svg" alt="">
-              <span>Module 10</span>
-              <h3>Creator / Admin Console</h3>
+              <span>Module 12</span>
+              <h3>經營後台 / Admin Console</h3>
             </div>
-            <p><strong>Purpose：</strong>讓操作者把社群當成生意或組織來經營。</p>
+            <p><strong>Purpose：</strong>讓空間主把空間當成生意、服務或組織來經營。</p>
             <ul>
               <li>成員列表、成員活動、成員標籤</li>
               <li>批准、移除、封禁成員</li>
@@ -617,10 +675,10 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/shield.svg" alt="">
-              <span>Module 11</span>
-              <h3>Trust &amp; Governance</h3>
+              <span>Module 13</span>
+              <h3>信任與治理 / Trust &amp; Governance</h3>
             </div>
-            <p><strong>Purpose：</strong>讓社群成長後仍安全、可管理。</p>
+            <p><strong>Purpose：</strong>讓空間成長後仍安全、可管理。</p>
             <ul>
               <li>檢舉、封鎖、靜音、封禁</li>
               <li>管理員、版主、加入審核</li>
@@ -634,11 +692,11 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/search.svg" alt="">
-              <span>Module 12</span>
+              <span>Module 14</span>
               <h3>In-space Search / 空間內搜尋</h3>
             </div>
-            <b class="cc-module-state">V1 必要</b>
-            <p><strong>Purpose：</strong>幫成員在已加入的社群空間內找到人、內容、討論、交付內容、活動與聊天上下文。</p>
+            <b class="cc-module-state">必要</b>
+            <p><strong>Purpose：</strong>幫成員在已加入的空間內找到人、內容、討論、交付內容、活動與聊天上下文。</p>
             <ul>
               <li>搜尋成員</li>
               <li>搜尋公告</li>
@@ -652,16 +710,33 @@
 
           <article class="cc-module-card">
             <div class="cc-module-head">
+              <img src="../app_structures/assets/icons/ui/inbox.svg" alt="">
+              <span>Module 15</span>
+              <h3>Notifications / 通知</h3>
+            </div>
+            <b class="cc-module-state">必要</b>
+            <p><strong>Purpose：</strong>把公告、回覆、私聊、付款狀態、活動提醒和交付進度帶回原上下文。</p>
+            <ul>
+              <li>未讀、push、inbox item</li>
+              <li>公告、回覆、私聊提醒</li>
+              <li>活動提醒、付款與權限變更</li>
+              <li>靜音、退訂、通知強度控制</li>
+              <li>回到原內容、討論或聊天</li>
+            </ul>
+          </article>
+
+          <article class="cc-module-card">
+            <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/sparkles.svg" alt="">
-              <span>Module 13</span>
-              <h3>Space Discovery / 全站社群發現</h3>
+              <span>Module 16</span>
+              <h3>全站空間發現 / Space Discovery</h3>
             </div>
             <b class="cc-module-state cc-module-state-later">後續擴展</b>
-            <p><strong>Purpose：</strong>幫使用者在平台層找到更多公開社群、creator spaces、公開頻道和熱門空間。</p>
+            <p><strong>Purpose：</strong>幫使用者在平台層找到更多公開空間、空間主和熱門空間。</p>
             <ul>
-              <li>搜尋公開社群</li>
-              <li>按分類探索 creator spaces</li>
-              <li>公開頻道 / 社群索引</li>
+              <li>搜尋公開空間</li>
+              <li>按分類探索 spaces</li>
+              <li>公開空間索引</li>
               <li>推薦與排序</li>
               <li>熱門空間</li>
               <li>風險審核與公開可見性</li>
@@ -672,11 +747,11 @@
           <article class="cc-module-card">
             <div class="cc-module-head">
               <img src="../app_structures/assets/icons/ui/credit-card.svg" alt="">
-              <span>Module 14</span>
-              <h3>Payments / Subscription</h3>
+              <span>Module 17</span>
+              <h3>付費與訂閱 / Payments &amp; Subscription</h3>
             </div>
-            <b class="cc-module-state">V1 必要</b>
-            <p><strong>Purpose：</strong>支撐創作者變現和付費社群，但不變成標準電商平台。</p>
+            <b class="cc-module-state">必要</b>
+            <p><strong>Purpose：</strong>支撐空間主變現和付費空間，但不變成標準電商平台。</p>
             <ul>
               <li>月訂閱、年訂閱、一次性交付內容付款</li>
               <li>付費 cohort、VIP 會員、coupon、trial</li>
@@ -739,9 +814,9 @@
       (() => {
         const moduleDetails = {
           "external-entry": {
-            title: "External Entry / 外部入口",
-            role: "V1 必要",
-            summary: "把外部內容、邀請、QR、廣告和社群分享轉成可追蹤、可治理的進入路徑。",
+            title: "外部入口 / Public Entry",
+            role: "必要",
+            summary: "把外部內容、邀請、QR、廣告和空間分享轉成可追蹤、可治理的進入路徑。",
             flow: ["外部內容 / QR / 邀請", "入口類型判斷", "來源與風險檢查", "公開頁或指定空間"],
             inputs: ["分享連結", "QR code", "邀請者", "campaign source", "目標空間 / 內容 / 私聊"],
             outputs: ["訪客 session", "來源紀錄", "加入意圖", "風險標記", "下一步 CTA"],
@@ -751,146 +826,157 @@
           },
           "public-landing": {
             title: "Public Landing / 公開承接頁",
-            role: "V1 必要",
+            role: "必要",
             summary: "讓使用者先理解空間價值，再決定註冊、加入、私聊或付費。",
-            flow: ["訪客進入", "看創作者 / 組織介紹", "預覽內容與會員價值", "加入 / 付費 / 私聊"],
-            inputs: ["入口來源", "公開內容", "創作者介紹", "會員方案", "熱門討論或交付內容預覽"],
+            flow: ["訪客進入", "看空間主 / 組織介紹", "預覽內容與會員價值", "加入 / 付費 / 私聊"],
+            inputs: ["入口來源", "公開內容", "空間主介紹", "會員方案", "熱門討論或交付內容預覽"],
             outputs: ["註冊意圖", "join request", "付費意圖", "追蹤 / 收藏", "私聊 CTA"],
-            competitors: ["Telegram public channel preview", "LINE 官方帳號入口", "Instagram creator profile", "Facebook Group public preview"],
+            competitors: ["Skool community landing", "Telegram public channel preview", "LINE 官方帳號入口", "Facebook Group public preview"],
             adopted: "採用先預覽再加入的模型，降低下載新 IM 的心理成本。",
-            rejected: "不把公開頁做成行銷長頁；重點是快速證明內容、社群和服務是否值得加入。"
+            rejected: "不把公開頁做成行銷長頁；重點是快速證明內容、空間和服務是否值得加入。"
           },
-          "community-space": {
-            title: "Community Space / 社群空間",
-            role: "V1 必要",
-            summary: "創作者、商家、團隊或私密組織的頂層容器，承接內容、成員、權限、聊天與付費狀態。",
+          space: {
+            title: "空間 / Space",
+            role: "必要",
+            summary: "空間型 IM 的頂層容器，承接內容、成員、權限、聊天、交付與付費狀態。",
             flow: ["建立空間", "配置身份與權限", "掛載內容 / 討論 / 聊天", "持續營運"],
-            inputs: ["空間資料", "owner / admin", "成員規則", "導航配置", "公開 / 私密狀態"],
-            outputs: ["成員首頁", "頻道與討論入口", "聊天入口", "後台入口", "治理範圍"],
-            competitors: ["Discord Server", "Facebook Groups", "LINE OpenChat", "Telegram channel + discussion group"],
-            adopted: "採用一個容器統一頻道、討論、聊天、會員、付費和治理，避免功能分散。",
+            inputs: ["空間資料", "Space Owner / Admin", "成員規則", "導航配置", "公開 / 私密狀態"],
+            outputs: ["成員首頁", "內容與討論入口", "聊天入口", "後台入口", "治理範圍"],
+            competitors: ["Skool community space", "Discord Server", "Facebook Groups", "LINE OpenChat"],
+            adopted: "採用一個容器統一內容與公告、討論、聊天、會員、付費和治理，避免功能分散。",
             rejected: "不照搬 Discord 的重型 server tree；第一屏要讓大眾用戶看懂下一步。"
           },
           "identity-member": {
-            title: "Identity & Member / 身份與成員",
-            role: "V1 必要",
+            title: "身份與成員 / Identity & Members",
+            role: "必要",
             summary: "把一般 IM 身份延伸成空間內成員身份，讓好友、角色、會員和私聊都能共用同一底座。",
             flow: ["登入 / 建立身份", "加入空間", "取得空間角色", "進入內容、討論與聊天"],
             inputs: ["手機 / email / 社交登入", "user ID", "空間 membership", "角色", "好友 / 聯絡人關係"],
             outputs: ["成員檔案", "role / tag", "可見範圍", "私聊關係", "封鎖 / 檢舉狀態"],
             competitors: ["WhatsApp inbox identity", "Telegram username", "LINE Login / user ID", "Discord role identity"],
             adopted: "採用個人身份 + 空間成員身份兩層模型，支撐同一人在不同空間有不同角色。",
-            rejected: "不只做單一帳號 profile；社群、交付內容、商業服務都需要空間內身份。"
+            rejected: "不只做單一帳號 profile；空間、交付內容、商業服務都需要空間內身份。"
           },
           "membership-payment": {
-            title: "Membership & Payment Gate / 會員與付費閘門",
-            role: "V1 必要",
+            title: "權限與會員 / Access & Membership",
+            role: "必要",
             summary: "把會員方案、付款、訂閱、試用和退款狀態轉成具體權限。",
             flow: ["選擇方案", "付款 / 試用 / 邀請核准", "生成 access grant", "解鎖內容、討論、聊天"],
             inputs: ["會員方案", "付款紀錄", "訂閱狀態", "優惠 / trial", "角色與人工核准"],
             outputs: ["access grant", "付費成員狀態", "可見內容", "可加入群組", "退款 / 到期狀態"],
-            competitors: ["WeChat Pay", "LINE services / wallet links", "Instagram subscriptions", "Telegram paid / boosted channel patterns"],
+            competitors: ["Skool paid community", "WeChat Pay", "LINE services / wallet links", "Instagram subscriptions"],
             adopted: "採用付費狀態驅動權限：付款不是獨立交易，而是決定能看到什麼、加入什麼、聯絡誰。",
             rejected: "不在這一版做完整商城、訂單和履約；交易只服務會員、訂閱、交付內容與權限解鎖。"
           },
+          "payments-subscription": {
+            title: "付費與訂閱 / Payments & Subscription",
+            role: "必要",
+            summary: "處理付款、訂閱、退款和到期狀態，並把狀態回寫到權限與會員。",
+            flow: ["選擇方案", "付款 / 訂閱", "更新狀態", "回寫 access"],
+            inputs: ["會員方案", "付款紀錄", "訂閱狀態", "退款狀態", "到期時間"],
+            outputs: ["付款成功 / 失敗", "訂閱狀態", "退款紀錄", "access update", "通知"],
+            competitors: ["Skool paid membership", "WeChat Pay", "LINE services / wallet links", "Instagram subscriptions"],
+            adopted: "採用輕量付費與訂閱能力，先服務空間權限、付費內容和長期關係。",
+            rejected: "不擴展成完整商城、購物車、訂單履約或售後平台。"
+          },
           "channel-announcement": {
-            title: "Channel / Announcement / 頻道與公告",
-            role: "V1 必要",
+            title: "內容與公告 / Content & Announcements",
+            role: "必要",
             summary: "低噪音承接官方內容、活動、交付內容更新、商品資訊和重要公告。",
-            flow: ["操作者發布", "頻道沉澱", "成員閱讀 / 反應", "導向討論、聊天或付費"],
+            flow: ["空間主發布", "公告沉澱", "成員閱讀 / 反應", "導向討論、聊天或付費"],
             inputs: ["公告", "內容貼文", "活動訊息", "商品 / 服務卡", "發布權限"],
             outputs: ["公開內容", "成員通知", "討論 CTA", "私聊 CTA", "轉發連結"],
             competitors: ["Telegram Channels", "WhatsApp Channels", "LINE 官方帳號", "Discord Announcement channel"],
-            adopted: "採用頻道作為低噪音內容面，再把需要互動的人導向 topic 或私聊。",
+            adopted: "採用內容與公告作為低噪音內容面，再把需要互動的人導向討論區或私聊。",
             rejected: "不讓群聊承擔所有公告；重要內容被聊天淹沒會傷害信任和轉化。"
           },
           "topic-discussion": {
-            title: "Topic Discussion / 主題討論",
-            role: "V1 必要",
+            title: "討論區 / Discussion",
+            role: "必要",
             summary: "把大群拆成可理解的問題空間，讓問答、活動、資源與討論可被沉澱和搜尋。",
-            flow: ["從頻道 / 交付項目 / 問題進入", "選擇 topic", "留言 / 回覆 / 最佳答案", "沉澱為可查找內容"],
+            flow: ["從內容 / 交付項目 / 問題進入", "選擇 topic", "留言 / 回覆 / 最佳答案", "沉澱為可查找內容"],
             inputs: ["貼文", "問題", "分類", "活動", "資源", "管理規則"],
             outputs: ["topic thread", "回答與評論", "最佳答案", "置頂 / 收藏", "檢舉事件"],
-            competitors: ["Discord forum / thread", "Telegram Topics", "LINE OpenChat", "Facebook Groups"],
+            competitors: ["Skool community feed", "Discord forum / thread", "Telegram Topics", "Facebook Groups"],
             adopted: "採用 topic 作為多人互動的結構，不讓新成員直接面對混亂大群。",
             rejected: "不把所有討論做成即時群聊；需要長期沉澱的內容必須可分類、可搜尋、可管理。"
           },
           "im-inbox": {
-            title: "IM / Inbox / 即時通訊與收件箱",
-            role: "V1 必要",
-            summary: "保留 IM 核心優勢，讓私聊、群聊、商業對話和上下文 DM 都能回到同一入口。",
+            title: "即時通訊 / Chat",
+            role: "必要",
+            summary: "保留 IM 核心優勢，讓私聊、群聊、服務對話和上下文 DM 都能回到同一入口。",
             flow: ["從內容 / topic / 成員進入", "帶上下文開啟對話", "私聊或群聊互動", "收件箱回訪"],
             inputs: ["成員身份", "來源內容", "問題上下文", "會員狀態", "聊天權限"],
-            outputs: ["私聊 thread", "群聊 thread", "未讀", "通知", "商業對話上下文"],
+            outputs: ["私聊 thread", "群聊 thread", "未讀", "通知", "服務對話上下文"],
             competitors: ["WhatsApp", "LINE", "Telegram", "Meta Business Suite / Intercom context"],
-            adopted: "採用統一收件箱，但對私聊、群聊、頻道和商業對話做清楚類型標記。",
-            rejected: "不把社群產品做成純論壇；長期關係仍要靠 IM 的即時性與回訪能力。"
+            adopted: "採用統一收件箱，但對私聊、群聊、公告和服務對話做清楚類型標記。",
+            rejected: "不把空間型 IM 做成純論壇；長期關係仍要靠 IM 的即時性與回訪能力。"
           },
           "in-space-search": {
             title: "In-space Search / 空間內搜尋",
-            role: "V1 必要",
-            summary: "只在已加入或有權限的 Community Space 內搜尋，幫成員找回內容、成員、交付項目、活動與對話上下文。",
+            role: "必要",
+            summary: "只在已加入或有權限的空間內搜尋，幫成員找回內容、成員、交付項目、活動與對話上下文。",
             flow: ["輸入搜尋詞", "套用空間與權限範圍", "查找內容 / 人 / 討論", "回到原模組"],
             inputs: ["成員身份", "空間權限", "公告", "topic / 問答", "交付內容", "文件 / 工具 / 回放", "活動", "聊天上下文"],
             outputs: ["空間內搜尋結果", "成員結果", "內容結果", "相關討論", "交付內容入口", "活動 / 回放入口"],
-            competitors: ["Discord server search", "Slack workspace search", "Facebook Groups search", "LINE OpenChat topic search"],
-            adopted: "採用空間內搜尋作為 V1 必要能力，搜尋範圍由成員身份與權限決定。",
+            competitors: ["Skool community search", "Discord server search", "Slack workspace search", "Facebook Groups search"],
+            adopted: "採用空間內搜尋作為 必要能力，搜尋範圍由成員身份與權限決定。",
             rejected: "不把私聊、私密空間內容或未授權交付項目放進全站搜尋；內部搜尋和平台發現必須分層。"
           },
           "notifications-return": {
-            title: "Notifications / Return Loop / 通知與回訪",
-            role: "V1 必要",
+            title: "Notifications / 通知",
+            role: "必要",
             summary: "把公告、回覆、私聊、付款狀態、活動提醒和交付進度帶回收件箱或空間首頁。",
             flow: ["事件產生", "判斷通知強度", "送達收件箱 / push", "回到原內容或對話"],
             inputs: ["新訊息", "新回覆", "公告", "付款狀態", "活動提醒", "權限變更"],
             outputs: ["未讀", "push / inbox item", "回訪入口", "退訂 / 靜音狀態"],
             competitors: ["WhatsApp Updates / Chats", "LINE notification model", "Discord mentions", "Intercom conversation routing"],
             adopted: "採用事件回到原上下文的路徑，讓使用者知道為什麼被叫回來。",
-            rejected: "不把所有事件都做強推播；噪音過高會破壞社群信任。"
+            rejected: "不把所有事件都做強推播；噪音過高會破壞空間信任。"
           },
           "admin-console": {
-            title: "Creator / Admin Console / 經營後台",
-            role: "V1 必要",
-            summary: "讓操作者管理內容、成員、付款狀態、活動、審核和基本成效。",
+            title: "經營後台 / Admin Console",
+            role: "必要",
+            summary: "讓空間主管理內容、成員、付款狀態、活動、審核和基本成效。",
             flow: ["查看空間狀態", "管理成員與內容", "處理付款 / 權限", "審核與分析"],
             inputs: ["成員列表", "內容列表", "付款狀態", "檢舉事件", "來源資料", "活動資料"],
             outputs: ["公告發布", "角色調整", "移除 / 封禁", "權限變更", "營運分析"],
-            competitors: ["Discord roles / admin", "Facebook Group admin tools", "LINE 官方帳號管理", "Meta Business Suite inbox"],
-            adopted: "採用輕量經營後台，讓頻道主能處理成員、內容、收入和治理。",
-            rejected: "不把第一版做成完整 CRM 或客服工作台；後台只服務社群經營閉環。"
+            competitors: ["Skool admin tools", "Discord roles / admin", "Facebook Group admin tools", "LINE 官方帳號管理"],
+            adopted: "採用輕量經營後台，讓空間主能處理成員、內容、收入和治理。",
+            rejected: "不把第一版做成完整 CRM 或客服工作台；後台只服務空間經營閉環。"
           },
           "trust-governance": {
-            title: "Trust & Governance / 信任與治理",
-            role: "V1 必要",
-            summary: "橫跨入口、身份、權限、內容、聊天、付款和後台，防止社群成長後失控。",
+            title: "信任與治理 / Trust & Governance",
+            role: "必要",
+            summary: "橫跨入口、身份、權限、內容、聊天、付款和後台，防止空間成長後失控。",
             flow: ["行為產生", "權限 / 風險判斷", "管理或限制", "留下操作紀錄"],
             inputs: ["檢舉", "封鎖", "角色", "付款爭議", "連結", "管理員操作"],
             outputs: ["禁言 / 封禁", "內容移除", "權限限制", "審核紀錄", "爭議紀錄"],
             competitors: ["Discord AutoMod / roles", "WhatsApp Business quality limits", "LINE block / unsubscribe", "Amazon / Mercado Libre disputes"],
             adopted: "採用跨模組安全層，不把治理藏在單一後台頁。",
-            rejected: "不等到 AI、API 或付費能力上線後才補治理；公開入口和付費社群一開始就需要邊界。"
+            rejected: "不等到 AI、API 或付費能力上線後才補治理；公開入口和付費空間一開始就需要邊界。"
           },
-          "classroom-events": {
-            title: "Delivery Hub / Events / 交付中心與活動",
+          "delivery-hub": {
+            title: "交付中心 / Delivery Hub",
             role: "可插拔活動模組",
-            summary: "支援課程、會員內容、文件、工具、案例、服務說明、SOP、培訓資料、直播回放和週期性活動。",
-            flow: ["建立交付項目 / 活動", "設定 access", "成員使用 / 參與", "討論與回訪"],
-            inputs: ["交付內容", "活動時間", "講師 / 主持人", "會員權限", "提醒規則"],
-            outputs: ["交付項目", "RSVP", "回放", "關聯討論", "出席 / 完成狀態"],
-            competitors: ["Discord Events", "Facebook Groups events / guides", "YouTube memberships / Community", "LINE 官方帳號活動導流"],
-            adopted: "採用交付中心作為可插拔模組，讓教育、商業服務、專業社群和內部組織都能交付自己的內容。",
+            summary: "交付課程、會員內容、文件、工具、案例、服務說明、SOP、培訓資料、直播回放和資源庫。",
+            flow: ["建立交付項目", "設定 access", "成員使用 / 完成", "討論與回訪"],
+            inputs: ["交付內容", "文件 / 工具 / 回放", "會員權限", "解鎖規則", "完成狀態"],
+            outputs: ["交付項目", "資源庫", "完成紀錄", "關聯討論", "權限受控入口"],
+            competitors: ["Skool course module", "Facebook Groups guides / files", "Discord forum resources", "LINE OpenChat notes"],
+            adopted: "採用交付中心作為可插拔模組，讓教育、商業服務、專業空間和內部組織都能交付自己的內容。",
             rejected: "不把這個模組限定成課程系統；課程只是其中一種交付形態。"
           },
-          resources: {
-            title: "Resources / 資源庫",
+          events: {
+            title: "活動 / Events",
             role: "可插拔活動模組",
-            summary: "沉澱文件、連結、模板、精華內容與成員常用資料。",
-            flow: ["管理員整理", "依權限可見", "成員查找 / 收藏", "回到討論或私聊"],
-            inputs: ["文件", "連結", "精華貼文", "交付資料", "權限規則"],
-            outputs: ["資源頁", "搜尋結果", "收藏", "關聯 topic", "權限受控下載"],
-            competitors: ["Facebook Groups files / guides", "Discord forum resources", "LINE OpenChat notes", "Reddit wiki / pinned resources"],
-            adopted: "採用輕量資源庫，讓常用資料不被聊天和貼文沖走。",
-            rejected: "不先做完整知識庫或文件協作工具；重點是社群內可找到、可回到討論。"
+            summary: "建立直播、AMA、office hour、webinar、meetup 和週期性活動節奏。",
+            flow: ["建立活動", "設定提醒 / 權限", "成員 RSVP / 參與", "回放與討論"],
+            inputs: ["活動時間", "主持人", "會員權限", "提醒規則", "直播 / 回放入口"],
+            outputs: ["活動頁", "RSVP", "提醒", "出席紀錄", "活動後討論"],
+            competitors: ["Skool events calendar", "Discord Events", "Facebook Groups events", "LINE 官方帳號活動導流"],
+            adopted: "採用獨立活動模組，讓節奏、提醒和參與紀錄不被交付內容綁死。",
+            rejected: "不把活動塞進交付中心；交付內容和週期性參與節奏需要分開管理。"
           },
           "ai-crm-api": {
             title: "AI / CRM / Bot API",
@@ -901,29 +987,18 @@
             outputs: ["自動化回覆", "工單 / 任務", "Webhook event", "人工接手", "審計紀錄"],
             competitors: ["Telegram Bot API", "LINE Messaging API / LIFF", "Intercom / Zendesk AI", "WeChat service ecosystem"],
             adopted: "採用後續接入點，讓平台能力建立在已存在的身份、權限和治理上。",
-            rejected: "不把 Bot、AI、CRM 提前做成主產品；缺少社群和聊天基礎時，自動化沒有可靠上下文。"
-          },
-          "full-commerce": {
-            title: "Full Commerce / 完整商務",
-            role: "後續擴展",
-            summary: "市集、購物車、訂單、履約與售後可以後續接入，但不取代 IM 社群主線。",
-            flow: ["商品 / 服務意圖", "聊天或內容承接", "交易系統處理", "狀態回到 IM"],
-            inputs: ["商品卡", "付款", "訂單", "配送", "售後 / 爭議"],
-            outputs: ["訂單狀態", "服務通知", "售後對話", "評價 / 信任訊號"],
-            competitors: ["WeChat Mini Programs / Pay", "LINE services", "Shopee / Amazon order flow", "WhatsApp Business catalog"],
-            adopted: "採用交易狀態回到 IM 的方向，讓商務資料服務對話和信任。",
-            rejected: "不在第一版把產品變成市集；完整電商會稀釋 creator/community IM 的落地場景。"
+            rejected: "不把 Bot、AI、CRM 提前做成主產品；缺少空間和聊天基礎時，自動化沒有可靠上下文。"
           },
           "space-discovery": {
-            title: "Space Discovery / 全站社群發現",
+            title: "全站空間發現 / Space Discovery",
             role: "後續擴展",
-            summary: "在平台層幫使用者找到更多公開社群、creator spaces、公開頻道和熱門空間，需要公開索引、排序、審核和風險控制。",
+            summary: "在平台層幫使用者找到更多公開空間、空間主和熱門空間，需要公開索引、排序、審核和風險控制。",
             flow: ["公開空間入索引", "分類 / 搜尋 / 推薦", "查看公開頁", "加入或追蹤空間"],
             inputs: ["公開空間資料", "分類標籤", "公開內容摘要", "搜尋詞", "推薦訊號", "風險審核狀態"],
-            outputs: ["公開社群搜尋結果", "creator spaces 推薦", "熱門空間", "分類頁", "公開頁入口"],
-            competitors: ["LINE OpenChat discovery", "Discord Server Discovery", "Facebook Groups discovery", "Reddit communities"],
+            outputs: ["公開空間搜尋結果", "spaces 推薦", "熱門空間", "分類頁", "公開頁入口"],
+            competitors: ["Skool discovery", "LINE OpenChat discovery", "Discord Server Discovery", "Facebook Groups discovery"],
             adopted: "採用後續擴展的全站發現層，只索引公開且通過治理的空間與內容摘要。",
-            rejected: "不把空間內搜尋、私密社群內容或私聊內容混入全站發現；平台曝光需要獨立風控。"
+            rejected: "不把空間內搜尋、私密空間內容或私聊內容混入全站發現；平台曝光需要獨立風控。"
           }
         };
 

@@ -23,6 +23,31 @@
   margin: 0;
 }
 
+.report-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 22px;
+}
+
+.report-switch a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.report-switch a.active {
+  border-color: color-mix(in srgb, var(--primary) 34%, var(--line));
+  background: color-mix(in srgb, var(--primary) 12%, #fff);
+  color: var(--primary-dark);
+}
+
 .markdown-body {
   color: #344054;
 }
@@ -160,6 +185,34 @@
   padding-left: 14px;
 }
 
+.markdown-body .decision-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 18px 0 24px;
+}
+
+.markdown-body .decision-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 16px;
+}
+
+.markdown-body .decision-card span {
+  color: var(--primary-dark);
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.markdown-body .decision-card h3 {
+  margin-top: 0;
+}
+
 @media (max-width: 760px) {
   .report-shell {
     padding: 20px;
@@ -173,5 +226,9 @@
   .markdown-body td {
     min-width: 160px;
     white-space: normal;
+  }
+
+  .markdown-body .decision-grid {
+    grid-template-columns: 1fr;
   }
 }
