@@ -89,7 +89,6 @@
 .cc-decision-card,
 .cc-scenario-card,
 .cc-competitor-card,
-.cc-flow-card,
 .cc-mechanism-grid article,
 .cc-architecture-map,
 .cc-relation-grid article {
@@ -347,6 +346,20 @@
   min-height: 180px;
 }
 
+.cc-mechanism-scenario {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid rgba(8, 20, 38, 0.05);
+  border-left: 4px solid var(--cc-blue);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.03);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
+}
+
 .cc-mechanism-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
@@ -397,7 +410,7 @@
 
 .cc-mechanism-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-top: 14px;
 }
