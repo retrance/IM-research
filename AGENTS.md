@@ -2,190 +2,73 @@
 
 ## Role
 
-You are a coding agent and product reasoning assistant for an IM product research website.
+You are a coding agent and product-reasoning assistant for an IM product research site.
 
-Generate stable, shareable V1 architecture rationale artifacts. Do not create research dumps or lists of unresolved questions.
+The current active deliverable is the **competitor benchmark** at `index.html` (data + rendering in `assets/js/benchmark.js`, styling in `assets/css/pages/benchmark.css`). Produce a stable, shareable, high-density comparison artifact. No research dumps, no long lists of unresolved questions.
 
-## Core Goal
+## Project Context
 
-Show how the V1 architecture follows from:
+- A PM inherited an existing IM product and is reshaping it. Boss goals: separate modules cleanly, improve them, take the wallet out of the app (deliver via external API), and ship to the App Store fast.
+- This page is **competitor-only by design.** The "現有產品" and "差異分析" pages (see `assets/js/site-nav.js`) come later, once real product details exist. Do not fake a gap analysis or invent our current product state here.
+- Competitors compared: Telegram, WhatsApp, WeChat, LINE, Discord (5). Signal was removed; its privacy baseline (訊息請求 / 端對端加密 / 安全號碼) is folded into the 私聊 and 身分 definitions.
 
-- priority role needs
-- module necessity classification
-- researched competitor flows
-- adopted / rejected product patterns
-- final V1 scope cut
+## Module Taxonomy & Layers
 
-The reader should understand within 30 seconds:
+10 modules, each tagged with one of four layers (`layer` field in `benchmark.js`, rendered as a colored pill, ordered by `LAYER_ORDER`, index badge computed at render):
 
-- the fixed V1 route
-- the priority role needs
-- the V1 necessary, lightweight, and later modules
-- the minimum V1 architecture
-- why AI, CRM, Bot/API, mini-apps, and full commerce are later hooks
+- **core 核心 · 首發** — ships first, kept lean: `private-chat` 私聊, `group-chat` 群聊, `channel` 頻道, `identity` 身分, `notification` 通知.
+- **platform 平台 · 必做** — the backbone every extension rides on: `open-platform` 開放平台 / Bot / API.
+- **extension 擴展 · API** — not in core, delivered through external API: `discovery` 發現, `red-packet-points` 紅包 / 積分, `wallet` 錢包（API 化）.
+- **undecided 待討論** — not yet classified: `voice-video` 語音 / 視訊 (self-built real-time media, not a plug-in API; needs a team decision).
 
-## Work Before Writing
+Strategy to preserve:
 
-Before making changes:
+- Core stays thin; everything else is an extension delivered through the open platform.
+- Wallet and red-packet are **not self-built.** Chat only holds the trigger / 商品卡 (intent + return path); ledger, payment, refund, compliance all go to external APIs. Do not reframe them as in-app wallets.
+- 開放平台 is the platform layer that 紅包 / 錢包 / 通知 etc. hang off. It is must-do.
 
-- State the goal in plain language.
-- State only assumptions that affect the output.
-- If multiple meanings are possible, choose the most reasonable one and say why.
-- Ask only when ambiguity would seriously change the result.
-- Push back on directions that would overbuild or weaken the deliverable.
+## Data Structure Rules (`benchmark.js`)
 
-Do not let process notes, hidden assumptions, or AI reasoning appear in final files.
-
-## Product Reasoning Rules
-
-Do not present everything as undecided.
-
-For each major architecture choice, provide a concise decision block:
-
-- Recommended pattern
-- Because
-- Evidence
-- Adopted pattern
-- Rejected pattern
-- V1 architecture implication
-- Risk or assumption, if relevant
-
-Use evidence labels:
-
-- Evidence-backed
-- Product judgment
-- Hypothesis
-- Unknown
-
-Do not invent facts, product behavior, or fake metrics. If evidence is weak, say so.
-
-## V1 Module Rules
-
-Before adding any module to V1, classify it against `docs/v1-module-prioritization.md`.
-
-Hard rules:
-
-- Priority role coverage starts from 普通用戶 and 商家 / 商業主.
-- Detailed reasoning and interaction playground mocks are required only for V1 necessary modules: `messaging-identity`, `external-entry`, `channel-loop`, `community-governance`, and `trust-risk`.
-- `business-commerce` is V1 necessary but lightweight: business profile, business chat label, product card object, and product card sharing into chat or channel.
-- Do not expand `business-commerce` into marketplace, payment, order, or fulfillment.
-- `status-updates` is a V1 lightweight placeholder: simple update/status object with reply or return path into chat/inbox.
-- Do not expand `status-updates` into stories editor, social feed, or recommendation.
-- `support-crm`, `platform-ai-ops`, AI customer service, CRM, Bot/API, mini-apps, and full commerce are Later hooks, not V1 architecture proof.
-
-## Evidence Rules
-
-Use existing files as evidence whenever possible.
-
-Primary evidence sources:
-
-```text
-compare_features/index.html
-product_architecture/index.html
-interaction_playground/index.html
-interaction_playground/app.js
-reports/report.html
-learn/
-reports/
-```
-
-Use competitor flows as evidence, not decoration. Cite source files or sections when useful.
+- Each module = `{ id, layer, order, name, summary, definition, sections: [...] }`.
+- Sections are per-module and custom — do **not** force every module into one fixed column set. Build with `section(title, rows)`, `row(label, [5 values])`, `flowRow(label, { Product: [steps] })`.
+- Each `row` holds exactly 5 values, one per competitor in `PRODUCTS` order. No Signal / 6th value.
+- Keep a 技術實作 (or equivalent) section per module, but the rows can differ. Technical rows should say the concrete adjustment (加密模型、同步、權限、資料模型、API / 事件回呼、金流、帳本、通知路由、身分對應、風控事件…).
+- `值得研究` (via `researchRows`) answers only 應學哪個行為 / 技術該怎麼調. Exceptions: wallet also has 「API 化邊界（我方決策）」, open-platform also has 「這是我方必做骨幹」.
+- Do not add our-side checklists as competitor columns. Orphan rows like 採用取捨 / 重要遺漏檢查 were removed on purpose — that content belongs in the future 差異分析 page, not here.
 
 ## Writing Rules
 
-Use smooth, plain Traditional Chinese for visible page text.
-
-Prefer stable artifact language:
-
-- 架構推導
-- 角色需求
-- 必要模組
-- 採用 pattern
-- 不採用 pattern
-- 架構含義
-- V1 範圍切割
-- 後續擴展
-
-Avoid:
-
-- 本次會議
-- 老闆
-- 核准 / 調整 / 否決
-- 會後 PRD
-- agent process notes
-- internal methodology
-- repeated route statements
-
-Every sentence should help the reader make a product decision, understand a flow, define scope, compare options, or hand off to design / engineering.
-
-## Structure Rules
-
-Start from priority role needs, then classify modules, then explain necessary modules, then show the architecture implication.
-
-Prefer:
-
-- executive summary
-- decision cards
-- concise recommendation blocks
-- visual flow strips
-- comparison cards
-- V1 / Later / Out-of-scope tables
-- compact evidence tags
-- risks and assumptions
-
-Avoid:
-
-- long research paragraphs
-- decorative dashboards
-- fake analytics
-- over-interactive demos
-- repeated background
-- too many open questions
+- Visible text: smooth, plain Traditional Chinese. Turn noun-stacks into normal sentences; gloss a term the first time it appears (e.g. webhook、RTC、端對端加密).
+- Engineering-facing rows (技術該怎麼調 etc.) may keep necessary technical terms so they map to real implementation.
+- Keep cells short and scannable — high density, not paragraphs.
+- Avoid noise: when all products behave the same (e.g. "依地區而異"), don't repeat it cell by cell.
+- Do not let 老闆 / 本次會議 / process notes / internal methodology / fake metrics appear in visible text.
 
 ## Design Rules
 
 Use the existing visual system.
 
-- Mobile-first, premium, Gen Z fintech feel with quiet blue/cyan accents.
-- iOS 26 / Liquid Glass-inspired but restrained.
-- Use glass for top navigation, high-level panels, and selected floating controls.
-- Do not stack glass boxes inside glass boxes.
-- Keep content panels readable and calm.
-- Keep typography hierarchy clear.
-- Avoid cluttered cards, oversized hero type, and heavy scrollbars.
-- Use `assets/css/liquid-glass.css` as the final visual calibration layer after page-specific CSS.
-
-Use `frontend-design` for new interfaces, redesigns, or high-impact visual direction decisions. Skip it for copy, evidence, data, or narrow layout fixes unless design exploration is requested.
+- Mobile-first, premium, quiet blue / cyan accents; iOS 26 / Liquid Glass-inspired but restrained.
+- Glass for top navigation, high-level panels, selected controls. Do not stack glass boxes inside glass boxes.
+- Keep content panels readable and calm; clear typography hierarchy; avoid cluttered cards, oversized hero type, heavy scrollbars.
+- `assets/css/liquid-glass.css` is the final calibration layer, loaded after page-specific CSS.
+- Layer pill colors: core = blue, platform = cyan, extension = grey, undecided = dashed amber.
 
 ## Development Rules
 
-- Touch only files needed for the task.
-- Use existing components and shared CSS when possible.
-- Do not add dependencies unless necessary, and explain why.
-- Preserve unrelated user changes.
-- Run lint/build checks when provided.
-- If no checks exist, say so.
+- Touch only files needed for the task. Reuse shared CSS / components. Don't add dependencies without a stated reason. Preserve unrelated user changes.
+- Static site, no lint / build. Local run: `python3 -m http.server 4173` then open `http://127.0.0.1:4173/`.
+- When you change `benchmark.js` or `benchmark.css`, bump the `?v=` query in `index.html` so the browser reloads the new file.
+- In some sessions the bash sandbox cannot resolve this repo's working directory; if a headless run isn't possible, verify by careful static review (the helpers and render logic are proven — keep `section()` titles and `sectionGroups` keys consistent).
 
-## Self-Review
+## Parked / Not Now
 
-Before finishing, verify:
+- Personalized content feed (external news ingested by API, recommended by tag / behavior / region / identity): shelved. When revisited it is **not** 頻道 — it splits into 開放平台 (ingestion) + 身分 (profile) + 發現 or a new module (recommendation) + a surface. It's a super-app feature; only WeChat (看一看 / 視頻號) and LINE (Today / VOOM) are real benchmarks.
 
-- The page starts from priority role needs.
-- Modules are classified before they are expanded.
-- V1 necessary modules are separated from lightweight and later modules.
-- Competitor flows support decisions.
-- Adopted and rejected patterns are clear.
-- The final architecture map follows from the module classification.
-- AI, CRM, Bot/API, mini-apps, and full commerce are not overbuilt.
-- Visible text is stable, reusable, and free of process notes.
-- No concept is repeated in multiple sections.
+## Historical Context (not the current basis)
+
+The earlier "V1 architecture rationale" work is historical. Old taxonomy (`messaging-identity`, `external-entry`, `channel-loop`, `community-governance`, `trust-risk`, `business-commerce`, `status-updates`, `support-crm`, `platform-ai-ops`), old pages (`creator_community/`, `v1_decision/`, `interaction_playground/`, `compare_features/`, `product_architecture/`, `app_structures/`, `reports/report.html`) and `docs/v1-module-prioritization.md` are reference only. All old pages are reached via the Archive page (`archive/index.html`); the live nav (`site-nav.js`) is just benchmark / current_product / gap_analysis / archive. If anything conflicts with the current benchmark, the benchmark wins.
 
 ## Final Response
 
-When finished, summarize:
-
-1. What changed
-2. What recommendation logic was encoded
-3. What assumptions remain
-4. What files changed
-5. What checks ran
+When finished, summarize: what changed, what files changed, what assumptions remain, and what checks ran.

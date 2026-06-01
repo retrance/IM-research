@@ -161,6 +161,67 @@
   font-weight: 860;
 }
 
+.benchmark-layer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 9px;
+  padding: 5px 11px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 820;
+  line-height: 1;
+}
+
+.benchmark-layer-pill:empty {
+  display: none;
+}
+
+.benchmark-layer-pill[data-layer="core"],
+.benchmark-status span[data-layer="core"] {
+  background: color-mix(in srgb, var(--benchmark-blue) 14%, #fff);
+  color: var(--benchmark-blue-dark);
+  border-color: color-mix(in srgb, var(--benchmark-blue) 30%, #fff);
+}
+
+.benchmark-layer-pill[data-layer="platform"],
+.benchmark-status span[data-layer="platform"] {
+  background: color-mix(in srgb, var(--benchmark-cyan) 16%, #fff);
+  color: #04736f;
+  border-color: color-mix(in srgb, var(--benchmark-cyan) 34%, #fff);
+}
+
+.benchmark-layer-pill[data-layer="extension"],
+.benchmark-status span[data-layer="extension"] {
+  background: rgba(83, 98, 116, 0.12);
+  color: var(--benchmark-muted);
+  border-color: rgba(83, 98, 116, 0.28);
+}
+
+.benchmark-module-card[data-layer="platform"] span {
+  background: color-mix(in srgb, var(--benchmark-cyan) 16%, #fff);
+  color: #04736f;
+}
+
+.benchmark-module-card[data-layer="extension"] span {
+  background: rgba(83, 98, 116, 0.14);
+  color: var(--benchmark-muted);
+}
+
+.benchmark-layer-pill[data-layer="undecided"],
+.benchmark-status span[data-layer="undecided"] {
+  background: rgba(245, 158, 11, 0.12);
+  color: #92600a;
+  border-color: rgba(245, 158, 11, 0.45);
+  border-style: dashed;
+}
+
+.benchmark-module-card[data-layer="undecided"] span {
+  background: rgba(245, 158, 11, 0.16);
+  color: #92600a;
+}
+
 .benchmark-detail {
   display: grid;
   gap: 18px;

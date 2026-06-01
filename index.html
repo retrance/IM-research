@@ -7,7 +7,7 @@
     <link rel="icon" href="app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
     <link rel="stylesheet" href="assets/css/site.css?v=shared-ui-20260521">
     <link rel="stylesheet" href="assets/css/components.css?v=shared-ui-20260521">
-    <link rel="stylesheet" href="assets/css/pages/benchmark.css?v=benchmark-20260601">
+    <link rel="stylesheet" href="assets/css/pages/benchmark.css?v=undecided-v5-20260601">
     <link rel="stylesheet" href="assets/css/liquid-glass.css?v=ios26-20260526">
   </head>
   <body class="benchmark-page">
@@ -28,7 +28,11 @@
           <h1>IM 競品實現方式 Benchmark</h1>
           <p class="lead">比較主流 IM 在核心模組上的 UI、流程、規模限制、技術特徵與可借鑑點。</p>
           <div class="benchmark-status" aria-label="資料狀態">
-            <span>固定競品：Telegram、WhatsApp、WeChat、LINE、Discord、Signal</span>
+            <span>對標競品：Telegram、WhatsApp、WeChat、LINE、Discord</span>
+            <span data-layer="core">核心：私聊、群聊、頻道、身分、通知</span>
+            <span data-layer="platform">必做：開放平台 / Bot / API</span>
+            <span data-layer="extension">擴展 · API：發現、紅包積分、錢包</span>
+            <span data-layer="undecided">待討論：語音視訊</span>
           </div>
         </div>
       </section>
@@ -36,6 +40,7 @@
       <section id="module-detail" class="benchmark-detail" aria-live="polite">
         <div class="benchmark-detail-head">
           <div>
+            <span id="moduleLayer" class="benchmark-layer-pill"></span>
             <h2 id="moduleTitle"></h2>
             <p class="muted" id="moduleDefinition"></p>
           </div>
@@ -50,6 +55,6 @@
       </section>
     </main>
 
-    <script src="assets/js/benchmark.js?v=benchmark-20260601"></script>
+    <script src="assets/js/benchmark.js?v=undecided-v5-20260601"></script>
   </body>
 </html>
