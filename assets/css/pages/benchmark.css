@@ -66,8 +66,7 @@
 }
 
 .benchmark-status span,
-.benchmark-module-card span,
-.benchmark-placeholder-list span {
+.benchmark-module-card span {
   display: inline-flex;
   width: max-content;
   max-width: 100%;
@@ -339,12 +338,6 @@
 .benchmark-archive-card:hover {
   border-color: color-mix(in srgb, var(--benchmark-blue) 28%, #fff);
   transform: translateY(-1px);
-}
-
-.benchmark-placeholder-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
 }
 
 @media (max-width: 1180px) {
