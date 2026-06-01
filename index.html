@@ -3,22 +3,101 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="0; url=creator_community/index.html">
-    <title>Creator-led / Community-led IM 首頁原型</title>
+    <title>IM 競品實現方式 Benchmark</title>
     <link rel="icon" href="app_structures/assets/icons/ui/message-circle.svg" type="image/svg+xml">
-    <script>
-      window.location.replace("creator_community/index.html");
-    </script>
+    <link rel="stylesheet" href="assets/css/site.css?v=shared-ui-20260521">
+    <link rel="stylesheet" href="assets/css/components.css?v=shared-ui-20260521">
+    <link rel="stylesheet" href="assets/css/pages/benchmark.css?v=benchmark-20260601">
+    <link rel="stylesheet" href="assets/css/liquid-glass.css?v=ios26-20260526">
   </head>
-  <body>
-    <nav aria-label="頁面切換">
-      <a href="creator_community/index.html">首頁</a>
-      <a href="v1_decision/index.html">V1 架構推導</a>
-      <a href="interaction_playground/index.html">V1 情境流程</a>
-      <a href="compare_features/index.html">功能比較</a>
-      <a href="app_structures/index.html">競品架構庫</a>
-      <a href="product_architecture/index.html">產品架構</a>
-      <a href="reports/report.html">報告</a>
-    </nav>
+  <body class="benchmark-page">
+    <header class="topbar is-compact">
+      <div class="topbar-inner">
+        <div class="brand">
+          <strong>IM Benchmark</strong>
+        </div>
+        <nav class="nav" aria-label="頁面切換" data-site-nav data-active="benchmark"></nav>
+      </div>
+    </header>
+    <script src="assets/js/site-nav.js?v=site-nav-20260601"></script>
+
+    <main>
+      <section class="benchmark-hero" id="top">
+        <div class="benchmark-hero-copy">
+          <span class="eyebrow">競品實現方式資料庫</span>
+          <h1>IM 競品實現方式 Benchmark</h1>
+          <p class="lead">比較主流 IM 在核心模組上的 UI、流程、規模限制、技術特徵與可借鑑點；本頁只做橫向比較，不做最終採用決策。</p>
+          <div class="benchmark-status" aria-label="資料狀態">
+            <span>固定競品：Telegram、WhatsApp、WeChat、LINE、Discord、Signal</span>
+            <span>資料不確定處標示「待確認」</span>
+            <span>截圖區僅預留 placeholder</span>
+          </div>
+        </div>
+        <aside class="benchmark-principle" aria-label="閱讀原則">
+          <strong>閱讀順序</strong>
+          <p>先看模組總覽，再切換模組比較產品做法。此頁用於建立共同理解，不替代產品決策或 PRD。</p>
+        </aside>
+      </section>
+
+      <section id="modules" class="benchmark-overview">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Module Overview</span>
+            <h2>點選模組，直接比較 6 個產品</h2>
+          </div>
+          <p class="muted">每個模組都用同一套版型呈現：核心做法、值得借鑑點、風險、不確定資料與截圖 placeholder。</p>
+        </div>
+        <div class="benchmark-module-grid" id="benchmarkModuleGrid"></div>
+      </section>
+
+      <section id="module-detail" class="benchmark-detail" aria-live="polite">
+        <div class="benchmark-detail-head">
+          <div>
+            <span class="eyebrow" id="moduleKicker">Benchmark Module</span>
+            <h2 id="moduleTitle"></h2>
+            <p class="muted" id="moduleDefinition"></p>
+          </div>
+          <a class="benchmark-top-link" href="#modules">返回模組總覽</a>
+        </div>
+
+        <div class="benchmark-switch-note">
+          <strong>比較視角</strong>
+          <p>先看同一模組下各產品的優缺點，再用下方能力矩陣查細項。此頁不做採用決策。</p>
+        </div>
+
+        <div id="productComparisonGrid" class="benchmark-product-grid" aria-label="產品優缺點比較"></div>
+
+        <div class="benchmark-block">
+          <h3>能力矩陣</h3>
+          <div class="benchmark-table-wrap">
+            <table id="capabilityTable" aria-label="核心能力比較"></table>
+          </div>
+        </div>
+
+        <details class="benchmark-detail-drawer">
+          <summary>查看 Flow / Scale / Technical 原始比較資料</summary>
+          <div class="benchmark-drawer-grid">
+            <article class="benchmark-block">
+              <h3>User Flow</h3>
+              <div id="flowCards" class="benchmark-flow-grid"></div>
+            </article>
+            <article class="benchmark-block">
+              <h3>Scale / Limits</h3>
+              <div class="benchmark-table-wrap">
+                <table id="limitsTable" aria-label="規模限制比較"></table>
+              </div>
+            </article>
+            <article class="benchmark-block">
+              <h3>Technical Characteristics</h3>
+              <div class="benchmark-table-wrap">
+                <table id="technicalTable" aria-label="技術特徵比較"></table>
+              </div>
+            </article>
+          </div>
+        </details>
+      </section>
+    </main>
+
+    <script src="assets/js/benchmark.js?v=benchmark-20260601"></script>
   </body>
 </html>
